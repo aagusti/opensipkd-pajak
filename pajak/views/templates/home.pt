@@ -1,0 +1,34 @@
+<html metal:use-macro="load: base.pt">
+
+<div metal:fill-slot="content">
+
+<!-- Main component for a primary marketing message or call to action -->
+<div class="well">
+<h1>Pajak Daerah Kota Tangerang Selatan </h1>
+<p><img src="/static/img/logo.png" class="img-float img-thumbnail"/>
+Selamat datang  di aplikasi <code>Pajak Daerah</code> Kota Tangerang Selatan aplikasi ini di desain untuk 
+memproses data pajak daerah (PBB, BPHTB dan Non PBB BPHTB)
+
+<p>Aplikasi pajak daerah terdiri dari module:</p>
+<ul>
+<li>Pajak Daerah Non PBB/BPHTB Back Office <a href="http://padl.tangselkotaorg/">PADL</a> </li>
+<li>Elektronik SPTPD (e-sptpd) <a href="http://e-sptpd.tangselkota.org/">E-SPTPD</a> </li>
+<li>PBB Monitoring <a href="http://pbb-bphtb.tangselkota.org">PBBM</a></li>
+<li>Elektronik SSP BPHTB Monitoring <a href="http://pbb-bphtb.tangselkota.org">e-sspb</a></li>
+<li>SIG PBB <a href="http://sig.tangselkota.org/">SIG-PBB</a></li>
+<li>Integrasi PBB - Akuntansi <a href="/pbb/akrual?project=_akrual">PBB Akrual</a></li>
+<li>Integrasi BPHTB - Akuntansi <a href="/bphtb/akrual?project=_akrual">BPHTB Akrual</a></li>
+<li>Integrasi PDL Akuntansi <a href="http://padl.tangselkota.org">PDL Akrual</a></li>
+<li>Elektronik SPPT <a href="http://e-sppt.tangselkota.org">e-sppt</a></li>
+<li>Informasi Tagihan PBB Via Android Base <a href="https://play.google.com/store/apps/details?id=com.opensipkd.ipbb_tangsel">i-pbb</a></li>
+<li>Informasi Tagihan PBB Via SMS +6281210101070 Command <strong>NOP 36.76.kec.kel.blok.urut.jns.tahun</strong></li>
+<li>Informasi PBB Via email <strong>pbb-bphtb[at]tangerangselatankota.go.id</strong> dengan isi <strong>NOP 36.76.kec.kel.blok.urut.jns</strong></li>
+<li>Pengelolaan Restitusi/Kompensasi PBB  <a href="/F170900?project=_restitusi">e-Restitusi</a></li>
+<li>Payment Online System PBB  <a href="http://pospbb.tangselkota.org">POS PBB</a></li>
+<li>System Integrasi Perbankan (BJB/BCA/MANDIRI)</li>
+<li>System Informasi Objek Pajak PBB</li>
+</ul>
+</div><!--well-->
+
+</div>
+</html>

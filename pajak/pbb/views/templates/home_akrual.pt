@@ -1,0 +1,36 @@
+<html metal:use-macro="load: main_akrual.pt">
+
+<div metal:fill-slot="content">
+
+<!-- Main component for a primary marketing message or call to action -->
+<div class="well">
+<h1>Pajak Daerah ${request.company} </h1>
+<p><img src="/static/img/logo.png" class="img-float img-thumbnail"/>
+Selamat datang  di module <code>PBB Akuntansi Akrual</code> ${request.company} aplikasi ini di desain untuk 
+memproses data Ketetapan dan Realisasi Pajak Bumi dan Bangunan Perkotaan dan Perdesaan (PBB-P2) dengan Sistem Akuntansi
+<p>Module ini digunakan sebagai jembatan antara Aplikasi
+<ul>
+<li>Sistem Informasi Manajemen Objek Pajak (SISMIOP) PBB PD</li>
+<li>Sistem Informasi Akuntansi dan Keuangan (SIMRAL/SIPKD/SIMDA)</li>
+</ul>
+
+Module dibuat dengan menggunakan berbasiskan aplikasi Open Source yang terdiri dari
+
+<ul>
+    <li>
+        Python Web Framework <a href="http://pylonsproject.org/">Pyramid</a>
+    </li>
+    <li>
+        CSS Framework <a href="http://getbootstrap.com">Bootstrap</a>
+    </li> 
+    <li>
+        Javascript Framwork <a href="https://jquery.com/">jQuery</a>
+    </li>
+    
+</ul>
+
+</p>
+</div><!--well-->
+
+</div>
+</html>
