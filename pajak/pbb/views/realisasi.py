@@ -14,6 +14,9 @@ from ...tools import _DTstrftime, _DTnumber_format, FixLength
 from ...views.common import ColumnDT, DataTables
 from ..views import PbbView
 import re
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
 
 SESS_ADD_FAILED  = 'Tambah Saldo Awal gagal'
 SESS_EDIT_FAILED = 'Edit Saldo Awal gagal'
@@ -144,15 +147,11 @@ class RealisasiView(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='pbb-realisasi-csv', renderer='csv',
-                 permission='pbb-realisasi-csv')
+    @view_config(route_name='pbb-realisasi-rpt', 
+                 permission='pbb-realisasi-rpt')
     def view_csv(self):
-        req = self.req
-        ses = req.session
-        params   = req.params
-        url_dict = req.matchdict
-        
-        q = pbbDBSession.query(func.concat(PembayaranSppt.kd_propinsi,
+        url_dict = self.req.matchdict
+        query = pbbDBSession.query(func.concat(PembayaranSppt.kd_propinsi,
                                func.concat(".", 
                                func.concat(PembayaranSppt.kd_dati2, 
                                func.concat("-", 
@@ -171,24 +170,8 @@ class RealisasiView(PbbView):
                                PembayaranSppt.denda_sppt.label('denda'),
                                PembayaranSppt.jml_sppt_yg_dibayar.label('bayar'),
                                PembayaranSppt.posted,).\
-                          filter(PembayaranSppt.tgl_pembayaran_sppt.between(awal,akhir))
-        # override attributes of response
-        filename = 'pbb-realisasi.csv'
-        req.response.content_disposition = 'attachment;filename=' + filename
-        rows = []
-        header = []
+                          filter(PembayaranSppt.tgl_pembayaran_sppt.between(self.dt_awal,self.dt_akhir))
         
-        r = q.first()
-        if r:
-            header = r.keys()
-            query = q.all()
-            rows = []
-            for item in query:
-                rows.append(list(item))
-
-        
-        return {
-          'header': header,
-          'rows': rows,
-        }                
-                
+        if url_dict['rpt']=='csv' :
+            filename = 'pbb-realisasi.csv'
+            return csv_response(self.req, csv_rows(query), filename)

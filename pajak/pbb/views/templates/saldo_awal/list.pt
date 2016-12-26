@@ -1,8 +1,23 @@
-<html metal:use-macro="load: ../main${project}.pt">
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
 
 <div metal:fill-slot="content">
 <h3>${request.title}</h3>
 <hr>
+    <fieldset class="deformFormFieldset">
+      <div class="form-group">
+        <!--Tanggal-->
+        <div id="item-tanggal_fltr">
+          <label for="tanggal_fltr" class="control-label col-md-1" id="req-tanggal_fltr">
+                  Tahun</label>
+          <div class="col-md-2">
+             <input id="tahun" class="form-control" type="text" 
+                     value="${request.session['tahun']}" name="tahun">
+          </div>
+        </div>
+        <button id="btn_filter"  name="btn_filter"  class="btn btn btn-primary" type="submit">Filter</button>
+      </div>
+    </fieldset>
+    
 <table id="table1" class="table ">
     <thead>
         <tr>
@@ -70,18 +85,18 @@
           ]
         });
 
-        var tb_array = [
+       var tb_array = [
           '<div class="btn-group pull-left">',
+          '	<!--<button id="btn_post"   class="btn btn btn-primary" type="button">Post/Unpost</button>-->',
           '	<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
-          '	<button id="btn_edit"   class="btn btn btn-primary" type="button">Edit</button>',
-          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>',
-          '	<!--button id="btn_print"  class="btn btn btn-primary" type="button">Cetak</button-->',
+          '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
+          '	<button id="btn_del" class="btn btn btn-danger"  type="button">Hapus</button>',
           '	<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
-          '	<button id="btn_close"  class="btn btn btn-warning" type="button">Tutup</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];
-
 
         var tb = tb_array.join(' ');
         $("div.toolbar").html(tb);
@@ -110,28 +125,31 @@
             else alert('Pilih Baris yang akan di edit');
         });
 
-        $('#btn_delete').click(function () {
+        $('#btn_del').click(function () {
             if (mID) window.location = oTableUri+'/'+mID+'/delete';
             else alert('Pilih Baris yang akan di hapus');
-        });
-
-        $('#btn_print').click(function () {
-            url = '/admin/report/act/user?user='+mID
-
-        if (mID) window.open(url);
-            else window.open('/admin/report/act/user2');
-            
-        });
-        $('#btn_csv').click(function () {
-            url = oTableUri+'/csv';
-            window.open(url);
         });
 
         $("#btn_close").click(function () {
             window.location = '/';
             return false;
         });
-        })
+        
+        $('#btn_csv').click(function () {
+            url = oTableUri+"/csv/rpt";
+            window.open(url);
+        });
+        
+        $('#btn_pdf').click(function () {
+            url = oTableUri+"/pdf/rpt";
+            window.open(url);
+        });
+        
+        $("#btn_filter").click(function () {
+            filter = "?tahun="+$("#tahun").val();
+            oTable.ajax.url(oTableUrl+filter).load();
+        });        
+      });
     </script>
 </div>
 

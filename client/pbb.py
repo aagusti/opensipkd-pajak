@@ -15,7 +15,7 @@ arg = sys.argv[0]
 c = len(sys.argv) 
 print c
 #if c < 1:
-#    print 'python import-csv [path]'
+#    print 'python import-rpt [path]'
 #    sys.exit()
     
 path = "/home/eis-data/"

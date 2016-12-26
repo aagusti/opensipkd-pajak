@@ -219,3 +219,55 @@ def view_delete(request):
     return dict(row=row,
                  form=form.render())
 
+##########
+# RPT    #
+##########    
+from ..os_reports import open_rml_row, open_rml_pdf, pdf_response, csv_response
+
+@view_config(route_name='group-rpt', permission='group-rpt')
+def view_rpt(request):
+    def query_reg():
+        return DBSession.query(Group.group_name, Group.description, 
+                    Group.member_count).order_by(Group.group_name)
+    params   = request.params
+    url_dict = request.matchdict
+    if url_dict['rpt']=='pdf' :
+        query = query_reg()
+        _here = os.path.dirname(__file__)
+        path = os.path.join(os.path.dirname(_here), 'static')
+        logo = path + "/img/logo.png"
+        line = path + "/img/line.png"
+        
+        path = os.path.join(os.path.dirname(_here), 'reports')
+        rml_row = open_rml_row(path+'/group.row.rml')
+        
+        rows=[]
+        for r in query.all():
+            s = rml_row.format(group_name=r.group_name, 
+                               description=r.description, 
+                               member_count=r.member_count
+                               )
+            rows.append(s)
+        
+        pdf, filename = open_rml_pdf(path+'/group.rml', rows=rows, 
+                            company=request.company,
+                            departement = request.departement,
+                            logo = logo,
+                            line = line,
+                            address = request.address)
+        return pdf_response(request, pdf, filename)
+        
+    elif url_dict['rpt']=='csv' :
+        query = query_reg() 
+        row = query.first()
+        header = row.keys()
+        rows = []
+        for item in query.all():
+            rows.append(list(item))
+
+        filename = 'user.csv'
+        value = {
+                  'header': header,
+                  'rows'  : rows,
+                } 
+        return csv_response(request, value, filename)

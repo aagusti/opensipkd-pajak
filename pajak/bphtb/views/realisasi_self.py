@@ -85,8 +85,8 @@ class BphtbViewSelf(BphtbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='bphtb-self-csv', renderer='csv',
-                 permission='bphtb-self-csv')
+    @view_config(route_name='bphtb-self-rpt', renderer='csv',
+                 permission='bphtb-self-rpt')
     def view_csv(self):
         q = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
                     PembayaranBphtb.transno.label("transno"),

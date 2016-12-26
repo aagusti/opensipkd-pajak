@@ -12,27 +12,27 @@
           <li><a href="/pdl/realisasi">Realisasi</a></li>                
         </ul>
       </li-->
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PBB <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="/pbb/sa">Saldo Awal</a></li>                
-          <li><a href="/pbb/sppt">Ketetapan SPPT</a></li>                
-          <li><a href="/pbb/ketetapan">Ketetapan Harian</a></li>                
-          <li><a href="/pbb/ketetapan/rekap">Ketetapan Harian Rekap</a></li>                
-          <li><a href="/pbb/realisasi">Realisasi By NOP</a></li>                
-          <li><a href="/pbb/realisasi/rekap">Realisasi Rekap</a></li>                
-        </ul>
+      <!-- <li class="dropdown"> -->
+        <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">PBB <b class="caret"></b></a> -->
+        <!-- <ul class="dropdown-menu"> -->
+          <!-- <li><a href="/pbb/sa">Saldo Awal</a></li>                 -->
+          <!-- <li><a href="/pbb/sppt">Ketetapan SPPT</a></li>                 -->
+          <!-- <li><a href="/pbb/ketetapan">Ketetapan Harian</a></li>                 -->
+          <!-- <li><a href="/pbb/ketetapan/rekap">Ketetapan Harian Rekap</a></li>                 -->
+          <!-- <li><a href="/pbb/realisasi">Realisasi By NOP</a></li>                 -->
+          <!-- <li><a href="/pbb/realisasi/rekap">Realisasi Rekap</a></li>                 -->
+        <!-- </ul> -->
 
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">BPHTB <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="/bphtb/sa">Saldo Awal</a></li>                
-          <li><a href="/bphtb/self">Realisasi SSPD/Self</a></li>                
-          <li><a href="/bphtb/ketetapan">Ketetapan</a></li>                
-          <li><a href="/bphtb/realisasi">Realisasi Ketetapan</a></li>                
-        </ul>
-      </li>
+      <!-- </li> -->
+      <!-- <li class="dropdown"> -->
+        <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">BPHTB <b class="caret"></b></a> -->
+        <!-- <ul class="dropdown-menu"> -->
+          <!-- <li><a href="/bphtb/sa">Saldo Awal</a></li>                 -->
+          <!-- <li><a href="/bphtb/self">Realisasi SSPD/Self</a></li>                 -->
+          <!-- <li><a href="/bphtb/ketetapan">Ketetapan</a></li>                 -->
+          <!-- <li><a href="/bphtb/realisasi">Realisasi Ketetapan</a></li>                 -->
+        <!-- </ul> -->
+      <!-- </li> -->
       <!--li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Akuntansi <b class="caret"></b></a>
         <ul class="dropdown-menu">

@@ -280,8 +280,8 @@ def view_posting(request):
 ##########
 # CSV #
 ##########
-@view_config(route_name='bphtb-sa-csv', renderer='csv',
-             permission='bphtb-sa-csv')
+@view_config(route_name='bphtb-sa-rpt', renderer='csv',
+             permission='bphtb-sa-rpt')
 def view_csv(request):
     ses = request.session
     req = request

@@ -97,6 +97,14 @@ class clsSppt(clsNop, clsKode):
         #Set Local Variable
         self.thn_pajak_sppt=self.kode['thn_pajak_sppt']
 
+class clsSiklus(clsSppt, clsKode):
+    def __init__(self, kode):
+        clsSppt.__init__(self, kode)
+        clsKode.__init__(self, kode, SIKLUS)
+
+        #Set Local Variable
+        self.siklus_sppt=self.kode['siklus_sppt']
+        
 class clsBayar(clsSppt, clsBank, clsKode):
     def __init__(self, kode):
         kode = re.sub("\D","", kode)

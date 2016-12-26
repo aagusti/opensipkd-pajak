@@ -30,6 +30,9 @@ class DataTables(BaseDataTables):
 
         global_filter = [filter_for(col)
                          for col in self.columns if col.global_search]
-
+        # global_filter = []
+        # for col in self.columns:
+            # if col.global_search:
+                # global_filter.append(filter_for(col))
         self.filter_expressions.append(or_(*global_filter))
 

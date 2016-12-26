@@ -85,8 +85,8 @@ class BphtbViewRealisasi(BphtbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='bphtb-realisasi-csv', renderer='csv',
-                 permission='bphtb-realisasi-csv')
+    @view_config(route_name='bphtb-realisasi-rpt', renderer='csv',
+                 permission='bphtb-realisasi-rpt')
     def view_csv(self):
         q = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
                     PembayaranBphtb.transno.label("transno"),

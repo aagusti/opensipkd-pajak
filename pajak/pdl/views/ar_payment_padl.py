@@ -534,8 +534,8 @@ def view_unposting(request):
 # CSV #
 ##########
 
-@view_config(route_name='ar-payment-padl-csv', renderer='csv',
-             permission='ar-payment-padl-csv')
+@view_config(route_name='ar-payment-padl-rpt', renderer='csv',
+             permission='ar-payment-padl-rpt')
 def view_csv(request):
     ses = request.session
     req = request

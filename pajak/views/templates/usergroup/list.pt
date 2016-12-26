@@ -1,4 +1,4 @@
-<html metal:use-macro="load: ../base.pt">
+<html metal:use-macro="load: ../main.pt">
 
 <div metal:fill-slot="content">
 <h4>User Group</h4>
@@ -69,6 +69,7 @@
           serverSide    : true,
           ajax          : oTableGrpUrl,
           stateSave     : true,
+          
           scrollCollapse: true,
           sort          : true,
           info          : false,
@@ -81,11 +82,6 @@
               [10, 25, 50, 100],
               [10, 25, 50, 100]
           ],
-          columnDefs: [{
-                        searchable: false,
-                        visible: false,
-                        targets: [0]
-                    }],
           columns: [
               { "data": "id" },
               { "data": "name", "width": "200px", "class":"left"},
@@ -156,10 +152,12 @@
         });
         var tb_array = [
           '<div class="btn-group pull-left">',
-          '	<button id="btn_add" class="btn btn btn-primary" type="button">Tambah</button>',
-          '	<button id="btn_delete" class="btn btn btn-danger" type="button">Hapus</button>',
-          '	<!--button id="btn_pdf" class="btn btn btn-warning" type="button">PDF</button>',
-          '	<button id="btn_csv" class="btn btn btn-default" type="button">CSV</button-->',
+          '	<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
+          '	<!--<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>-->',
+          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>',
+          '	<!--<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>-->',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];

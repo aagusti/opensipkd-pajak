@@ -1,4 +1,4 @@
-<html metal:use-macro="load: ../main${project}.pt">
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
 
 <div metal:fill-slot="content">
 <h3>${request.title}</h3>
@@ -162,16 +162,18 @@
           }
         });
 
-        var tb_array = [
+       var tb_array = [
           '<div class="btn-group pull-left">',
-          '	<button id="btn_view"    class="btn btn btn-primary" type="button">Tampil</button>',
-          '	<button id="btn_post"   class="btn btn btn-primary" type="button">Posting</button>',
+          '	<button id="btn_post"   class="btn btn btn-warning" type="button">Post/Unpost</button>',
+          '	<!--<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
+          '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
+          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>-->',
           '	<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
-          '	<button id="btn_close"  class="btn btn btn-warning" type="button">Tutup</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];
-
 
         var tb = tb_array.join(' ');
         $("div.toolbar").html(tb);
@@ -210,10 +212,6 @@
         if (mID) window.open(url);
             else window.open('/admin/report/act/user2');
             
-        });
-        $('#btn_csv').click(function () {
-            url = oTableUri+'/csv';
-            window.open(url);
         });
 
         $("#btn_close").click(function () {
@@ -258,6 +256,16 @@
             changeYear: true,
             dateFormat:'dd-mm-yy'
       });
+        $('#btn_csv').click(function () {
+            url = oTableUri+"/csv/rpt";
+            window.open(url);
+        });
+        $('#btn_pdf').click(function () {
+            url = oTableUri+"/pdf/rpt";
+            window.open(url);
+        });
+ 
+
       
 // Handle click on checkbox
       $('#table1 tbody').on('click', 'input[type="checkbox"]', function(e){

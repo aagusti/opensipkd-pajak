@@ -14,7 +14,9 @@ from ...tools import _DTstrftime, _DTnumber_format, FixLength
 from ..views import PbbView
 from ...views.common import ColumnDT, DataTables
 import re
-
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
 SESS_ADD_FAILED  = 'Tambah Ketetapan gagal'
 SESS_EDIT_FAILED = 'Edit Ketetapan gagal'
 
@@ -213,15 +215,11 @@ class KetetapanRekapView(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='pbb-ketetapan-rekap-csv', renderer='csv',
-                 permission='pbb-ketetapan-rekap-csv')
+    @view_config(route_name='pbb-ketetapan-rekap-rpt',
+                 permission='pbb-ketetapan-rekap-rpt')
     def view_csv(self):
-        req = self.req
-        ses = self.ses
-        params   = req.params
-        url_dict = req.matchdict
-        
-        q = pbbDBSession.query(SpptRekap.id,
+        url_dict = self.req.matchdict
+        query = pbbDBSession.query(SpptRekap.id,
                         func.to_char(SpptRekap.tanggal,'DD-MM-YYYY').label('tanggal'),
                         SpptRekap.kode,
                         SpptRekap.uraian, 
@@ -229,26 +227,10 @@ class KetetapanRekapView(PbbView):
                         SpptRekap.posted,).\
                 filter(SpptRekap.tanggal.between(self.dt_awal, self.dt_akhir)).\
                 filter(SpptRekap.posted==self.posted)
-        
-        # override attributes of response
-        filename = 'pbb-ketetapan-rekap.csv'
-        req.response.content_disposition = 'attachment;filename=' + filename
-        rows = []
-        header = []
-        
-        r = q.first()
-        if r:
-            header = r.keys()
-            query = q.all()
-            rows = []
-            for item in query:
-                rows.append(list(item))
 
-        
-        return {
-          'header': header,
-          'rows': rows,
-        }                
+        if url_dict['rpt']=='csv' :
+            filename = 'sppt_rekap.csv'
+            return csv_response(self.req, csv_rows(query), filename)
 
 def route_list(request):
     return HTTPFound(location=request.route_url('pbb-ketetapan-rekap'))

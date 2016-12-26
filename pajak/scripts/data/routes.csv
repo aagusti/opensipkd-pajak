@@ -30,6 +30,9 @@ id,kode,path,nama,status
 29,"group-routes-delete","/group/routes/{id}/delete","Hapus group permission",1
 30,"group-routes-act","/group/routes/{act}/act","Act grouppermission",1
 31,"upload-logo","/upload/logo","Unggah Logo",1
+32,"user-rpt","/user/{rpt}/rpt","Urser Report",1
+33,"group-rpt","/group/{rpt}/rpt","Group Report",1
+34,"routes-rpt","/routes/{rpt}/rpt","Routes Report",1
 50000,"pbb-akrual","/pbb/akrual","PBB-Akrual",1
 50001,"pbb-sa","/pbb/sa","PBB-Saldo Awal",1
 50002,"pbb-sa-act","/pbb/sa/{id}/act","PBB-Saldo Awal Act",1
@@ -38,32 +41,32 @@ id,kode,path,nama,status
 50005,"pbb-sa-add","/pbb/sa/add","PBB-Saldo Awal Tambah",1
 50006,"pbb-sa-delete","/pbb/sa/{id}/delete","PBB-Saldo Awal Hapus",1
 50007,"pbb-sa-edit","/pbb/sa/{id}/edit","PBB-Saldo Awal Edit",1
-50008,"pbb-sa-csv","/pbb/sa/csv","PBB-Saldo Awal CSV",1
+50008,"pbb-sa-rpt","/pbb/sa/{rpt}/rpt","PBB-Saldo Awal rpt",1
 50011,"pbb-sppt","/pbb/sppt","PBB-SPPT",1
 50012,"pbb-sppt-act","/pbb/sppt/{id}/act","PBB-SPPT Action",1
 50013,"pbb-sppt-view","/pbb/sppt/{id}/view","PBB-SPPT View",1
 50014,"pbb-sppt-post","/pbb/sppt/{id}/post","PBB-SPPT Posting",1
-50015,"pbb-sppt-csv","/pbb/sppt/csv","PBB-SPPT CSV",1
+50015,"pbb-sppt-rpt","/pbb/sppt/{rpt}/rpt","PBB-SPPT rpt",1
 50021,"pbb-ketetapan","/pbb/ketetapan","PBB-SPPT Akrual",1
 50022,"pbb-ketetapan-act","/pbb/ketetapan/{id}/act","PBB-SPPT Akrual Action",1
 50023,"pbb-ketetapan-view","/pbb/ketetapan/{id}/view","PBB-SPPT Akrual View",1
 50024,"pbb-ketetapan-post","/pbb/ketetapan/{id}/post","PBB-SPPT Akrual Posting",1
-50025,"pbb-ketetapan-csv","/pbb/ketetapan/csv","PBB-SPPT Akrual CSV",1
+50025,"pbb-ketetapan-rpt","/pbb/ketetapan/{rpt}/rpt","PBB-SPPT Akrual rpt",1
 50031,"pbb-ketetapan-rekap","/pbb/ketetapan/rekap","PBB Ketetapan Rekap",1
 50032,"pbb-ketetapan-rekap-act","/pbb/ketetapan/rekap/{id}/act","PBB Ketetapan Act",1
 50033,"pbb-ketetapan-rekap-view","/pbb/ketetapan/rekap/{id}/view","PBB Ketetapan View",1
 50034,"pbb-ketetapan-rekap-post","/pbb/ketetapan/rekap/{id}/post","PBB Ketetapan Post",1
-50035,"pbb-ketetapan-rekap-csv","/pbb/ketetapan/rekap/csv","PBB Ketetapan CSV",1
+50035,"pbb-ketetapan-rekap-rpt","/pbb/ketetapan/rekap/{rpt}/rpt","PBB Ketetapan rpt",1
 50041,"pbb-realisasi","/pbb/realisasi","PBB Realisasi",1
 50042,"pbb-realisasi-act","/pbb/realisasi/{id}/act","PBB Realisasi Act",1
 50043,"pbb-realisasi-view","/pbb/realisasi/{id}/view","PBB Realisasi View",1
 50044,"pbb-realisasi-post","/pbb/realisasi/{id}/post","PBB Realisasi Post",1
-50045,"pbb-realisasi-csv","/pbb/realisasi/csv","PBB Realisasi CSV",1
+50045,"pbb-realisasi-rpt","/pbb/realisasi/{rpt}/rpt","PBB Realisasi rpt",1
 50051,"pbb-realisasi-rekap","/pbb/realisasi/rekap","PBB Realisasi Rekap",1
 50052,"pbb-realisasi-rekap-act","/pbb/realisasi/rekap/{id}/act","PBB Realisasi Act",1
 50053,"pbb-realisasi-rekap-view","/pbb/realisasi/rekap/{id}/view","PBB Realisasi View",1
 50054,"pbb-realisasi-rekap-post","/pbb/realisasi/rekap/{id}/post","PBB Realisasi Post",1
-50055,"pbb-realisasi-rekap-csv","/pbb/realisasi/rekap/csv","PBB Realisasi CSV",1
+50055,"pbb-realisasi-rekap-rpt","/pbb/realisasi/rekap/{rpt}/rpt","PBB Realisasi rpt",1
 60000,"bphtb-akrual","/bphtb/akrual","BPHTB-Akrual",1
 60001,"bphtb-sa","/bphtb/sa","BPHTB-Saldo Awal",1
 60002,"bphtb-sa-act","/bphtb/sa/{id}/act","BPHTB-Saldo Awal Act",1
@@ -72,22 +75,22 @@ id,kode,path,nama,status
 60005,"bphtb-sa-add","/bphtb/sa/add","BPHTB-Saldo Awal Tambah",1
 60006,"bphtb-sa-delete","/bphtb/sa/{id}/delete","BPHTB-Saldo Awal Hapus",1
 60007,"bphtb-sa-edit","/bphtb/sa/{id}/edit","BPHTB-Saldo Edit",1
-60008,"bphtb-sa-csv","/bphtb/sa/csv","BPHTB-CSV",1
+60008,"bphtb-sa-rpt","/bphtb/sa/{rpt}/rpt","BPHTB-rpt",1
 60011,"bphtb-ketetapan","/bphtb/ketetapan","BPHTB-Ketetapan",1
 60012,"bphtb-ketetapan-act","/bphtb/ketetapan/{id}/act","BPHTB-Ketetapan Action",1
 60013,"bphtb-ketetapan-view","/bphtb/ketetapan/{id}/view","BPHTB-Ketetapan View",1
 60014,"bphtb-ketetapan-post","/bphtb/ketetapan/{id}/post","BPHTB-Ketetapan Posting",1
-60015,"bphtb-ketetapan-csv","/bphtb/ketetapan/csv","BPHTB-Ketetapan CSV",1
+60015,"bphtb-ketetapan-rpt","/bphtb/ketetapan/{rpt}/rpt","BPHTB-Ketetapan rpt",1
 60021,"bphtb-realisasi","/bphtb/realisasi","BPHTB Realisasi Ketetapan",1
 60022,"bphtb-realisasi-act","/bphtb/realisasi/{id}/act","BPHTB Realisasi Ketetapan Act",1
 60023,"bphtb-realisasi-view","/bphtb/realisasi/{id}/view","BPHTB Realisasi Ketetapan View",1
 60024,"bphtb-realisasi-post","/bphtb/realisasi/{id}/post","BPHTB Realisasi Ketetapan Post",1
-60025,"bphtb-realisasi-csv","/bphtb/realisasi/csv","BPHTB Realisasi Ketetapan CSV",1
+60025,"bphtb-realisasi-rpt","/bphtb/realisasi/{rpt}/rpt","BPHTB Realisasi Ketetapan rpt",1
 60031,"bphtb-self","/bphtb/self","BPHTB Realisasi Self",1
 60032,"bphtb-self-act","/bphtb/self/{id}/act","BPHTB Realisasi  Self Act",1
 60033,"bphtb-self-view","/bphtb/self/{id}/view","BPHTB Realisasi Self View",1
 60034,"bphtb-self-post","/bphtb/self/{id}/post","BPHTB Realisasi Self Post",1
-60035,"bphtb-self-csv","/bphtb/self/csv","BPHTB Realisasi Self CSV",1
+60035,"bphtb-self-rpt","/bphtb/self/{rpt}/rpt","BPHTB Realisasi Self rpt",1
 70001,"pdl-sa","/pdl/sa","PDL-Saldo Awal",1
 70002,"pdl-sa-act","/pdl/sa/{id}/act","PDL-Saldo Awal Act",1
 70003,"pdl-sa-view","/pdl/sa/{id}/view","PDL-Saldo Awal View",1
@@ -108,18 +111,18 @@ id,kode,path,nama,status
 1702002,"F170200-edt","/F170200/{id}/edt","PBB Permohonan Edit",1
 1702003,"F170200-del","/F170200/{id}/del","PBB Permohonan Delete",1
 1702004,"F170200-act","/F170200/{id}/act","PBB Permohonan Action",1
-1702005,"F170200-csv","/F170200/csv","PBB Permohonan CSV",1
+1702005,"F170200-rpt","/F170200/{rpt}/rpt","PBB Permohonan rpt",1
 1709000,"F170900","/F170900","PBB Restitusi Kompensasi",1
 1709020,"F170902","/F170902","PBB Restitusi Kompensasi",1
 1709021,"F170902-add","/F170902/add","PBB Restitusi Kompensasi Add",1
 1709022,"F170902-edt","/F170902/{id}/edt","PBB Restitusi Kompensasi Edit",1
 1709023,"F170902-del","/F170902/{id}/del","PBB Restitusi Kompensasi Delete",1
 1709024,"F170902-act","/F170902/{id}/act","PBB Restitusi Kompensasi Action",1
-1709025,"F170902-csv","/F170902/csv","PBB Restitusi Kompensasi CSV",1
+1709025,"F170902-rpt","/F170902/{rpt}/rpt","PBB Restitusi Kompensasi rpt",1
 1709026,"F170902-post","/F170902/{id}/post","PBB Restitusi Kompensasi Posting",1
 1604010,"F160401","/F160401","PBB Catatan Pembayaran",1
 1604011,"F160401-add","/F160401/add","PBB Catatan Pembayaran Add",1
 1604012,"F160401-edt","/F160401/{id}/edt","PBB Catatan Pembayaran Edit",1
 1604013,"F160401-del","/F160401/{id}/del","PBB Catatan Pembayaran Delete",1
 1604014,"F160401-act","/F160401/{id}/act","PBB Catatan Pembayaran Action",1
-1604015,"F160401-csv","/F160401/csv","PBB Catatan Pembayaran CSV",1
+1604015,"F160401-rpt","/F160401/{rpt}/rpt","PBB Catatan Pembayaran rpt",1

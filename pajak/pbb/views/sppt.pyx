@@ -433,8 +433,8 @@ def view_posting(request):
 ##########
 # CSV #
 ##########
-@view_config(route_name='ar-invoice-pbb-csv', renderer='csv',
-             permission='ar-invoice-pbb-csv')
+@view_config(route_name='ar-invoice-pbb-rpt', renderer='csv',
+             permission='ar-invoice-pbb-rpt')
 def view_csv(request):
     ses = request.session
     req = request

@@ -78,8 +78,8 @@ class BphtbKetetapanView(BphtbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='bphtb-ketetapan-csv', renderer='csv',
-                 permission='bphtb-ketetapan-csv')
+    @view_config(route_name='bphtb-ketetapan-rpt', renderer='csv',
+                 permission='bphtb-ketetapan-rpt')
     def view_csv(self):
         q = bphtbDBSession.query(SspdBphtb.id.label("id"),
                     SspdBphtb.transno.label("transno"),

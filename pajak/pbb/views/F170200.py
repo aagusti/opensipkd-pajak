@@ -152,8 +152,8 @@ class F170200View(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='F170200-csv', renderer='csv',
-                 permission='F170200-csv')
+    @view_config(route_name='F170200-rpt', renderer='csv',
+                 permission='F170200-rpt')
     def view_csv(self):
         req = self.req
         ses = self.ses
@@ -231,8 +231,8 @@ def id_not_found(value):
 # ##########
 # # CSV #
 # ##########
-# @view_config(route_name='F170200-csv', renderer='csv',
-             # permission='F170200-csv')
+# @view_config(route_name='F170200-rpt', renderer='csv',
+             # permission='F170200-rpt')
 # def view_csv(request):
     # ses = request.session
     # req = request

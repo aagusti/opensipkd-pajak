@@ -16,7 +16,7 @@ from deform import (
     ValidationFailure,
     )
 from ..models import DBSession, GroupRoutePermission, Group, Route
-from datatables import ColumnDT, DataTables
+from ..views.common import ColumnDT, DataTables
 #from okeuangan.views.base_view import BaseViews
     
 
@@ -83,8 +83,8 @@ def group_routes_act(request):
     
     if url_dict['act']=='grid':
         columns = []
-        columns.append(ColumnDT(GroupRoutePermission.group_id, mData="group_id"))
-        columns.append(ColumnDT(GroupRoutePermission.route_id, mData="route_id"))
+        columns.append(ColumnDT(GroupRoutePermission.group_id, mData="group_id", global_search=False))
+        columns.append(ColumnDT(GroupRoutePermission.route_id, mData="route_id", global_search=False))
         columns.append(ColumnDT(Group.group_name, mData="group_nama"))
         columns.append(ColumnDT(Route.nama, mData="route_nama"))
         columns.append(ColumnDT(Route.path, mData="route_path"))

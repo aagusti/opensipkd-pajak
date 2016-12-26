@@ -63,100 +63,32 @@ class SpptView(PbbView):
                                      filter(Sppt.thn_pajak_sppt==str(self.tahun))
                 rowTable = DataTables(req.GET, query, columns)
                 return rowTable.output_result()
-
-###########
-# Posting #
-###########
-@view_config(route_name='pbb-sppt-post', renderer='json',
-             permission='pbb-sppt-post')
-def view_posting(request):
-    if request.POST:
-        controls = dict(request.POST.items())
-        for id in controls['id'].split(","):
-            row    = query_id(id).first()
-            if not row:
-                n_id_not_found = n_id_not_found + 1
-                continue
-
-            if not row.nilai:
-                n_row_zero = n_row_zero + 1
-                continue
-
-            if request.session['posted']==0 and row.posted:
-                n_posted = n_posted + 1
-                continue
-
-            if request.session['posted']==1 and not row.posted:
-                n_posted = n_posted + 1
-                continue
-
-            n_id = n_id + 1
-
-            id_inv = row.id
-            
-            if request.session['posted']==0:
-                pass 
-            else:
-                pass
                 
-        if n_id_not_found > 0:
-            msg = '%s Data Tidan Ditemukan %s \n' % (msg,n_id_not_found)
-        if n_row_zero > 0:
-            msg = '%s Data Dengan Nilai 0 sebanyak %s \n' % (msg,n_row_zero)
-        if n_posted>0:
-            msg = '%s Data Tidak Di Proses %s \n' % (msg,n_posted)
-        msg = '%s Data Di Proses %s ' % (msg,n_id)
-        
-        return dict(success = True,
-                    msg     = msg)
-                    
-    return dict(success = False,
-                msg     = 'Terjadi kesalahan proses')
-
-##########
-# CSV #
-##########
-@view_config(route_name='pbb-sppt-csv', renderer='csv',
-             permission='pbb-sppt-csv')
-def view_csv(request):
-    ses = request.session
-    req = request
-    params   = req.params
-    url_dict = req.matchdict
-    tahun = 'tahun' in params and params['tahun'] or \
-                datetime.now().strftime('%Y')
-    tahun = '2013'        
-    q = pbbDBSession.query(func.concat(Sppt.kd_propinsi,
-                           func.concat(".", 
-                           func.concat(Sppt.kd_dati2, 
-                           func.concat("-", 
-                           func.concat(Sppt.kd_kecamatan,
-                           func.concat(".", 
-                           func.concat(Sppt.kd_kelurahan,
-                           func.concat("-", 
-                           func.concat(Sppt.kd_blok,
-                           func.concat(".", 
-                           func.concat(Sppt.no_urut,
-                           func.concat(".", Sppt.kd_jns_op)))))))))))),
-                           Sppt.thn_pajak_sppt,
-                           Sppt.nm_wp_sppt,
-                           Sppt.luas_bumi_sppt,
-                           Sppt.luas_bng_sppt,
-                           Sppt.pbb_yg_harus_dibayar_sppt).\
-                  filter(Sppt.thn_pajak_sppt==tahun)
-
-    r = q.first()
-    header = r.keys()
-    query = q.all()
-    rows = []
-    for item in query:
-        rows.append(list(item))
-
-    # override attributes of response
-    filename = 'pbb-sppt.csv'
-    request.response.content_disposition = 'attachment;filename=' + filename
-
-    return {
-      'header': header,
-      'rows': rows,
-    }
+    ##########
+    # CSV #
+    ##########
+    @view_config(route_name='pbb-sppt-rpt', 
+                 permission='pbb-sppt-rpt')
+    def view_csv(self):
+        url_dict = self.req.matchdict
+        query = pbbDBSession.query(func.concat(Sppt.kd_propinsi,
+                               func.concat(".", 
+                               func.concat(Sppt.kd_dati2, 
+                               func.concat("-", 
+                               func.concat(Sppt.kd_kecamatan,
+                               func.concat(".", 
+                               func.concat(Sppt.kd_kelurahan,
+                               func.concat("-", 
+                               func.concat(Sppt.kd_blok,
+                               func.concat(".", 
+                               func.concat(Sppt.no_urut,
+                               func.concat(".", Sppt.kd_jns_op)))))))))))),
+                               Sppt.thn_pajak_sppt,
+                               Sppt.nm_wp_sppt,
+                               Sppt.luas_bumi_sppt,
+                               Sppt.luas_bng_sppt,
+                               Sppt.pbb_yg_harus_dibayar_sppt).\
+                      filter(Sppt.thn_pajak_sppt==tahun)          
+        if url_dict['rpt']=='csv' :
+            filename = 'saldo_awal.csv'
+            return csv_response(self.req, csv_rows(query), filename)

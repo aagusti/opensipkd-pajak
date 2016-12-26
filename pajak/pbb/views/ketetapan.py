@@ -12,8 +12,12 @@ from ...pbb.tools import fixSiklus
 from ...tools import _DTstrftime, _DTnumber_format #, FixLength
 #from ...views.base_views import base_view
 from ...views.common import ColumnDT, DataTables
+from ..tools import clsSiklus
 import re
-
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
+        
 SESS_ADD_FAILED  = 'Tambah Ketetapan gagal'
 SESS_EDIT_FAILED = 'Edit Ketetapan gagal'
 
@@ -37,16 +41,9 @@ class KetetapanView(PbbView):
     @view_config(route_name='pbb-ketetapan-act', renderer='json',
                  permission='pbb-ketetapan-act')
     def view_act(self):
-        req = self.req
-        ses = req.session
-        params   = req.params
-        url_dict = req.matchdict
-        tahun = self.tahun
-        #tahun = '2013'    
+        url_dict = self.req.matchdict
         if url_dict['id']=='grid':
-            #pk_id = 'id' in params and params['id'] and int(params['id']) or 0
             if url_dict['id']=='grid':
-                # defining columns
                 columns = [
                     ColumnDT(func.concat(SpptAkrual.kd_propinsi,
                              func.concat(SpptAkrual.kd_dati2, 
@@ -84,14 +81,11 @@ class KetetapanView(PbbView):
                 query = pbbDBSession.query().select_from(SpptAkrual).\
                             filter(SpptAkrual.create_date.between(self.dt_awal, 
                                               self.dt_akhir+timedelta(days=1),)).\
-                            filter(SpptAkrual.posted == ses['posted'])
+                            filter(SpptAkrual.posted == self.posted)
                                      
-                rowTable = DataTables(req.GET, query, columns)
+                rowTable = DataTables(self.req.GET, query, columns)
                 return rowTable.output_result()
             
-
-        row = save(request, values, row)
-        
     ###########
     # Posting #
     ###########
@@ -128,10 +122,10 @@ class KetetapanView(PbbView):
 
                     #id_inv = row.id
                     
-                    if request.session['posted']==0:
-                        row.posted = 1 
+                    if self.posted==1:
+                        row.posted = 0 
                     else:
-                        row.posted = 0
+                        row.posted = 1
                     pbbDBSession.flush()
                     
                 if n_id_not_found > 0:
@@ -152,15 +146,11 @@ class KetetapanView(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='pbb-ketetapan-csv', renderer='csv',
-                 permission='pbb-ketetapan-csv')
+    @view_config(route_name='pbb-ketetapan-rpt', 
+                 permission='pbb-ketetapan-rpt')
     def view_csv(self):
-        req = self.req
-        ses = self.ses
-        params   = req.params
-        url_dict = req.matchdict
-        
-        q = pbbDBSession.query(func.concat(SpptAkrual.kd_propinsi,
+        url_dict = self.req.matchdict
+        query = pbbDBSession.query(func.concat(SpptAkrual.kd_propinsi,
                             func.concat(".", 
                             func.concat(SpptAkrual.kd_dati2, 
                             func.concat("-", 
@@ -180,46 +170,28 @@ class KetetapanView(PbbView):
                             SpptAkrual.pbb_yg_harus_dibayar_sppt).\
                             filter(SpptAkrual.create_date.between(self.dt_awal, 
                                               self.dt_akhir+timedelta(days=1),)).\
-                            filter(SpptAkrual.posted == ses['posted'])
-        
-        filename = 'pbb-ketetapan-rekap.csv'
-        req.response.content_disposition = 'attachment;filename=' + filename
-        rows = []
-        header = []
-       
-        r = q.first()
-        if r:
-            header = r.keys()
-            query = q.all()
-            for item in query:
-                rows.append(list(item))
-
+                            filter(SpptAkrual.posted == self.posted)
+        if url_dict['rpt']=='csv' :
+            filename = 'ketetapan.csv'
+            return csv_response(self.req, csv_rows(query), filename)
             
-        # override attributes of response
-
-        return {
-          'header': header,
-          'rows': rows,
-        }                
-                    
 ########
 # Edit #
 ########
 def query_id(value):
     val = re.sub("\D", "", value)
-    nop = FixLength(SIKLUS)
-    nop.set_raw(val)
+    nop = clsSiklus(val)
     #bayar = val[len(nop.get_raw()):]
     return pbbDBSession.query(SpptAkrual).\
-           filter(SpptAkrual.kd_propinsi==nop['kd_propinsi'],
-                  SpptAkrual.kd_dati2==nop['kd_dati2'],
-                  SpptAkrual.kd_kecamatan==nop['kd_kecamatan'],
-                  SpptAkrual.kd_kelurahan==nop['kd_kelurahan'],
-                  SpptAkrual.kd_blok==nop['kd_blok'],
-                  SpptAkrual.no_urut==nop['no_urut'],
-                  SpptAkrual.kd_jns_op==nop['kd_jns_op'],
-                  SpptAkrual.thn_pajak_sppt==nop['thn_pajak_sppt'],
-                  SpptAkrual.siklus_sppt==nop['siklus_sppt'],
+           filter(SpptAkrual.kd_propinsi==nop.kd_propinsi,
+                  SpptAkrual.kd_dati2==nop.kd_dati2,
+                  SpptAkrual.kd_kecamatan==nop.kd_kecamatan,
+                  SpptAkrual.kd_kelurahan==nop.kd_kelurahan,
+                  SpptAkrual.kd_blok==nop.kd_blok,
+                  SpptAkrual.no_urut==nop.no_urut,
+                  SpptAkrual.kd_jns_op==nop.kd_jns_op,
+                  SpptAkrual.thn_pajak_sppt==nop.thn_pajak_sppt,
+                  SpptAkrual.siklus_sppt==nop.siklus_sppt,
                   )
                   
 

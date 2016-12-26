@@ -96,7 +96,19 @@ def get_company(request):
     from tools import get_settings
     settings = get_settings()
     company = 'company' in settings and settings['company'] or 'DEMO'
-    return company
+    return company.upper()
+
+def get_departement(request):
+    from tools import get_settings
+    settings = get_settings()
+    departement = 'departement' in settings and settings['departement'] or 'DIVISI DEMO'
+    return departement
+
+def get_address(request):
+    from tools import get_settings
+    settings = get_settings()
+    address = 'address' in settings and settings['address'] or 'JATIASIH - BEKASI'
+    return address
     
 main_title = 'opensipkd-pajak'
 titles = {}
@@ -158,6 +170,8 @@ def main(global_config, **settings):
     config.add_request_method(get_user, 'user', reify=True)
     config.add_request_method(get_title, 'title', reify=True)
     config.add_request_method(get_company, 'company', reify=True)
+    config.add_request_method(get_departement, 'departement', reify=True)
+    config.add_request_method(get_address, 'address', reify=True)
     config.add_notfound_view(RemoveSlashNotFoundViewFactory())        
                           
     config.add_static_view('static', 'static', cache_max_age=3600)

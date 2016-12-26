@@ -4,9 +4,9 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="well">
-<h1>Pajak Daerah Kota Tangerang Selatan </h1>
+<h1>Pajak Daerah ${request.company} </h1>
 <p><img src="/static/img/logo.png" class="img-float img-thumbnail"/>
-Selamat datang  di aplikasi <code>Pajak Daerah</code> Kota Tangerang Selatan aplikasi ini di desain untuk 
+Selamat datang  di aplikasi <code>Pajak Daerah</code> ${request.company} aplikasi ini di desain untuk 
 memproses data pajak daerah (PBB, BPHTB dan Non PBB BPHTB)
 
 <p>Aplikasi pajak daerah terdiri dari module:</p>

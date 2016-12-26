@@ -73,10 +73,11 @@
         var tb_array = [
           '<div class="btn-group pull-left">',
           '	<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
-          '	<button id="btn_edit"   class="btn btn btn-primary" type="button">Edit</button>',
+          '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
           '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>',
-          '	<button id="btn_print"  class="btn btn btn-primary" type="button">Cetak</button>',
-          '	<button id="btn_close"  class="btn btn btn-warning" type="button">Tutup</button>',
+          '	<!--<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>-->',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];

@@ -111,8 +111,8 @@ class F160401View(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='F160401-csv', renderer='csv',
-                 permission='F160401-csv')
+    @view_config(route_name='F160401-rpt', renderer='csv',
+                 permission='F160401-rpt')
     def view_csv(self):
         req = self.req
         ses = self.ses

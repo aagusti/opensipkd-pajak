@@ -9,11 +9,15 @@ from deform import (Form, widget, ValidationFailure, )
 from ..models import pbbDBSession
 from ...pbb.tools import clsBank
 from ..models.tap import PembayaranRekap, PembayaranSppt
-from ...tools import _DTstrftime, _DTnumber_format, FixLength
+from ...tools import _DTstrftime, _DTnumber_format
 #from ...views.base_views import base_view
 from ...views.common import ColumnDT, DataTables
+from ..tools import clsBank
 import re
 from ..views import PbbView
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
 SESS_ADD_FAILED  = 'Tambah Saldo Awal gagal'
 SESS_EDIT_FAILED = 'Edit Saldo Awal gagal'
 
@@ -99,9 +103,11 @@ class RealisasiRekapView(PbbView):
                                 msg     = 'Tidak ada data yang di proses')
                     
                 headers = r.keys()
+                bank = clsBank("")
                 for row in rows.all():
                     row_dicted = dict(zip(row.keys(), row))
-                    bank.from_dict(row_dicted)
+                    
+                    bank.kode.from_dict(row_dicted)
                     row_dicted['uraian'] = "Penerimaan Tanggal {tanggal} Bank {bank}".\
                                            format(tanggal = row.tanggal.strftime('%d-%m-%Y'),
                                                   bank = bank.get_raw())
@@ -222,54 +228,23 @@ class RealisasiRekapView(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='pbb-realisasi-rekap-csv', renderer='csv',
-                 permission='pbb-realisasi-rekap-csv')
+    @view_config(route_name='pbb-realisasi-rekap-rpt', 
+                 permission='pbb-realisasi-rekap-rpt')
     def view_csv(self):
-        req = self.req
-        ses = req.session
-        params   = req.params
-        url_dict = req.matchdict
-        tahun = 'tahun' in params and params['tahun'] or \
-                    datetime.now().strftime('%Y')
-        q = pbbDBSession.query(func.concat(PembayaranRekap.kd_propinsi,
-                               func.concat(".", 
-                               func.concat(PembayaranRekap.kd_dati2, 
-                               func.concat("-", 
-                               func.concat(PembayaranRekap.kd_kecamatan,
-                               func.concat(".", 
-                               func.concat(PembayaranRekap.kd_kelurahan,
-                               func.concat("-", 
-                               func.concat(PembayaranRekap.kd_blok,
-                               func.concat(".", 
-                               func.concat(PembayaranRekap.no_urut,
-                               func.concat(".", PembayaranRekap.kd_jns_op)))))))))))),
-                               PembayaranRekap.thn_pajak_realisasi,
-                               PembayaranRekap.nm_wp_realisasi,
-                               PembayaranRekap.luas_bumi_realisasi,
-                               PembayaranRekap.luas_bng_realisasi,
-                               PembayaranRekap.pbb_yg_harus_dibayar_realisasi).\
-                      filter(PembayaranRekap.thn_pajak_realisasi==tahun)
-
-        # override attributes of response
-        filename = 'pbb-realisasi-rekap.csv'
-        req.response.content_disposition = 'attachment;filename=' + filename
-        rows = []
-        header = []
+        url_dict = self.req.matchdict
+        query = pbbDBSession.query(PembayaranRekap.tanggal,
+                               PembayaranRekap.kode,
+                               PembayaranRekap.uraian,
+                               (PembayaranRekap.bayar - PembayaranRekap.denda).label("pokok"),
+                               PembayaranRekap.denda,
+                               PembayaranRekap.bayar).\
+                      filter(PembayaranRekap.tanggal.between(self.dt_awal,self.dt_akhir),
+                             PembayaranRekap.posted == self.posted)
         
-        r = q.first()
-        if r:
-            header = r.keys()
-            query = q.all()
-            rows = []
-            for item in query:
-                rows.append(list(item))
-
-        
-        return {
-          'header': header,
-          'rows': rows,
-        }                
-                                
+        if url_dict['rpt']=='csv' :
+            filename = 'pbb-realisasi-rekap.csv'
+            return csv_response(self.req, csv_rows(query), filename)
+                               
                 
 def route_list(request):
     return HTTPFound(location=request.route_url('pbb-realisasi-rekap'))
