@@ -88,11 +88,12 @@ def view_file(request):
             if ext.lower()!='.png':
                 request.session.flash('File harus format png','error')
                 return dict(form=form.render())	
-
-            resolver = AssetResolver()
-            static_path = resolver.resolve('keuangan:static').abspath()
-            fullpath = os.path.join( static_path, 'img/logo.png')
-            print '------------------>',fullpath
+            _here = os.path.dirname(__file__)
+            fullpath = os.path.join(os.path.dirname(_here), 'static')
+        
+            #resolver = AssetResolver()
+            #static_path = resolver.resolve('keuangan:static').abspath()
+            #fullpath = os.path.join( static_path, 'img/logo.png')
             output_file = open(fullpath, 'wb')
             input_file.seek(0)
             while True:

@@ -87,7 +87,7 @@ def get_settings():
     
 def get_timezone():
     settings = get_settings()
-    return pytz.timezone(settings.timezone)
+    return pytz.timezone(settings['timezone'])
 
 ########    
 # Time #
