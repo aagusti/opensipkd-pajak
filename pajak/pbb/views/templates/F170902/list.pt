@@ -62,7 +62,6 @@
 </div>
   <div metal:fill-slot="scripts">
     <script type="text/javascript" src="/static/js/tools.js"></script>
-
     <script>
       var oTable;
       var oTableUri = "${request.url}";

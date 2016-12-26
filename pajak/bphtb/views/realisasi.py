@@ -14,6 +14,9 @@ from ...tools import _DTstrftime, _DTnumber_format, FixLength
 from ..views import BphtbView
 import re
 from ..views import BPHTB_SELF
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
     
 class BphtbViewRealisasi(BphtbView):
     def __init__(self, request):
@@ -73,7 +76,7 @@ class BphtbViewRealisasi(BphtbView):
                                      join(SspdBphtb).\
                                      filter(PembayaranBphtb.tanggal.between(self.dt_awal,self.dt_akhir)).\
                                      filter(PembayaranBphtb.posted == self.posted,
-                                            not_(SspdBphtb.kode.in_(BPHTB_SELF)))
+                                            SspdBphtb.kode!='1')
                 
                 rowTable = DataTables(self.req.GET, query, columns)
                 return rowTable.output_result()
@@ -88,7 +91,7 @@ class BphtbViewRealisasi(BphtbView):
     @view_config(route_name='bphtb-realisasi-rpt', renderer='csv',
                  permission='bphtb-realisasi-rpt')
     def view_csv(self):
-        q = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
+        query = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
                     PembayaranBphtb.transno.label("transno"),
                     func.to_char(PembayaranBphtb.tanggal,"DD-MM-YYYY").label("tanggal"),
                     func.concat(PembayaranBphtb.kd_propinsi,
@@ -112,21 +115,11 @@ class BphtbViewRealisasi(BphtbView):
                     PembayaranBphtb.posted.label('posted')).\
                 join(SspdBphtb).\
                 filter(PembayaranBphtb.tanggal.between(self.dt_awal, self.dt_akhir),
-                       SspdBphtb.kode.in_(BPHTB_KETETAPAN))
-        r = q.first()
-        header = r.keys()
-        rows = []
-        for item in q.all():
-            rows.append(list(item))
-
-        # override attributes of response
-        filename = 'bphtb-self.csv'
-        self.req.response.content_disposition = 'attachment;filename=' + filename
-
-        return {
-          'header': header,
-          'rows': rows,
-        }
+                       SspdBphtb.kode!='1')
+        url_dict = self.req.matchdict
+        if url_dict['rpt']=='csv' :
+            filename = 'saldo_awal.csv'
+            return csv_response(self.req, csv_rows(query), filename)
 
     ###########
     # Posting #
@@ -199,59 +192,6 @@ class BphtbViewRealisasi(BphtbView):
         return dict(success = False,
                     msg     = 'Terjadi kesalahan proses')
                 
-#######
-# Add #
-#######
-# def form_validator(form, value):
-    # def err_kegiatan():
-        # raise colander.Invalid(form,
-            # 'Kegiatan dengan no urut tersebut sudah ada')
-
-# class AddSchema(colander.Schema):
-    # tahun       = colander.SchemaNode(
-                            # colander.String())
-    # uraian      = colander.SchemaNode(
-                            # colander.String(),
-                            # missing = colander.drop)
-    # tahun_tetap = colander.SchemaNode(
-                            # colander.String(),
-                            # title = "Tahun Ketetapan")
-    # nilai         = colander.SchemaNode(
-                            # colander.String())
-    
-# class EditSchema(AddSchema):
-    # id             = colander.SchemaNode(
-                          # colander.Integer(),
-                          # oid="id")
-
-# def get_form(request, class_form):
-    # schema = class_form(validator=form_validator)
-    # schema = schema.bind(jenis_id=JENIS_ID,sumber_id=SUMBER_ID)
-    # schema.request = request
-    # return Form(schema, buttons=('simpan','batal'))
-
-# def save(request, values, row=None):
-    # if not row:
-        # row = PembayaranBphtb()
-    # row.from_dict(values)
-    # bphtbDBSession.add(row)
-    # bphtbDBSession.flush()
-    # return row
-
-# def save_request(values, request, row=None):
-    # if 'id' in request.matchdict:
-        # values['id'] = request.matchdict['id']
-        # values['update_uid'] = request.user.id
-        # values['updated'] = datetime.now()
-    # else:
-        # values['create_uid'] = request.user.id
-        # values['created'] = datetime.now()
-        # values['posted'] = 0
-        
-    # row = save(request, values, row)
-    # request.session.flash('Saldo Awal sudah disimpan.')
-    # return row
-
 def route_list(request):
     return HTTPFound(location=request.route_url('bphtb-realisasi'))
 
@@ -271,35 +211,6 @@ def id_not_found(request):
     msg = 'User ID %s not found.' % request.matchdict['id']
     request.session.flash(msg, 'error')
     return route_list(request)
-
-# @view_config(route_name='bphtb-realisasi-view', renderer='templates/realisasi/add.pt',
-             # permission='bphtb-realisasi-view')
-# def view_edit(request):
-    # row = query_id(request).first()
-
-    # if not row:
-        # return id_not_found(request)
-    # if row.posted:
-        # request.session.flash('Data sudah diposting', 'error')
-        # return route_list(request)
-
-    # form = get_form(request, EditSchema)
-    # if request.POST:
-        # if 'simpan' in request.POST:
-            # controls = request.POST.items()
-            # try:
-                # c = form.validate(controls)
-            # except ValidationFailure, e:
-                # return dict(form=form)
-            # save_request(dict(controls), request, row)
-        # return route_list(request)
-    # elif SESS_EDIT_FAILED in request.session:
-        # del request.session[SESS_EDIT_FAILED]
-        # return dict(form=form)
-    # values = row.to_dict()
-    # form.set_appstruct(values)
-    # return dict(form=form)
-
 
 
 

@@ -14,6 +14,9 @@ from ...tools import _DTstrftime, _DTnumber_format, FixLength
 from ..views import BphtbView
 import re
 from ..views import BPHTB_SELF
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
   
 class BphtbViewSelf(BphtbView):
     def __init__(self, request):
@@ -73,7 +76,7 @@ class BphtbViewSelf(BphtbView):
                                      join(SspdBphtb).\
                                      filter(PembayaranBphtb.tanggal.between(self.dt_awal,self.dt_akhir)).\
                                      filter(PembayaranBphtb.posted == self.posted,
-                                            SspdBphtb.kode.in_(BPHTB_SELF))
+                                            SspdBphtb.kode=='1')
                 
                 rowTable = DataTables(self.req.GET, query, columns)
                 return rowTable.output_result()
@@ -85,10 +88,10 @@ class BphtbViewSelf(BphtbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='bphtb-self-rpt', renderer='csv',
+    @view_config(route_name='bphtb-self-rpt', 
                  permission='bphtb-self-rpt')
     def view_csv(self):
-        q = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
+        query = bphtbDBSession.query(PembayaranBphtb.id.label("id"),
                     PembayaranBphtb.transno.label("transno"),
                     func.to_char(PembayaranBphtb.tanggal,"DD-MM-YYYY").label("tanggal"),
                     func.concat(PembayaranBphtb.kd_propinsi,
@@ -112,21 +115,11 @@ class BphtbViewSelf(BphtbView):
                     PembayaranBphtb.posted.label('posted')).\
                 join(SspdBphtb).\
                 filter(PembayaranBphtb.tanggal.between(self.dt_awal, self.dt_akhir),
-                       not_(SspdBphtb.kode.in_(('2','96'))))
-        r = q.first()
-        header = r.keys()
-        rows = []
-        for item in q.all():
-            rows.append(list(item))
-
-        # override attributes of response
-        filename = 'bphtb-self.csv'
-        self.req.response.content_disposition = 'attachment;filename=' + filename
-
-        return {
-          'header': header,
-          'rows': rows,
-        }
+                       SspdBphtb.kode=='1')
+        url_dict = self.req.matchdict
+        if url_dict['rpt']=='csv' :
+            filename = 'saldo_awal.csv'
+            return csv_response(self.req, csv_rows(query), filename)
 
     ###########
     # Posting #

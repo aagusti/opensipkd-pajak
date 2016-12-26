@@ -2,7 +2,21 @@
 
 <div metal:fill-slot="content">
 <h3>${request.title}</h3>
-<hr>
+    <fieldset class="deformFormFieldset">
+      <div class="form-group">
+        <!--Tanggal-->
+        <div id="item-tanggal_fltr">
+          <label for="tanggal_fltr" class="control-label col-md-1" id="req-tanggal_fltr">
+                  Tahun</label>
+          <div class="col-md-2">
+             <input id="tahun" class="form-control" type="text" 
+                     value="${request.session['tahun']}" name="tahun">
+          </div>
+        </div>
+        <button id="btn_filter"  name="btn_filter"  class="btn btn btn-primary" type="submit">Filter</button>
+      </div>
+    </fieldset>
+    
 <table id="table1" class="table ">
     <thead>
         <tr>
@@ -19,18 +33,8 @@
 </table>
 </div>
   <div metal:fill-slot="scripts">
+    <script type="text/javascript" src="/static/js/tools.js"></script>
     <script>
-      Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
-        var n = this,
-            decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
-            decSeparator = decSeparator == undefined ? "." : decSeparator,
-            thouSeparator = thouSeparator == undefined ? "," : thouSeparator,
-            sign = n < 0 ? "-" : "",
-            i = parseInt(n = Math.abs(+n || 0).toFixed(decPlaces)) + "",
-            j = (j = i.length) > 3 ? j % 3 : 0;
-        return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
-      };
-
       var mID;
       var oTable;
       var oTableUri = "${request.url}";
@@ -70,18 +74,18 @@
           ]
         });
 
-        var tb_array = [
+       var tb_array = [
           '<div class="btn-group pull-left">',
+          '	<!--<button id="btn_post"   class="btn btn btn-primary" type="button">Post/Unpost</button>-->',
           '	<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
-          '	<button id="btn_edit"   class="btn btn btn-primary" type="button">Edit</button>',
-          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>',
-          '	<!--button id="btn_print"  class="btn btn btn-primary" type="button">Cetak</button-->',
+          '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
+          '	<button id="btn_del" class="btn btn btn-danger"  type="button">Hapus</button>',
           '	<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
-          '	<button id="btn_close"  class="btn btn btn-warning" type="button">Tutup</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];
-
 
         var tb = tb_array.join(' ');
         $("div.toolbar").html(tb);
@@ -110,7 +114,7 @@
             else alert('Pilih Baris yang akan di edit');
         });
 
-        $('#btn_delete').click(function () {
+        $('#btn_del').click(function () {
             if (mID) window.location = oTableUri+'/'+mID+'/delete';
             else alert('Pilih Baris yang akan di hapus');
         });
@@ -131,6 +135,19 @@
             window.location = '/';
             return false;
         });
+        $("#btn_filter").click(function () {
+            filter = "?tahun="+$("#tahun").val();
+            oTable.ajax.url(oTableUrl+filter).load();
+        });
+        $('#btn_csv').click(function () {
+            url = oTableUri+"/csv/rpt";
+            window.open(url);
+        });
+        
+        $('#btn_pdf').click(function () {
+            url = oTableUri+"/pdf/rpt";
+            window.open(url);
+        });        
         })
     </script>
 </div>

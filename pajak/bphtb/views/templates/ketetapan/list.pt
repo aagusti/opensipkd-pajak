@@ -2,7 +2,6 @@
 
 <div metal:fill-slot="content">
 <h3>${request.title}</h3>
-<hr>
 <!--form id="header" method="POST" enctype="multipart/form-data" accept-charset="utf-8" 
       class="form-horizontal"-->
     <fieldset class="deformFormFieldset">
@@ -37,10 +36,6 @@
         </div>
         
       </div>
-
-
-      
-      <!-- TEST     -->
     </fieldset>
     <!--/form-->
     
@@ -64,47 +59,8 @@
 </table>
 </div>
   <div metal:fill-slot="scripts">
+    <script type="text/javascript" src="/static/js/tools.js"></script>
     <script>
-      Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
-        var n = this,
-            decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
-            decSeparator = decSeparator == undefined ? "." : decSeparator,
-            thouSeparator = thouSeparator == undefined ? "," : thouSeparator,
-            sign = n < 0 ? "-" : "",
-            i = parseInt(n = Math.abs(+n || 0).toFixed(decPlaces)) + "",
-            j = (j = i.length) > 3 ? j % 3 : 0;
-        return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
-      };
-      
-      var rows_selected = [];
-      function updateDataTableSelectAllCtrl(table){
-        var $table             = table.table().node();
-        var $chkbox_all        = $('tbody input[type="checkbox"]', $table);
-        var $chkbox_checked    = $('tbody input[type="checkbox"]:checked', $table);
-        var chkbox_select_all  = $('thead input[name="select_all"]', $table).get(0);
-        // If none of the checkboxes are checked
-        if($chkbox_checked.length === 0){
-          chkbox_select_all.checked = false;
-          if('indeterminate' in chkbox_select_all){
-             chkbox_select_all.indeterminate = false;
-          }
-
-        // If all of the checkboxes are checked
-        } else if ($chkbox_checked.length === $chkbox_all.length){
-          chkbox_select_all.checked = true;
-          if('indeterminate' in chkbox_select_all){
-             chkbox_select_all.indeterminate = false;
-          }
-
-        // If some of the checkboxes are checked
-        } else {
-          chkbox_select_all.checked = true;
-          if('indeterminate' in chkbox_select_all){
-             chkbox_select_all.indeterminate = true;
-          }
-        }
-      }
-
       //var mID;
       var oTable;
       var oTableUri = "${request.url}";
@@ -164,16 +120,18 @@
           }
         });
 
-        var tb_array = [
+       var tb_array = [
           '<div class="btn-group pull-left">',
-          '	<button id="btn_view"    class="btn btn btn-primary" type="button">Tampil</button>',
-          '	<button id="btn_post"   class="btn btn btn-primary" type="button">Posting</button>',
+          '	<button id="btn_post"   class="btn btn btn-warning" type="button">Post/Unpost</button>',
+          '	<!--<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
+          '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
+          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>-->',
           '	<button id="btn_csv"  class="btn btn btn-primary" type="button">CSV</button>',
-          '	<button id="btn_close"  class="btn btn btn-warning" type="button">Tutup</button>',
+          '	<button id="btn_pdf"  class="btn btn btn-primary" type="button">PDF</button>',
+          '	<button id="btn_close"  class="btn btn btn-success" type="button">Tutup</button>',
           '	&nbsp;',
           '</div>',
         ];
-
 
         var tb = tb_array.join(' ');
         $("div.toolbar").html(tb);
@@ -215,10 +173,14 @@
         //});
         
         $('#btn_csv').click(function () {
-            url = oTableUri+'/csv';
+            url = oTableUri+"/csv/rpt";
             window.open(url);
         });
-
+        $('#btn_pdf').click(function () {
+            url = oTableUri+"/pdf/rpt";
+            window.open(url);
+        });   
+        
         $("#btn_close").click(function () {
             window.location = '/';
             return false;

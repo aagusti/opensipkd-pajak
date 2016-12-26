@@ -18,23 +18,6 @@ from ...os_reports import (
 SESS_ADD_FAILED  = 'Tambah Saldo Awal gagal'
 SESS_EDIT_FAILED = 'Edit Saldo Awal gagal'
 
-def deferred_jenis_id(node, kw):
-    values = kw.get('jenis_id', [])
-    return widget.SelectWidget(values=values)
-
-JENIS_ID = (
-    (1, 'Tagihan'),
-    (2, 'Piutang'),
-    (3, 'Ketetapan'))
-
-def deferred_sumber_id(node, kw):
-    values = kw.get('sumber_id', [])
-    return widget.SelectWidget(values=values)
-
-SUMBER_ID = (
-    (4, 'Manual'),
-    (1, 'PBB'),
-    )
 from ..views import PbbView
 
 class SaldoAwalView(PbbView):
@@ -215,7 +198,6 @@ class SaldoAwalView(PbbView):
     @view_config(route_name='pbb-sa-rpt', 
                  permission='pbb-sa-rpt')
     def view_csv(self):
-        url_dict = self.req.matchdict
         query = pbbDBSession.query(SaldoAwal.id,
                       SaldoAwal.tahun,
                       SaldoAwal.uraian,
@@ -224,6 +206,7 @@ class SaldoAwalView(PbbView):
                       SaldoAwal.posted,).\
               filter(SaldoAwal.tahun==self.tahun)
               
+        url_dict = self.req.matchdict
         if url_dict['rpt']=='csv' :
             filename = 'saldo_awal.csv'
             return csv_response(self.req, csv_rows(query), filename)

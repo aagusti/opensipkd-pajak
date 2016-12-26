@@ -13,6 +13,10 @@ from ..models.transaksi import SspdBphtb
 from ...tools import _DTstrftime, _DTnumber_format, FixLength
 from ..views import BphtbView
 import re
+from ...os_reports import (
+        open_rml_row, open_rml_pdf, pdf_response, 
+        csv_response, csv_rows)
+
 from ..views import BPHTB_SELF    
 class BphtbKetetapanView(BphtbView):
     def __init__(self, request):
@@ -66,7 +70,7 @@ class BphtbKetetapanView(BphtbView):
                 query = bphtbDBSession.query().select_from(SspdBphtb).\
                                      filter(SspdBphtb.created.between(self.dt_awal,self.dt_akhir)).\
                                      filter(SspdBphtb.posted == self.posted,
-                                            not_(SspdBphtb.kode.in_(BPHTB_SELF)))
+                                            SspdBphtb.kode!='1')
                 
                 rowTable = DataTables(self.req.GET, query, columns)
                 return rowTable.output_result()
@@ -81,7 +85,7 @@ class BphtbKetetapanView(BphtbView):
     @view_config(route_name='bphtb-ketetapan-rpt', renderer='csv',
                  permission='bphtb-ketetapan-rpt')
     def view_csv(self):
-        q = bphtbDBSession.query(SspdBphtb.id.label("id"),
+        query = bphtbDBSession.query(SspdBphtb.id.label("id"),
                     SspdBphtb.transno.label("transno"),
                     func.to_char(SspdBphtb.tanggal,"DD-MM-YYYY").label("tanggal"),
                     func.concat(SspdBphtb.kd_propinsi,
@@ -103,21 +107,12 @@ class BphtbKetetapanView(BphtbView):
                     SspdBphtb.denda.label('denda'),
                     SspdBphtb.bayar.label('bayar'),
                     SspdBphtb.posted.label('posted')).\
-                filter(SspdBphtb.tanggal.between(self.dt_awal, self.dt_akhir),)
-        r = q.first()
-        header = r.keys()
-        rows = []
-        for item in q.all():
-            rows.append(list(item))
-
-        # override attributes of response
-        filename = 'bphtb-self.csv'
-        self.req.response.content_disposition = 'attachment;filename=' + filename
-
-        return {
-          'header': header,
-          'rows': rows,
-        }
+                filter(SspdBphtb.tanggal.between(self.dt_awal, self.dt_akhir),
+                       SspdBphtb.kode!='1')
+        url_dict = self.req.matchdict
+        if url_dict['rpt']=='csv' :
+            filename = 'saldo_awal.csv'
+            return csv_response(self.req, csv_rows(query), filename)
 
     ###########
     # Posting #
