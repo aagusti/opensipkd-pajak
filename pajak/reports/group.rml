@@ -10,7 +10,7 @@
                 <!-- <drawRightString  x="19cm" y="27.7cm">PEMERINTAH {company}</drawRightString > -->
                 <setFont name="Helvetica-Bold" size="12"/>
                 <drawCenteredString x="10.5cm" y="27.2cm">{departement}</drawCenteredString>
-                <setFont name="Helvetica-Bold" size="10"/>
+                <setFont name="Helvetica-Bold" size="8"/>
                 <drawCenteredString  x="10.5cm" y="26.7cm">{address}</drawCenteredString >
                 <image file="{logo}" preserveAspectRatio="1" x="2cm" y="749" width="50" height="50"/>
                 <image file="{line}" preserveAspectRatio="0" x="2cm" y="740" width="17cm" height="10"/>            
