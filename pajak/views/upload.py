@@ -89,11 +89,11 @@ def view_file(request):
                 request.session.flash('File harus format png','error')
                 return dict(form=form.render())	
             _here = os.path.dirname(__file__)
-            fullpath = os.path.join(os.path.dirname(_here), 'static')
+            static_path = os.path.join(os.path.dirname(_here), 'static')
         
             #resolver = AssetResolver()
             #static_path = resolver.resolve('keuangan:static').abspath()
-            #fullpath = os.path.join( static_path, 'img/logo.png')
+            fullpath = os.path.join( static_path, 'img/logo.png')
             output_file = open(fullpath, 'wb')
             input_file.seek(0)
             while True:
