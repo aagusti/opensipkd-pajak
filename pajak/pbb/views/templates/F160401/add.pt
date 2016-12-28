@@ -1,4 +1,4 @@
-<html metal:use-macro="load: ../main${project}.pt">
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
 <div metal:fill-slot="content">
 <form id="myform" method="post" enctype="multipart/form-data" accept-charset="utf-8" 
              class="form-horizontal">
