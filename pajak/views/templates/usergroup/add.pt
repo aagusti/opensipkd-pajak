@@ -3,6 +3,8 @@
 <h3>Tambah User Group</h3>
 <div tal:content="structure form"/>
 <script>
+  $('#user_nm' ).typeahead({"minLength": 1, "remote": "/user/hon/act?term=%QUERY", "limit": 8});
+
   $('#user_nm').bind('typeahead:selected', function(obj, datum, name) {      
         $('#user_id').val(datum.id);
   });

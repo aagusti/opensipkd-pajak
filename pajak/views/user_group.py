@@ -103,11 +103,11 @@ class AddSchema(colander.Schema):
             
     user_name = colander.SchemaNode(
                     colander.String(),
-                    widget = user_widget,
+                    #widget = user_widget,
                     oid = "user_nm")
     group_name = colander.SchemaNode(
                     colander.String(),
-                    widget = group_widget,
+                    #widget = group_widget,
                     oid = "group_nm")
     group_id = colander.SchemaNode(
                     colander.Integer(),

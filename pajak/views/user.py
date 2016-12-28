@@ -266,7 +266,9 @@ def user_act(request):
     elif url_dict['act']=='hon':
         term = 'term' in params and params['term'] or '' 
         rows = DBSession.query(User.id, User.user_name
-                       ).filter(User.user_name.ilike('%%%s%%' % term) 
+                       ).filter(
+                            User.id>1,
+                            User.user_name.ilike('%%%s%%' % term) 
                        ).all()
         return array_of_rows(rows)
         
