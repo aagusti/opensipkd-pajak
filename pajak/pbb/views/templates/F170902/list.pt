@@ -66,6 +66,7 @@
       var oTable;
       var oTableUri = "${request.url}";
       var oTableUrl = oTableUri+"/grid/act";
+      var mID = 0;
       $(document).ready(function () {
         oTable = $('#table1').DataTable({
           dom           : '<"toolbar">lfrtip',
@@ -153,19 +154,19 @@
         });
           
         
-        //$('#table1 tbody').on('click', 'tr', function () {
-        //    if ($(this).hasClass('selected')) {
-        //        $(this).removeClass('selected');
-        //    } else {
-        //        var aData = oTable.row( this ).data();
-        //        oTable.$('tr.selected').removeClass('selected');
-        //        $(this).addClass('selected');
-        //        mID = aData.id;
-        //        //console.log(mID);
-        //        oTable.$('tr.row_selected').removeClass('row_selected');
-        //        $(this).addClass('row_selected');
-        //    }
-        //});
+        $('#table1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                var aData = oTable.row( this ).data();
+                oTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                mID = aData.id;
+                //console.log(mID);
+                oTable.$('tr.row_selected').removeClass('row_selected');
+                $(this).addClass('row_selected');
+            }
+        });
         
         $('#btn_add').click(function () {
             window.location = oTableUri+'/add';
