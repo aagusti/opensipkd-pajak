@@ -394,7 +394,7 @@ class Sppt(pbbBase, CommonModel):
                     cls.kd_jns_op == fxNop.kd_jns_op,
                     cls.thn_pajak_sppt==p_tahun)
         return query
-,
+
               # Kelurahan.nm_kelurahan.label('nm_kelurahan'), 
               # Kecamatan.nm_kecamatan.label('nm_kecamatan'), 
               # Dati2.nm_dati2.label('nm_dati2')).\
