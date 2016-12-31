@@ -357,7 +357,7 @@ class Sppt(pbbBase, CommonModel):
         return query
         
     @classmethod
-    def get_dop(cls, p_kode, p_tahun):
+    def get_dop1(cls, p_kode, p_tahun):
         fxNop = clsNop(p_kode)
         query = pbbDBSession.query( 
                     func.concat(cls.kd_propinsi, '.').\
@@ -491,7 +491,7 @@ class Sppt(pbbBase, CommonModel):
               # func.coalesce(SpptOpBersama.njop_bng_beban_sppt,0).label('njop_bng_beban'),
                     
     @classmethod
-    def get_dop2(cls, p_kode, p_tahun):
+    def get_dop(cls, p_kode, p_tahun):
         fxNop = clsNop(p_kode)
         query = pbbDBSession.query( 
                     func.concat(cls.kd_propinsi, '.').\
