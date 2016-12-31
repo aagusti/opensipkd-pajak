@@ -29,7 +29,6 @@ from sqlalchemy.orm import (
     #primary_join
     )
 import re
-<<<<<<< HEAD
 from ...tools import as_timezone 
 from ..tools import clsNop, hitung_denda, clsBayar, clsSppt
 from ...models import CommonModel

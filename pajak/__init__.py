@@ -196,14 +196,10 @@ def main(global_config, **settings):
     json_renderer.add_adapter(datetime.datetime, lambda v, request: v.isoformat())
     json_renderer.add_adapter(datetime.date, lambda v, request: v.isoformat())
     config.add_renderer('myjson', json_renderer)
-<<<<<<< HEAD
-    config.add_jsonrpc_endpoint('ws_pbb', '/pbb/api', default_renderer="myjson")
+    config.add_jsonrpc_endpoint('ws_pbb', '/pbb/ws/api', default_renderer="myjson")
     config.add_jsonrpc_endpoint('ws_keuangan', '/ws/keuangan', default_renderer="myjson")
     #config.add_jsonrpc_endpoint('ws_user', '/ws/user', default_renderer="myjson")
-=======
     #config.add_jsonrpc_endpoint('ws_user', '/ws/user', default_renderer="myjson")
-    config.add_jsonrpc_endpoint('ws_keuangan', '/ws/keuangan', default_renderer="myjson")
->>>>>>> cd5e2ab5f59d1e0a753e799005a1cfb7942329e2
     
     ############################################################################
  
