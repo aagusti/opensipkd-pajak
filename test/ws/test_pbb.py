@@ -11,6 +11,7 @@ from config import (
 url = 'http://localhost:6543/pbb/api'
 url = 'http://pajak.tangselkota.org:6543/pbb/ws/api'
 kode = '611001000100100010'
+kode = '367605000500100040'
 tahun = '2005'
 method = 'get_sppt_dop'
 username = 'admin'
@@ -54,7 +55,13 @@ data = get_dict(method, params)
 
 jsondata = json.dumps(data, ensure_ascii=False)
 print('Send to {url}'.format(url=url))
-print(jsondata)          
+print(jsondata)      
+from datetime import datetime    
+awal = datetime.now()
+print awal
 rows = requests.post(url, data=jsondata, headers=headers)
 print('Result:')
 print(json.loads(rows.text))
+akhir = datetime.now()
+print akhir
+print (akhir - awal)

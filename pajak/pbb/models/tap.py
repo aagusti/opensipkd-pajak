@@ -384,6 +384,137 @@ class Sppt(pbbBase, CommonModel):
               cls.no_persil_sppt.label('no_persil_sppt'),
               cls.pbb_yg_harus_dibayar_sppt.label('pbb_yg_harus_dibayar_sppt'), 
               cls.status_pembayaran_sppt.label('status_pembayaran_sppt'),
+              Kelurahan.nm_kelurahan.label('nm_kelurahan'), 
+              Kecamatan.nm_kecamatan.label('nm_kecamatan'), 
+              Dati2.nm_dati2.label('nm_dati2').\
+            filter(cls.kd_propinsi == Kelurahan.kd_propinsi, 
+                   cls.kd_dati2 == Kelurahan.kd_dati2, 
+                   cls.kd_kecamatan == Kelurahan.kd_kecamatan, 
+                   cls.kd_kelurahan == Kelurahan.kd_kelurahan,).\
+            filter(cls.kd_propinsi == Kecamatan.kd_propinsi, 
+                  cls.kd_dati2 == Kecamatan.kd_dati2, 
+                  cls.kd_kecamatan == Kecamatan.kd_kecamatan,).\
+            filter(cls.kd_propinsi == Dati2.kd_propinsi, 
+                    cls.kd_dati2 == Dati2.kd_dati2,).\
+            filter(
+                    cls.kd_propinsi == fxNop.kd_propinsi,
+                    cls.kd_dati2 == fxNop.kd_dati2,
+                    cls.kd_kecamatan == fxNop.kd_kecamatan,
+                    cls.kd_kelurahan == fxNop.kd_kelurahan,
+                    cls.kd_blok == fxNop.kd_blok,
+                    cls.no_urut == fxNop.no_urut,
+                    cls.kd_jns_op == fxNop.kd_jns_op,
+                    cls.thn_pajak_sppt==p_tahun)
+        return query        
+              # func.max(PembayaranSppt.tgl_pembayaran_sppt).label('tgl_bayar'),
+              # func.sum(func.coalesce(PembayaranSppt.jml_sppt_yg_dibayar,0)).label('jml_sppt_yg_dibayar'),
+              # func.sum(func.coalesce(PembayaranSppt.denda_sppt,0)).label('denda_sppt'),).\
+              # outerjoin(DatObjekPajak, and_(
+                            # cls.kd_propinsi==DatObjekPajak.kd_propinsi,
+                            # cls.kd_dati2==DatObjekPajak.kd_dati2,
+                            # cls.kd_kecamatan==DatObjekPajak.kd_kecamatan,
+                            # cls.kd_kelurahan==DatObjekPajak.kd_kelurahan,
+                            # cls.kd_blok==DatObjekPajak.kd_blok,
+                            # cls.no_urut==DatObjekPajak.no_urut,
+                            # cls.kd_jns_op==DatObjekPajak.kd_jns_op,
+                            # )).\
+              # outerjoin(SpptOpBersama, and_(
+                  # cls.kd_propinsi==SpptOpBersama.kd_propinsi,
+                  # cls.kd_dati2==SpptOpBersama.kd_dati2,
+                  # cls.kd_kecamatan==SpptOpBersama.kd_kecamatan,
+                  # cls.kd_kelurahan==SpptOpBersama.kd_kelurahan,
+                  # cls.kd_blok==SpptOpBersama.kd_blok,
+                  # cls.no_urut==SpptOpBersama.no_urut,
+                  # cls.kd_jns_op==SpptOpBersama.kd_jns_op,
+                  # cls.thn_pajak_sppt==SpptOpBersama.thn_pajak_sppt)).\
+              # outerjoin(PembayaranSppt,and_(
+                  # cls.kd_propinsi==PembayaranSppt.kd_propinsi,
+                  # cls.kd_dati2==PembayaranSppt.kd_dati2,
+                  # cls.kd_kecamatan==PembayaranSppt.kd_kecamatan,
+                  # cls.kd_kelurahan==PembayaranSppt.kd_kelurahan,
+                  # cls.kd_blok==PembayaranSppt.kd_blok,
+                  # cls.no_urut==PembayaranSppt.no_urut,
+                  # cls.kd_jns_op==PembayaranSppt.kd_jns_op,
+                  # cls.thn_pajak_sppt==PembayaranSppt.thn_pajak_sppt
+                  # )).\
+              # group_by(cls.kd_propinsi, cls.kd_dati2, cls.kd_kecamatan, cls.kd_kelurahan, cls.kd_blok,
+                    # cls.no_urut, cls.kd_jns_op, 
+                    # cls.thn_pajak_sppt, 
+                    # cls.luas_bumi_sppt, 
+                    # cls.njop_bumi_sppt, 
+                    # cls.luas_bng_sppt, 
+                    # cls.njop_bng_sppt, 
+                    # cls.nm_wp_sppt,
+                    # cls.jln_wp_sppt, 
+                    # cls.blok_kav_no_wp_sppt,
+                    # cls.rw_wp_sppt, 
+                    # cls.rt_wp_sppt, 
+                    # cls.kelurahan_wp_sppt,
+                    # cls.kota_wp_sppt, 
+                    # cls.kd_pos_wp_sppt, 
+                    # cls.npwp_sppt,
+                    # cls.no_persil_sppt,
+                    # cls.pbb_yg_harus_dibayar_sppt, 
+                    # cls.status_pembayaran_sppt,
+                    # DatObjekPajak.jalan_op, 
+                    # DatObjekPajak.blok_kav_no_op, 
+                    # DatObjekPajak.rt_op, 
+                    # DatObjekPajak.rw_op,
+                    # SpptOpBersama.luas_bumi_beban_sppt, 
+                    # SpptOpBersama.luas_bng_beban_sppt, 
+                    # SpptOpBersama.njop_bumi_beban_sppt, 
+                    # SpptOpBersama.njop_bng_beban_sppt,
+                    # Kelurahan.nm_kelurahan, 
+                    # Kecamatan.nm_kecamatan, 
+                    # Dati2.nm_dati2,
+                    # )
+        # return query.filter(
+                    # cls.kd_propinsi == fxNop.kd_propinsi,
+                    # cls.kd_dati2 == fxNop.kd_dati2,
+                    # cls.kd_kecamatan == fxNop.kd_kecamatan,
+                    # cls.kd_kelurahan == fxNop.kd_kelurahan,
+                    # cls.kd_blok == fxNop.kd_blok,
+                    # cls.no_urut == fxNop.no_urut,
+                    # cls.kd_jns_op == fxNop.kd_jns_op,
+                    # cls.thn_pajak_sppt==p_tahun)
+
+              # DatObjekPajak.jalan_op.label('jalan_op'), 
+              # DatObjekPajak.blok_kav_no_op.label('blok_kav_no_op'), 
+              # DatObjekPajak.rt_op.label('rt_op'), 
+              # DatObjekPajak.rw_op.label('rw_op'),
+              # func.coalesce(SpptOpBersama.luas_bumi_beban_sppt,0).label('luas_bumi_beban'), 
+              # func.coalesce(SpptOpBersama.luas_bng_beban_sppt,0).label('luas_bng_beban'), 
+              # func.coalesce(SpptOpBersama.njop_bumi_beban_sppt,0).label('njop_bumi_beban'), 
+              # func.coalesce(SpptOpBersama.njop_bng_beban_sppt,0).label('njop_bng_beban'),
+                    
+    @classmethod
+    def get_dop2(cls, p_kode, p_tahun):
+        fxNop = clsNop(p_kode)
+        query = pbbDBSession.query( 
+                    func.concat(cls.kd_propinsi, '.').\
+                    concat(cls.kd_dati2).concat('-').\
+                    concat(cls.kd_kecamatan).concat('.').\
+                    concat(cls.kd_kelurahan).concat('-').\
+                    concat(cls.kd_blok).concat('.').\
+                    concat(cls.no_urut).concat('-').\
+                    concat(cls.kd_jns_op).label('nop'),
+              cls.thn_pajak_sppt.label('thn_pajak_sppt'), 
+              cls.luas_bumi_sppt.label('luas_bumi_sppt'), 
+              cls.njop_bumi_sppt.label('njop_bumi_sppt'), 
+              cls.luas_bng_sppt.label('luas_bng_sppt'), 
+              cls.njop_bng_sppt.label('njop_bng_sppt'), 
+              cls.nm_wp_sppt.label('nm_wp_sppt'),
+              cls.jln_wp_sppt.label('jln_wp_sppt'), 
+              cls.blok_kav_no_wp_sppt.label('blok_kav_no_wp_sppt'),
+              cls.rw_wp_sppt.label('rw_wp_sppt'), 
+              cls.rt_wp_sppt.label('rt_wp_sppt'), 
+              cls.kelurahan_wp_sppt.label('kelurahan_wp_sppt'),
+              cls.kota_wp_sppt.label('kota_wp_sppt'), 
+              cls.kd_pos_wp_sppt.label('kd_pos_wp_sppt'), 
+              cls.npwp_sppt.label('npwp_sppt'),
+              cls.no_persil_sppt.label('no_persil_sppt'),
+              cls.pbb_yg_harus_dibayar_sppt.label('pbb_yg_harus_dibayar_sppt'), 
+              cls.status_pembayaran_sppt.label('status_pembayaran_sppt'),
               DatObjekPajak.jalan_op.label('jalan_op'), 
               DatObjekPajak.blok_kav_no_op.label('blok_kav_no_op'), 
               DatObjekPajak.rt_op.label('rt_op'), 
