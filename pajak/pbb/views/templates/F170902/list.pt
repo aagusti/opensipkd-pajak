@@ -1,0 +1,285 @@
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
+
+<div metal:fill-slot="content">
+<h3>${request.title}</h3>
+<hr>
+<!--form id="header" method="POST" enctype="multipart/form-data" accept-charset="utf-8" 
+      class="form-horizontal"-->
+    <fieldset class="deformFormFieldset">
+      <!--Tahun-->
+      <div class="form-group">
+        <!--Tanggal-->
+        <div id="item-tanggal_fltr">
+          <label for="tanggal_fltr" class="control-label col-md-1" id="req-tanggal_fltr">
+                  Tanggal</label>
+          <div class="col-md-2">
+             <input id="awal" class="form-control" type="text" 
+                     value="${request.session['awal']}" name="awal">
+          </div>
+          <label for="sd" class="control-label col-md-1" id="req-sd">
+                  s.d</label>
+          <div class="col-md-2">
+             <input id="akhir" class="form-control" type="text" 
+                     value="${request.session['akhir']}" name="akhir">
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+              <span class="input-group-addon">
+                <input type="checkbox" id="posted" class="form-control" 
+                       checked = "${request.session['posted'] and 'checked' or None}" name="posted">
+              </span>
+             <input id="txt_posted_fltr" class="form-control" type="text" 
+                     value="Posted" readonly name="txt_posted_fltr">
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+          
+          <button id="btn_filter"  name="btn_filter"  class="btn btn btn-primary" type="submit">Filter</button>
+        </div>
+        
+      </div>
+
+
+      
+      <!-- TEST     -->
+    </fieldset>
+    <!--/form-->
+    
+<table id="table1" class="table ">
+    <thead>
+        <tr>
+            <th><input name="select_all" value="1" type="checkbox"></th>
+            <th>NO.PEL</th>
+            <th>NOP</th>
+            <th>Nomor</th>
+            <th>Tanggal</th>
+            <th>Jenis</th>
+            <th>Nilai</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</div>
+  <div metal:fill-slot="scripts">
+    <script type="text/javascript" src="/static/js/tools.js"></script>
+    <script>
+      var oTable;
+      var oTableUri = "${request.url}";
+      var oTableUrl = oTableUri+"/grid/act";
+      var mID = 0;
+      $(document).ready(function () {
+        oTable = $('#table1').DataTable({
+          dom           : '<"toolbar">lfrtip',
+          processing    : true,
+          serverSide    : true,
+          ajax          : oTableUrl,
+          stateSave     : false,
+          scrollCollapse: true,
+          info          : false,
+          filter        : true,
+          autoWidth     : false,
+          paginate      : true,
+          paginationType: "full_numbers",
+          lengthMenu: [
+              [10, 25, 50, 100, -1],
+              [10, 25, 50, 100, "Semua"]
+          ],
+          order: [[1, 'asc']],
+          sort:true,
+          columns: [
+              { "data": "id", "width": "40px",  "orderable": false, 
+                "searchable": false,
+                'render': function (data, type, full, meta){
+                            return '<input type="checkbox">';
+                         }
+              },
+              { "data": "nopel",  "width": "100px", "class":"left"},
+              { "data": "nop",  "width": "175px", "class":"left"},
+              { "data": "nomor",  "width": "75px", "class":"left"},
+              { "data": "tanggal",  "width": "100px", "class":"center"},
+              { "data": "jenis",
+                'render': function (data, type, full, meta){
+                            if (data==1)
+                                return 'Restitusi';
+                            else if (data==2)
+                                return 'Kompensasi';
+                            else if (data==3)
+                                return 'Disumbangkan';
+                            else if (data==4)
+                                return 'Koreksi';
+                            else
+                                return "Tidak Diketahui";
+                        }
+              },
+              { "data": "nilai", "width": "150px", "class":"right",
+                "render": $.fn.dataTable.render.number( '.', ',', 0, '' )},
+          ],
+     
+          fnRowCallback: function (nRow, aData, iDisplayIndex) {
+            var rowId = aData.siklus;
+            if($.inArray(rowId, rows_selected) !== -1){
+                $(nRow).find('input[type="checkbox"]').prop('checked', true);
+               $(nRow).addClass('selected');
+            }
+          }          
+        });
+
+        var tb_array = [
+          '<div class="btn-group pull-left">',
+          ' <button id="btn_add"    class="btn btn btn-success" type="button">Tambah</button>',
+          ' <button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
+          ' <button id="btn_post"   class="btn btn btn-primary" type="button">Post/Unpost</button>',
+          '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>',
+          '	<!--button id="btn_print"  class="btn btn btn-primary" type="button">Cetak</button-->',
+          '	<button id="btn_csv"    class="btn btn btn-primary" type="button">CSV</button>',
+          '	<button id="btn_close"  class="btn btn btn-default" type="button">Tutup</button>',
+          '	&nbsp;',
+          '</div>',
+        ];
+
+
+        var tb = tb_array.join(' ');
+        $("div.toolbar").html(tb);
+        $("div.toolbar").attr('style', 'display:block; float: left; margin-bottom:6px; line-height:16px;');
+        
+        $("#btn_filter").click(function () {
+            filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val()+'&posted='+$("#posted").is(':checked');
+            oTable.ajax.url(oTableUrl+filter).load();
+        });
+        
+        $('#awal, #akhir').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat:'dd-mm-yy'
+        });
+          
+        
+        $('#table1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                var aData = oTable.row( this ).data();
+                oTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                mID = aData.id;
+                //console.log(mID);
+                oTable.$('tr.row_selected').removeClass('row_selected');
+                $(this).addClass('row_selected');
+            }
+        });
+        
+        $('#btn_add').click(function () {
+            window.location = oTableUri+'/add';
+        });
+
+        $('#btn_edit').click(function () {
+            if (mID) window.location = oTableUri+'/'+mID+'/edt';
+            else alert('Pilih Baris yang akan di edit');
+        });
+
+        $('#btn_delete').click(function (e) {
+            if (rows_selected.length>1){
+                alert('Hanya boleh 1 record yang di delete');
+                return;
+            }
+            id = rows_selected.join(',');
+            if (id) window.location = oTableUri+'/'+id+'/del';
+            else alert('Pilih Baris yang akan di hapus');
+            e.stopPropagation();
+        });
+
+        $('#btn_csv').click(function () {
+            url = oTableUri+'/csv';
+            window.open(url);
+        });
+
+        $("#btn_close").click(function () {
+            window.location = '/';
+            return false;
+        });
+       //Handle Button Posting Click
+       $('#btn_post').click(function () {
+            if (rows_selected.length>0) {
+              $.ajax({
+                type: "POST",
+                url: oTableUri+"/post/post",
+                data : { id : rows_selected.join(",") },
+                success: function (html) {
+                  if (html.success == true) {
+                    $("#success").css('display', 'inline', 'important');
+                    $("#success").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                    rows_selected = [];
+                    oTable.ajax.reload();
+                    } 
+                  else {
+                    $("#errors").css('display', 'inline', 'important');
+                    $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
+                    }
+                  } //end if
+                }); //end ajax*/
+              } //end if
+            else {
+              alert('Silahkan pilih data yang akan diposting');
+              }
+        });
+
+        
+     // Handle click on checkbox
+      $('#table1 tbody').on('click', 'input[type="checkbox"]', function(e){
+        var $row = $(this).closest('tr');
+        // Get row data
+        //iPos = oTable.fnGetPosition(this);
+        var data = oTable.row($row).data();
+        // Get row ID
+        var rowId = data.id;
+        
+        // Determine whether row ID is in the list of selected row IDs 
+        var index = $.inArray(rowId, rows_selected);
+
+        // If checkbox is checked and row ID is not in list of selected row IDs
+        if(this.checked && index === -1){
+           rows_selected.push(rowId);
+
+        // Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+        } else if (!this.checked && index !== -1){
+           rows_selected.splice(index, 1);
+        }
+
+        if(this.checked){
+           $row.addClass('selected');
+        } else {
+           $row.removeClass('selected');
+        }
+
+        // Update state of "Select all" control
+        
+        updateDataTableSelectAllCtrl(oTable);
+        
+        // Prevent click event from propagating to parent
+        e.stopPropagation();
+      });
+      
+      // Handle click on "Select all" control
+      $('#table1 thead input[name="select_all"]').on('click', function(e){
+        if(this.checked){
+            $('#table1 tbody input[type="checkbox"]:not(:checked)').trigger('click');
+          } else {
+            $('#table1 tbody input[type="checkbox"]:checked').trigger('click');
+          }
+
+        // Prevent click event from propagating to parent
+        e.stopPropagation();
+        });
+
+      // Handle table draw event
+      oTable.on('draw', function(){
+        // Update state of "Select all" control
+        updateDataTableSelectAllCtrl(oTable);
+        });
+
+        
+        })
+    </script>
+</div>
+
+</html>

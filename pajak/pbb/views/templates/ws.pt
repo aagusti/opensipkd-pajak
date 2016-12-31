@@ -1,0 +1,211 @@
+<html metal:use-macro="load: base.pt">
+<div metal:fill-slot="content">
+<div class="well">
+<h1>Web service PBB ${request.company} </h1>
+<p><img src="/static/img/logo.png" class="img-float img-thumbnail"/>
+Selamat datang  di module <code>Web Service PBB</code> ${request.company} module ini di desain untuk 
+untuk mengekspose methode yang diperlukan untuk System Informasi Lain dalam Menerima atau Mengirim data.
+Web Service Sangat Bergunakan  seingga interopabilitas system sehingga antar system yang 
+berbeda bahasa pemorgraman maupun database dapat saling berkomunikasi.
+
+<h3>Spesifikasi system</h3>
+<p>Aplikasi pajak daerah terdiri dari module:</p>
+<ul>
+    <li>Format yang digunakan adalah <a href="http://www.jsonrpc.org/specification" target="_blank">json-rpc 2.0</a></li>
+    <li>Access methode dengan request.post</li>
+    <li>Alamat Web Service ${request.url}/api</li>
+    <li>Method adalah method yang akan di akses</li>
+</ul>
+<h3>Autentikasi</h3>
+
+Setiap HTTP POST yang dikirim harus mengandung HTTP Header seperti berikut ini.
+<table border="1">
+    <tr>
+        <td width="150px">Nama header</td>
+        <td width="400px">Keterangan</td>
+        <td>Contoh Data</td>
+    </tr>
+    <tr>
+        <td>userid</td>
+        <td>User ID yang akan mengakses	</td>
+        <td>user-ws</td>
+    </tr>
+
+    <tr>
+        <td>signature</td>
+        <td>Signature dengan pola HMAC-256</td>
+        <td>wtl7nDjOGWqVFS/oESUbEoOyQWyJItLIFWMZvASYpmQ=</td>
+    </tr>
+    <tr>
+        <td>key</td>
+        <td>Time Stamp dengan format Unix-Based</td>
+        <td>1424087283</td>
+    </tr>
+    
+</table>
+ 		
+	
+		
+		
+<h3>Signature Generator</h3>
+
+Signature Generator adalah pengacak data dengan menggunakan enkripsi HMAC-256. Penggunaan signature ini untuk meningkatkan keamanan karena transaksi dalam bentuk HTTP. Signature ini dihasilkan dengan mengkombinasikan userid dan password client.
+<h4>PHP</h4>
+<pre>
+function json_rpc_header($userid, $password){
+    date_default_timezone_set('UTC'); 
+    $inttime     = strval(time()-strtotime('1970-01-01 00:00:00')); 
+    $value       = "admin&" . $inttime; 
+    $key         = $password; 
+    $signature   = hash_hmac('sha256', $value, $key, true); 
+    $signature64 = base64_encode($signature);
+    headers      = {'userid':userid,
+                    'signature':signature64,
+                    'key':inttime}   	
+    return headers
+}
+</pre>
+<h3>Python</h3>
+<pre>
+def  json_rpc_header(userid, password):
+    utc_date    = datetime.utcnow()
+    inttime     = int((utc_date-datetime.strptime('19700101 000000', '%Y%m%d %H%M%S')).total_seconds())
+    value       = "%s&%s" % (str(userid),str(inttime))
+    key         = str(password)
+    signature   = hmac.new(key, msg=value, digestmod=hashlib.sha256).digest() 
+    signature64 = base64.encodestring(signature).replace('\n', '')
+    headers     = {'userid':userid,
+                   'signature':signature64,
+                   'key':inttime}
+    return headers
+</pre>
+
+<h3>Pengiriman Data dengan Format JSON-RPC 2.0</h3>
+<pre>
+    {
+      "jsonrpc": "2.0",
+      "method": "set_antrian",
+      "params": data,
+      "id":1
+    }
+</pre>
+
+<h3>Contoh aplikasi client dalam python</h3>
+
+<pre>
+row_dicted = [{'penerima':'081311045668','pesan':'Test 1'},
+              {'penerima':'087775477775','pesan':'Test 2'}]
+rows      = {"data":row_dicted}
+headers    = json_rpc_header('admin','$2a$10$EjDrW6Fk0g5')
+data = {
+      "jsonrpc": "2.0",
+      "method": "set_antrian",
+      "params": rows,
+      "id":1
+    }
+ 
+jsondata=json.dumps(data, ensure_ascii=False)        
+ 
+results = requests.post(rpc_url, data=jsondata,headers=headers)
+row_results = json.loads(results.text)
+
+</pre>
+
+<h4>Contoh</h4>
+<pre>
+userid : admin
+password: admin
+
+timestamp = '1442495331'
+signature = 'ix/9W9AV38NbOBxPMxMRUl8moiYmnC1nUlbou0WmrZ8='
+
+header = {'userid': 'admin', 
+          'key': 1442495331, 
+          'signature': 'ix/9W9AV38NbOBxPMxMRUl8moiYmnC1nUlbou0WmrZ8='}
+</pre>
+
+<h4>Result</h4>
+
+Setiap request akan dibalas oleh web-service dalam format json dengan kode seperti berikut ini:
+<pre>
+    CODE_OK = 0
+    CODE_NOT_FOUND = -1
+    CODE_DATA_INVALID = -2
+    CODE_INVALID_LOGIN = -10
+    CODE_NETWORK_ERROR = -11
+</pre>
+
+<h4>Method</h4>
+<ul>
+ <code>get_sppt_dop</code>
+<h5>Input Param:</h5>
+<pre>
+{
+    "jsonrpc" : "2.0",
+    "id" : 1,
+    "method" : "get_sppt_dop"
+    "params" : {
+        "data" : [{
+                "tahun" : "YYYY",
+                "kode" : "PPKKCCCLLLBBBUUUUJ"
+            }
+        ]
+    },
+}
+</pre>
+<h5>Output Params:</h5>
+<pre>
+{
+    'jsonrpc' : '2.0',
+    'id' : 1,
+    'result' : {
+        'message' : 'Data Submitted',
+        'code' : 0,
+        'params' : {
+            'data' : [{
+                    'nop' : 'PP.KK-CCC.LLL-BBB.UUUU-J',
+                    'thn_pajak_sppt' : 'YYYY',
+                    'nm_dati2' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS'
+                    'nm_kecamatan' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'nm_kelurahan' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'jalan_op' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'blok_kav_no_op' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'rw_op' : 'NN',
+                    'rt_op' : 'NNN',
+                    'nm_wp_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'jln_wp_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'blok_kav_no_wp_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'rw_wp_sppt' : 'NN',
+                    'rt_wp_sppt' : 'NNN',
+                    'kelurahan_wp_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'kota_wp_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'npwp_sppt' : 'NNNNNNNNNNNNNNNNNNNNNNN',
+                    'kd_pos_wp_sppt' : 'NNNNN',
+                    'no_persil_sppt' : 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+                    'luas_bumi_sppt' : NNNNNNNNNNNN.N,
+                    'luas_bumi_beban' : NNNNNNNNNNNN.N,
+                    'luas_bng_sppt' : NNNNNNNNNNNN.N,
+                    'luas_bng_beban' : NNNNNNNNNNNN.N,
+                    'njop_bumi_sppt' : NNNNNNNNNNNN.N,
+                    'njop_bumi_beban' : NNNNNNNNNNNN.N,
+                    'njop_bng_sppt' : NNNNNNNNNNNN.N,
+                    'njop_bng_beban' : NNNNNNNNNNNN.N,
+                    'pbb_yg_harus_dibayar_sppt' : NNNNNNNNNNNN.N,
+                    'status_pembayaran_sppt' : 'N',
+                    'denda_sppt' : NNNNNNNNNNNN.N,
+                    'jml_sppt_yg_dibayar' : NNNNNNNNNNNN.N,
+                    'tgl_bayar' : 'YYYY-MM-DD',
+                }
+            ]
+        }
+    }
+}
+</pre>
+</ul>
+</div><!--well-->
+
+<br>
+
+
+</div>
+</html>

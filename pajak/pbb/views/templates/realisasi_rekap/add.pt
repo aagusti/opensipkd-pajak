@@ -1,0 +1,6 @@
+<html metal:use-macro="load: ../main${project}.pt">
+<div metal:fill-slot="content">
+    ${structure:form.serialize()}
+</div>
+</html>
+

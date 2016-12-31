@@ -1,0 +1,260 @@
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
+<div metal:fill-slot="content">
+<form id="myform" method="post" enctype="multipart/form-data" accept-charset="utf-8" 
+             class="form-horizontal">
+<div  class="panel panel-default">
+<div class="panel-heading">
+    <h3 class="panel-title">${request.title}</h3>
+</div>
+<div class="panel-body">
+    <div tal:condition="'id' in form" style="display:none;">
+      <div tal:define="field form['id']">
+          ${structure:field.serialize()}
+      </div>
+    </div>
+    <div class="form-group">
+        <div tal:define="field form['tgl_pembayaran_sppt']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div tal:define="field form['nop']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>   
+
+    <div class="form-group">
+        <div tal:define="field form['thn_pajak_sppt']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div tal:define="field form['piutang_pokok']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['piutang_denda']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div tal:define="field form['jumlah_piutang']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div tal:define="field form['jatuh_tempo']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+   
+    <div class="form-group">
+        <div tal:define="field form['pembayaran_sppt_ke']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['bayar_pokok']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['denda_sppt']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['jml_sppt_yg_dibayar']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>      
+    
+    <div class="form-group">
+        <div tal:define="field form['kd_tp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>    
+</div>
+
+</div>
+<div id="btn-grup" class="col-md-3">
+  <button id="deformsave" name="simpan" type="submit" class="btn btn-primary "
+        value="simpan">Simpan</button>
+  <button id="deformcancel" name="batal" type="submit" class="btn btn-danger "
+        value="batal">Batal</button>
+</div>
+</form>    
+</div>
+  <div metal:fill-slot="scripts">
+    <script>
+        var frmUrl = "/F160401";
+        $('#tgl_pembayaran_sppt').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat:'dd-mm-yy'
+        });
+        
+        //CEK JIKA ADA FIELD ID berarti Edit
+        if ($('#id').length)
+        {
+            $('#nop, #thn_pajak_sppt').attr("readonly",true);
+        }
+        else{
+            $('#kd_tp, #no_sk_skkpp, #tgl_sk_skkpp, #jns_keputusan_skkpp, #kpkn, #nilai_skkpp').attr("readonly",true);
+        }
+        //readonly field ini
+        $('#piutang_pokok, #piutang_denda, #jumlah_piutang').attr("readonly",true);
+        $('#jatuh_tempo, #status, #pembayaran_sppt_ke').attr("readonly",true);
+        $('#jml_sppt_yg_dibayar').attr("readonly",true);
+        
+        //CEK apakah nopelayanan valid
+        //$('#nop').focus(function(e){
+        //    nop = $('#nop').val();
+        //    if (nop==""){
+        //        nopel = $('#nopel').val();
+        //        if  (nopel== ""){
+        //            alert('Isi Dulu Nomor Pelayanan');
+        //            $('#nopel').focus();
+        //            return;
+        //        }
+        //        $.ajax({
+        //          method: "GET",
+        //          url: frmUrl+"/nopel/act",
+        //          data: { nopel: nopel }
+        //        })
+        //          .done(function( html ) {
+        //            if (html.code==-1){
+        //                $('#nopel').focus();
+        //                alert( html.msg);
+        //            }
+        //          });
+        //    }
+        //  e.stopPropagation();
+        //});
+        //CEK apakah nopelayanan dan nop valid
+        
+        $('#thn_pajak_sppt').focusout(function(e){
+            nop = $('#nop').val();
+            tahun = $('#thn_pajak_sppt').val();
+            tanggal = $('#tgl_pembayaran_sppt').val();
+            if  (nop != "" && tahun!=""){
+                $.ajax({
+                  method: "GET",
+                  url: frmUrl+"/nop/act",
+                  data: { tahun: tahun, nop:nop, tanggal:tanggal }
+                })
+                  .done(function( html ) {
+                    if (html.code==-1){
+                        $('#nop').focus();
+                        alert( html.msg);
+                    }else{
+                        $("#piutang_denda").val(html.data.denda);
+                        $("#piutang_pokok").val(html.data.pokok);
+                        $("#jumlah_piutang").val(html.data.pokok+html.data.denda);
+                        $("#jatuh_tempo").val(html.data.jatuh_tempo);
+                        $("#pembayaran_sppt_ke").val(html.data.ke);
+                    }
+                  });
+            }
+            e.stopPropagation();
+        });
+        
+        $('#bayar_pokok, #denda_sppt').change(function(e){
+            pokok = Number($('#bayar_pokok').val());
+            denda = Number($('#denda_sppt').val());
+            if (isNaN(pokok)) pokok = 0;
+            if (isNaN(denda)) denda = 0;
+            $('#jml_sppt_yg_dibayar').val(denda+pokok);
+        });
+        
+    </script>
+</div>
+
+</html>
+

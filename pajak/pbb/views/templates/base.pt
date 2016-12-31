@@ -1,0 +1,2 @@
+<html metal:use-macro="load: ../../../views/templates/base.pt">
+</html>

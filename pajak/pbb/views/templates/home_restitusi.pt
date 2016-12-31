@@ -1,0 +1,21 @@
+<html metal:use-macro="load: main_restitusi.pt">
+
+<div metal:fill-slot="content">
+
+<!-- Main component for a primary marketing message or call to action -->
+<div class="well">
+<h1>Pajak Daerah ${request.company} </h1>
+<p><img src="/static/img/logo.png" class="img-float img-thumbnail"/>
+Selamat datang  di module <code>Restitusi dan Kompensasi</code> ${request.company} aplikasi ini di desain untuk 
+memproses data restitusi dan kompensasi Pajak Bumi dan Bangunan Perkotaan dan Perdesaan (PBB-P2)
+
+<p>Module terdiri dari menu:</p>
+<ul>
+<li>Catatan pembayaran <a href="/F160401">Pembayaran Tunggal</a> </li>
+<li><a href="/F170902">Input Kompensasi</a> </li>
+<li><a href="/F170904">Laporan Kompensasi</a> </li>
+</ul>
+</div><!--well-->
+
+</div>
+</html>

@@ -1,0 +1,318 @@
+<html metal:use-macro="load: ../main${request.session['project']}.pt">
+<div metal:fill-slot="content">
+<form id="myform" method="post" enctype="multipart/form-data" accept-charset="utf-8" 
+             class="form-horizontal">
+<div  class="panel panel-default">
+<div class="panel-heading">
+    <h3 class="panel-title">${request.title}</h3>
+</div>
+<div class="panel-body">
+    <div tal:condition="'id' in form" style="display:none;">
+      <div tal:define="field form['id']">
+          ${structure:field.serialize()}
+      </div>
+    </div>
+    <div class="form-group">
+        <div tal:define="field form['nopel']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div tal:define="field form['nop']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>   
+
+    <div class="form-group">
+        <div tal:define="field form['kd_tp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div tal:define="field form['no_sk_skkpp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['tgl_sk_skkpp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div tal:define="field form['jns_keputusan_skkpp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div> 
+    <div class="form-group">
+        <div tal:define="field form['nilai_skkpp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div tal:define="field form['kpkn']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>     
+    <div class="col-md-3">
+      <label class="control-label col-md-4"></label>
+      <button id="btn-next" name="more" type="button" class="btn btn-primary "
+            value="more">Selanjutnya</button>
+    </div>
+</div>
+<div class="panel-heading">
+    <h3 class="panel-title">Restitusi</h3>
+</div>
+<div class="panel-body" id="restitusi" style="display:none;">
+    <div class="form-group">
+        <div tal:define="field form['no_spmkp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['tgl_spmkp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['no_rek_wp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <div tal:define="field form['nm_bank_wp']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>      
+</div>
+<div class="panel-heading">
+    <h3 class="panel-title">Kompensasi</h3>
+</div>
+<div class="panel-body" id="kompensasi" style="display:none;">
+    <div class="form-group">
+        <div tal:define="field form['no_urut_penerima_kompensasi']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>    
+    <div class="form-group">
+        <div tal:define="field form['nop_kompensasi']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="form-group">
+        <div tal:define="field form['thn_pajak_kompensasi']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>    
+    <div class="form-group">
+        <div tal:define="field form['nilai_yang_dikompensasi']" id="item-${field.oid}">
+            <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                    ${field.title}</label>
+            <div class="col-md-3">
+                ${structure:field.serialize()}
+                <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                   tal:repeat="error field.error.messages()">
+                   ${error}</p>
+            </div>
+        </div>
+    </div>        
+</div>
+
+</div>
+<div id="btn-grup" class="col-md-3" style="display:none;"    >
+  <button id="deformsave" name="simpan" type="submit" class="btn btn-primary "
+        value="simpan">Simpan</button>
+  <button id="deformcancel" name="batal" type="submit" class="btn btn-danger "
+        value="batal">Batal</button>
+</div>
+</form>    
+</div>
+  <div metal:fill-slot="scripts">
+    <script>
+        var frmUrl = "/F170902";
+        $('#tgl_sk_skkpp, #tgl_spmkp').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat:'dd-mm-yy'
+        });
+        
+        //CEK JIKA ADA FIELD ID berarti Edit
+        if ($('#id').length)
+        {
+            $('#nopel, #nop').attr("readonly",true);
+        }
+        else{
+            $('#kd_tp, #no_sk_skkpp, #tgl_sk_skkpp, #jns_keputusan_skkpp, #kpkn, #nilai_skkpp').attr("readonly",true);
+        }
+        
+        //CEK apakah nopelayanan valid
+        $('#nop').focus(function(e){
+            nop = $('#nop').val();
+            if (nop==""){
+                nopel = $('#nopel').val();
+                if  (nopel== ""){
+                    alert('Isi Dulu Nomor Pelayanan');
+                    $('#nopel').focus();
+                    return;
+                }
+                $.ajax({
+                  method: "GET",
+                  url: frmUrl+"/nopel/act",
+                  data: { nopel: nopel }
+                })
+                  .done(function( html ) {
+                    if (html.code==-1){
+                        $('#nopel').focus();
+                        alert( html.msg);
+                    }
+                  });
+            }
+          e.stopPropagation();
+        });
+        //CEK apakah nopelayanan dan nop valid
+        
+        $('#nop').focusout(function(e){
+            nop = $('#nop').val();
+            if  (nop != ""){
+                nopel = $('#nopel').val();
+                $.ajax({
+                  method: "GET",
+                  url: frmUrl+"/nop/act",
+                  data: { nopel: nopel, nop:nop }
+                })
+                  .done(function( html ) {
+                    if (html.code==-1){
+                        $('#nop').focus();
+                        alert( html.msg);
+                    }else{
+                        $('#kd_tp, #no_sk_skkpp, #tgl_sk_skkpp, #jns_keputusan_skkpp, #kpkn, #nilai_skkpp').attr("readonly",false);
+                        $('#nopel, #nop').attr("readonly",true);
+                    }
+                  });
+            }
+            e.stopPropagation();
+        });
+        $('#btn-next').click(function(e){
+            if ($("#jns_keputusan_skkpp").val()==0){
+                alert('Pilih Dulu Jenis Keputusan');
+                return;
+            }
+            if ($("#jns_keputusan_skkpp").val()==1)
+                $("#restitusi").show();
+            if ($("#jns_keputusan_skkpp").val()==2)
+                $("#kompensasi").show();
+            $("#btn-grup").show();
+            $("#kd_tp, #no_sk_skkpp, #tgl_sk_skkpp, #jns_keputusan_skkpp, #kpkn, #nilai_skkpp,#nop,#nopel").attr("readonly",true);
+        });
+            
+    </script>
+</div>
+
+</html>
+
