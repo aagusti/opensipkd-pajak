@@ -31,9 +31,6 @@ from ...tools import as_timezone, FixLength
 from ...models import CommonModel
 from ..models import pbbBase, pbbDBSession, PBB_ARGS
 
-#from ref import Kelurahan, Kecamatan, Dati2, KELURAHAN, KECAMATAN
-      
-        
 class TempatPembayaran(pbbBase, CommonModel):
     __tablename__ = 'tempat_pembayaran'
     kd_kanwil = Column(String(2), primary_key=True)

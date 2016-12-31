@@ -29,6 +29,7 @@ from sqlalchemy.orm import (
     #primary_join
     )
 import re
+<<<<<<< HEAD
 from ...tools import as_timezone 
 from ..tools import clsNop, hitung_denda, clsBayar, clsSppt
 from ...models import CommonModel
@@ -150,7 +151,6 @@ class Sppt(pbbBase, CommonModel):
                 cls.no_urut == fxNop.no_urut,
                 cls.kd_jns_op == fxNop.kd_jns_op)
     
-        
     @classmethod
     def piutang(cls, nop, tahun, tanggal):
         row = cls.query_by_nop(nop).\
@@ -558,7 +558,7 @@ class SpptAkrual(pbbBase, CommonModel):
     
     def __init__(cls):
         pass
-    
+        
 class SpptRekap(pbbBase, CommonModel):
     __tablename__  = 'sppt_rekap'
     __table_args__ = PBB_ARGS 
@@ -751,4 +751,3 @@ class PembayaranRekap(pbbBase, CommonModel):
     update_uid   = Column(Integer)
     def __init__(cls):
         pass
-
