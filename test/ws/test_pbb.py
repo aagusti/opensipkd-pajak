@@ -9,11 +9,14 @@ from config import (
 
 #url = 'http://rpc.bogorkota.net:6543/ws/pbb'
 url = 'http://localhost:6543/pbb/api'
+url = 'http://pajak.tangselkota.org:6543/pbb/ws/api'
 kode = '611001000100100010'
 tahun = '2005'
-method = 'get_dop_bphtb'
+method = 'get_sppt_dop'
 username = 'admin'
+username = 'bpn'
 pass_encrypted = '$2b$12$8GYYsICY1tkALhGdz9xw3OHJy97GYW5FJYmeC1jeSLnVN597y9luO'
+pass_encrypted = '$2b$12$AWdtBu31oPfB9zn97Owgd.75kpYlY/OxL38hi4jPICoWo554f6f7W'
 argv = sys.argv
 if argv[1:]:
     method = argv[1]
