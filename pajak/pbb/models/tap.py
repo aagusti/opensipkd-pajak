@@ -386,7 +386,7 @@ class Sppt(pbbBase, CommonModel):
               cls.status_pembayaran_sppt.label('status_pembayaran_sppt'),
               Kelurahan.nm_kelurahan.label('nm_kelurahan'), 
               Kecamatan.nm_kecamatan.label('nm_kecamatan'), 
-              Dati2.nm_dati2.label('nm_dati2').\
+              Dati2.nm_dati2.label('nm_dati2')).\
             filter(cls.kd_propinsi == Kelurahan.kd_propinsi, 
                    cls.kd_dati2 == Kelurahan.kd_dati2, 
                    cls.kd_kecamatan == Kelurahan.kd_kecamatan, 
@@ -405,7 +405,9 @@ class Sppt(pbbBase, CommonModel):
                     cls.no_urut == fxNop.no_urut,
                     cls.kd_jns_op == fxNop.kd_jns_op,
                     cls.thn_pajak_sppt==p_tahun)
-        return query        
+        return query
+
+        
               # func.max(PembayaranSppt.tgl_pembayaran_sppt).label('tgl_bayar'),
               # func.sum(func.coalesce(PembayaranSppt.jml_sppt_yg_dibayar,0)).label('jml_sppt_yg_dibayar'),
               # func.sum(func.coalesce(PembayaranSppt.denda_sppt,0)).label('denda_sppt'),).\
