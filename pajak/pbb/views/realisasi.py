@@ -162,7 +162,7 @@ class RealisasiView(PbbView):
                                func.concat(PembayaranSppt.kd_blok,
                                func.concat(".", 
                                func.concat(PembayaranSppt.no_urut,
-                               func.concat(".", PembayaranSppt.kd_jns_op)))))))))))),
+                               func.concat(".", PembayaranSppt.kd_jns_op)))))))))))).label('nop'),
                                PembayaranSppt.thn_pajak_sppt,
                                PembayaranSppt.pembayaran_sppt_ke,
                                func.to_char(PembayaranSppt.tgl_pembayaran_sppt,'DD-MM-YYYY').label('tanggal'),
@@ -175,3 +175,32 @@ class RealisasiView(PbbView):
         if url_dict['rpt']=='csv' :
             filename = 'pbb-realisasi.csv'
             return csv_response(self.req, csv_rows(query), filename)
+
+        if url_dict['rpt']=='pdf' :
+            _here = os.path.dirname(__file__)
+            path = os.path.join(os.path.dirname(_here), 'static')
+            print "XXXXXXXXXXXXXXXXXXX", os.path
+
+            #logo = path + "/img/logo.png"
+            #line = path + "/img/line.png"
+            #logo = self.req.static_url('static/img/logo.png')
+            #line = self.req.static_url('static/img/line.png')
+            logo = "http://192.168.56.3:6543/static/img/logo.png"
+            line = "http://192.168.56.3:6543/static/img/line.png"
+
+            path = os.path.join(os.path.dirname(_here), 'reports')
+            rml_row = open_rml_row(path+'/pbb_realisasi.row.rml')
+            
+            rows=[]
+            for r in query.all():
+                s = rml_row.format(nop=r.nop, thn_pajak_sppt=r.thn_pajak_sppt, pembayaran_sppt_ke=r.pembayaran_sppt_ke,   
+                                   tanggal=r.tanggal, pokok=r.pokok, denda=r.denda, bayar=r.bayar, posted=r.posted)
+                rows.append(s)
+            
+            pdf, filename = open_rml_pdf(path+'/pbb_realisasi.rml', rows=rows, 
+                                company=self.req.company,
+                                departement = self.req.departement,
+                                logo = logo,
+                                line = line,
+                                address = self.req.address)
+            return pdf_response(self.req, pdf, filename)
