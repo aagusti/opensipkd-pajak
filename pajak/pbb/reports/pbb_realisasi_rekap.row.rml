@@ -1,0 +1,8 @@
+<tr>
+    <td style="tableBody">{tanggal}</td>
+    <td style="tableBody">{kode}</td>
+    <td style="tableBody">{uraian}</td>
+    <td style="tableBody">{pokok}</td>
+    <td style="tableBody">{denda}</td>
+    <td style="tableBody">{bayar}</td>
+</tr>
