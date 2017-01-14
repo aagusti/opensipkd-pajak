@@ -1,0 +1,10 @@
+<tr>
+    <td style="tableBody">{nop}</td>
+    <td style="tableBody">{tahun}</td>
+    <td style="tableBody">{ke}</td>
+    <td style="tableBody">{wp_nama}</td>
+    <td style="tableBody">{pokok}</td>
+    <td style="tableBody">{denda}</td>
+    <td style="tableBody">{bayar}</td>
+    <td style="tableBody">{posted}</td>
+</tr>
