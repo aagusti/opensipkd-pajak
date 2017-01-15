@@ -244,6 +244,34 @@ class RealisasiRekapView(PbbView):
             filename = 'pbb-realisasi-rekap.csv'
             return csv_response(self.req, csv_rows(query), filename)
                                
+        if url_dict['rpt']=='pdf' :
+            _here = os.path.dirname(__file__)
+            path = os.path.join(os.path.dirname(_here), 'static')
+            print "XXXXXXXXXXXXXXXXXXX", os.path
+
+            #logo = path + "/img/logo.png"
+            #line = path + "/img/line.png"
+            #logo = self.req.static_url('static/img/logo.png')
+            #line = self.req.static_url('static/img/line.png')
+            logo = "http://192.168.56.3:6543/static/img/logo.png"
+            line = "http://192.168.56.3:6543/static/img/line.png"
+
+            path = os.path.join(os.path.dirname(_here), 'reports')
+            rml_row = open_rml_row(path+'/pbb_realisasi_rekap.row.rml')
+            
+            rows=[]
+            for r in query.all():
+                s = rml_row.format(tanggal=r.tanggal, kode=r.kode, uraian=r.uraian, pokok=r.pokok,   
+                                   denda=r.denda, bayar=r.bayar)
+                rows.append(s)
+            
+            pdf, filename = open_rml_pdf(path+'/pbb_realisasi_rekap.rml', rows=rows, 
+                                company=self.req.company,
+                                departement = self.req.departement,
+                                logo = logo,
+                                line = line,
+                                address = self.req.address)
+            return pdf_response(self.req, pdf, filename)
                 
 def route_list(request):
     return HTTPFound(location=request.route_url('pbb-realisasi-rekap'))

@@ -175,6 +175,36 @@ class KetetapanView(PbbView):
         if url_dict['rpt']=='csv' :
             filename = 'ketetapan.csv'
             return csv_response(self.req, csv_rows(query), filename)
+
+        if url_dict['rpt']=='pdf' :
+            _here = os.path.dirname(__file__)
+            path = os.path.join(os.path.dirname(_here), 'static')
+            print "XXXXXXXXXXXXXXXXXXX", os.path
+
+            #logo = path + "/img/logo.png"
+            #line = path + "/img/line.png"
+            #logo = self.req.static_url('static/img/logo.png')
+            #line = self.req.static_url('static/img/line.png')
+            logo = "http://192.168.56.3:6543/static/img/logo.png"
+            line = "http://192.168.56.3:6543/static/img/line.png"
+
+            path = os.path.join(os.path.dirname(_here), 'reports')
+            rml_row = open_rml_row(path+'/pbb_ketetapan.row.rml')
+            
+            rows=[]
+            for r in query.all():
+                s = rml_row.format(nop=r.nop, thn_pajak_sppt=r.thn_pajak_sppt, siklus_sppt=r.siklus_sppt,   
+                                   nm_wp_sppt=r.nm_wp_sppt,  
+                                   luas_bumi_sppt=r.luas_bumi_sppt, luas_bng_sppt=r.luas_bng_sppt, pbb_yg_harus_dibayar_sppt=r.pbb_yg_harus_dibayar_sppt)
+                rows.append(s)
+            
+            pdf, filename = open_rml_pdf(path+'/pbb_ketetapan.rml', rows=rows, 
+                                company=self.req.company,
+                                departement = self.req.departement,
+                                logo = logo,
+                                line = line,
+                                address = self.req.address)
+            return pdf_response(self.req, pdf, filename)
             
 ########
 # Edit #

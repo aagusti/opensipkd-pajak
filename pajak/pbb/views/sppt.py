@@ -13,6 +13,8 @@ from ...pbb.models.tap import Sppt
 from ...views.common import ColumnDT, DataTables
 from ..views import PbbView
 
+from ...os_reports import open_rml_row, open_rml_pdf, pdf_response, csv_response, csv_rows
+
 SESS_ADD_FAILED  = 'Tambah Saldo Awal gagal'
 SESS_EDIT_FAILED = 'Edit Saldo Awal gagal'
 
@@ -82,13 +84,44 @@ class SpptView(PbbView):
                                func.concat(Sppt.kd_blok,
                                func.concat(".", 
                                func.concat(Sppt.no_urut,
-                               func.concat(".", Sppt.kd_jns_op)))))))))))),
+                               func.concat(".", Sppt.kd_jns_op)))))))))))).label('nop'),
                                Sppt.thn_pajak_sppt,
                                Sppt.nm_wp_sppt,
                                Sppt.luas_bumi_sppt,
                                Sppt.luas_bng_sppt,
                                Sppt.pbb_yg_harus_dibayar_sppt).\
-                      filter(Sppt.thn_pajak_sppt==tahun)          
+                      filter(Sppt.thn_pajak_sppt==str(self.tahun)).\
+                      order_by(Sppt.kd_kecamatan,Sppt.kd_kelurahan,Sppt.kd_blok,Sppt.no_urut).limit(5000)
+
         if url_dict['rpt']=='csv' :
-            filename = 'saldo_awal.csv'
+            filename = 'pbb_sppt.csv'
             return csv_response(self.req, csv_rows(query), filename)
+
+        if url_dict['rpt']=='pdf' :
+            _here = os.path.dirname(__file__)
+            path = os.path.join(os.path.dirname(_here), 'static')
+            print "XXXXXXXXXXXXXXXXXXX", os.path
+
+            #logo = path + "/img/logo.png"
+            #line = path + "/img/line.png"
+            #logo = self.req.static_url('static/img/logo.png')
+            #line = self.req.static_url('static/img/line.png')
+            logo = "http://192.168.56.3:6543/static/img/logo.png"
+            line = "http://192.168.56.3:6543/static/img/line.png"
+
+            path = os.path.join(os.path.dirname(_here), 'reports')
+            rml_row = open_rml_row(path+'/pbb_sppt.row.rml')
+            
+            rows=[]
+            for r in query.all():
+                s = rml_row.format(nop=r.nop, thn_pajak_sppt=r.thn_pajak_sppt, nm_wp_sppt=r.nm_wp_sppt,  
+                                   luas_bumi_sppt=r.luas_bumi_sppt, luas_bng_sppt=r.luas_bng_sppt, pbb_yg_harus_dibayar_sppt=r.pbb_yg_harus_dibayar_sppt)
+                rows.append(s)
+            
+            pdf, filename = open_rml_pdf(path+'/pbb_sppt.rml', rows=rows, 
+                                company=self.req.company,
+                                departement = self.req.departement,
+                                logo = logo,
+                                line = line,
+                                address = self.req.address)
+            return pdf_response(self.req, pdf, filename)

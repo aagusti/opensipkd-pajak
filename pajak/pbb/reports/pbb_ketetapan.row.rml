@@ -1,0 +1,9 @@
+<tr>
+    <td style="tableBody">{nop}</td>
+    <td style="tableBody">{thn_pajak_sppt}</td>
+    <td style="tableBody">{siklus_sppt}</td>
+    <td style="tableBody">{nm_wp_sppt}</td>
+    <td style="tableBody">{luas_bumi_sppt}</td>
+    <td style="tableBody">{luas_bng_sppt}</td>
+    <td style="tableBody">{pbb_yg_harus_dibayar_sppt}</td>
+</tr>
