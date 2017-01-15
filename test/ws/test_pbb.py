@@ -9,7 +9,7 @@ from config import (
 
 #url = 'http://rpc.bogorkota.net:6543/ws/pbb'
 url = 'http://localhost:6543/pbb/api'
-url = 'http://pajak.tangselkota.org:6543/pbb/ws/api'
+url = 'https://pajak.tangselkota.org/pbb/ws/api'
 kode = '611001000100100010'
 kode = '367605000500100040'
 tahun = '2005'
@@ -59,7 +59,7 @@ print(jsondata)
 from datetime import datetime    
 awal = datetime.now()
 print awal
-rows = requests.post(url, data=jsondata, headers=headers)
+rows = requests.post(url, data=jsondata, headers=headers, verify=False)
 print('Result:')
 print(json.loads(rows.text))
 akhir = datetime.now()

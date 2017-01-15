@@ -7,10 +7,7 @@ from pyramid.httpexceptions import ( HTTPFound, )
 import colander
 from deform import (Form, widget, ValidationFailure, )
 from ..models import pbbDBSession
-from ...pbb.tools import fixBayar
 from ..models.tap import PembayaranSppt
-from ...tools import _DTstrftime, _DTnumber_format, FixLength
-#from ...views.base_views import base_view
 from ...views.common import ColumnDT, DataTables
 from ..views import PbbView
 import re

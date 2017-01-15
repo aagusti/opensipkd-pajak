@@ -7,12 +7,11 @@ from pyramid.httpexceptions import ( HTTPFound, )
 import colander
 from deform import (Form, widget, ValidationFailure, )
 from ..models import pbbDBSession
-from ...pbb.tools import clsBank
+from ...pbb.tools import FixBank
 from ..models.tap import PembayaranRekap, PembayaranSppt
 from ...tools import _DTstrftime, _DTnumber_format
 #from ...views.base_views import base_view
 from ...views.common import ColumnDT, DataTables
-from ..tools import clsBank
 import re
 from ..views import PbbView
 from ...report_tools import (
@@ -103,7 +102,7 @@ class RealisasiRekapView(PbbView):
                                 msg     = 'Tidak ada data yang di proses')
                     
                 headers = r.keys()
-                bank = clsBank("")
+                bank = FixBank("")
                 for row in rows.all():
                     row_dicted = dict(zip(row.keys(), row))
                     
@@ -147,7 +146,7 @@ class RealisasiRekapView(PbbView):
                     n_id = n_id + 1
                     row_dicted = row.to_dict()
                     start_pos = -6
-                    bank = clsBank(row_dicted['kode'][start_pos:])
+                    bank = FixBank(row_dicted['kode'][start_pos:])
                     #unposting data di Pembayaran SPPT
                     pbbDBSession.query(PembayaranSppt).\
                                  filter(PembayaranSppt.tgl_pembayaran_sppt == row.tanggal,

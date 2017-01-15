@@ -8,11 +8,11 @@ import colander
 from deform import (Form, widget, ValidationFailure, )
 from ...pbb.models import pbbDBSession
 from ...pbb.models.tap import SpptAkrual
-from ...pbb.tools import fixSiklus
+from ...pbb.tools import FixSiklus
 from ...tools import _DTstrftime, _DTnumber_format #, FixLength
 #from ...views.base_views import base_view
 from ...views.common import ColumnDT, DataTables
-from ..tools import clsSiklus
+#from ..tools import FixSiklus
 import re
 from ...report_tools import (
         open_rml_row, open_rml_pdf, pdf_response, 
@@ -126,6 +126,7 @@ class KetetapanView(PbbView):
                         row.posted = 0 
                     else:
                         row.posted = 1
+                        
                     pbbDBSession.flush()
                     
                 if n_id_not_found > 0:
@@ -178,10 +179,8 @@ class KetetapanView(PbbView):
 ########
 # Edit #
 ########
-def query_id(value):
-    val = re.sub("\D", "", value)
-    nop = clsSiklus(val)
-    #bayar = val[len(nop.get_raw()):]
+def query_id(id):
+    nop = FixSiklus(id)
     return pbbDBSession.query(SpptAkrual).\
            filter(SpptAkrual.kd_propinsi==nop.kd_propinsi,
                   SpptAkrual.kd_dati2==nop.kd_dati2,

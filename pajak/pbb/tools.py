@@ -1,9 +1,14 @@
 #Tools PBB Constanta yang digunakan di PBB karena dalam PBB primary Key 
 #Banyak terdiri dari beberapa field
-from ..tools import *
+from types import (
+    StringType,
+    UnicodeType)
+from ..tools import FixLength
 from models import pbbDBSession
 from models.ref import TempatPembayaran
-from datetime import timedelta
+from models.pegawai import DatLogin
+from datetime import timedelta, datetime
+import re
 PROPINSI = [('kd_propinsi', 2, 'N'),]
 
 DATI2 = list(PROPINSI)
@@ -42,119 +47,91 @@ NOPEL = list(KANTOR)
 NOPEL.extend([('tahun',4,'N'),
               ('bundel',4,'N'),
               ('urut',3,'N')])
-NOPELDET = list(KANTOR)
+NOPELDET = list(NOPEL)
 NOPELDET.extend(list(NOP))
 
-fixKantor = FixLength(KANTOR)
-fixBank = FixLength(BANK)
-fixNopel = FixLength(NOPEL)
-fixNop   = FixLength(NOP)
-fixSiklus = FixLength(SIKLUS)
-fixBayar  = FixLength(BAYAR)
-fixSPPT = FixLength(SPPT)
+# fixKantor = FixLength(KANTOR)
+# fixBank = FixLength(BANK)
+# fixNopel = FixLength(NOPEL)
+# fixNop   = FixLength(NOP)
+# fixSiklus = FixLength(SIKLUS)
+# fixBayar  = FixLength(BAYAR)
+# fixSPPT = FixLength(SPPT)
 
-class clsKode(object):
-    def __init__(self, kode, obj):
-        kode = re.sub("\D","",kode)
-        fKode = FixLength(obj)
-        fKode.set_raw(kode)
-        self.kode = fKode
-        
-    def get_raw(self):
-        return self.kode.get_raw()
-        
-class clsKantor(clsKode):
-    def __init__(self, kode):
-        super(clsKantor,self).__init__(kode, KANTOR)
-        #Set Local Variable
-        self.kd_kanwil=self.kode['kd_kanwil']
-        self.kd_kantor=self.kode['kd_kantor']
+def get_value(obj,struct):
+    raw = ""
+    for name, typ, size in struct:
+        raw  += obj[name]
+    return raw
 
-class clsBank(clsKantor, clsKode):
-    def __init__(self, kode):
-        clsKantor.__init__(self, kode)
-        clsKode.__init__(self, kode, BANK)
-        #Set Local Variable
-        self.kd_tp = self.kode['kd_tp']
+    
+class SetFixLength(FixLength):
+    def __init__(self, raw, struct):
+        super(SetFixLength,self).__init__(struct)
+        raw = re.sub("\D","",raw)
+        self.set_raw(raw)
+        for name, typ, size in struct:
+            setattr(self, name, self[name])
         
-class clsNop(clsKode):
-    def __init__(self, kode):
-        clsKode.__init__(self, kode, NOP)
-        #Set Local Variable
-        self.kd_propinsi=self.kode['kd_propinsi']
-        self.kd_dati2=self.kode['kd_dati2']
-        self.kd_kecamatan=self.kode['kd_kecamatan']
-        self.kd_kelurahan=self.kode['kd_kelurahan']
-        self.kd_blok=self.kode['kd_blok']
-        self.no_urut=self.kode['no_urut']
-        self.kd_jns_op=self.kode['kd_jns_op']
+class BaseFixLength(SetFixLength):
+    def __init__(self, raw):
+        super(BaseFixLength,self).__init__(raw, self.get_structure())
+        raw = re.sub("\D","",raw)
+        self.set_raw(raw)
         
-class clsSppt(clsNop, clsKode):
-    def __init__(self, kode):
-        clsNop.__init__(self, kode)
-        clsKode.__init__(self, kode, SPPT)
+    def get_structure(self):
+        pass
 
-        #Set Local Variable
-        self.thn_pajak_sppt=self.kode['thn_pajak_sppt']
+class FixKantor(BaseFixLength):
+    def get_structure(self):
+        return KANTOR
 
-class clsSiklus(clsSppt, clsKode):
-    def __init__(self, kode):
-        clsSppt.__init__(self, kode)
-        clsKode.__init__(self, kode, SIKLUS)
+class FixBank(BaseFixLength):
+    def get_structure(self):
+        return BANK
+        
+       
+class FixNop(BaseFixLength):
+    def get_structure(self):
+        return NOP
+        
+class FixSppt(BaseFixLength):
+    def get_structure(self):
+        return SPPT
 
-        #Set Local Variable
-        self.siklus_sppt=self.kode['siklus_sppt']
+class FixSiklus(BaseFixLength):
+    def get_structure(self):
+        return SIKLUS
         
-class clsBayar(clsSppt, clsBank, clsKode):
-    def __init__(self, kode):
-        kode = re.sub("\D","", kode)
-        clsSppt.__init__(self, kode)
-        clsBank.__init__(self, kode[18:24])
-        clsKode.__init__(self, kode, BAYAR)
-        
-        #Set Local Variable
-        self.pembayaran_sppt_ke=self.kode['pembayaran_sppt_ke']
+class FixBayar(BaseFixLength):
+    def get_structure(self):
+        return BAYAR
+    
     def get_sppt(self):
-        return self.get_raw()[:22]
-    
+        return get_value(self, SPPT)
+                
     def get_bank(self):
-        return self.get_raw()[22:28]
+        return get_value(self, BANK)
     
-    def get_tp(self):
-        return self.get_raw()[28:]
+        
+class FixNopel(BaseFixLength):
+        
+    def get_structure(self):
+        return NOPEL
 
-class clsNopel(clsKantor, clsKode):
-    def __init__(self, kode):
-        clsKantor.__init__(self, kode)
-        clsKode.__init__(self, kode, NOPEL)
-        
-        #Set Local Variable
-        self.tahun = self.kode['tahun'] 
-        self.bundel = self.kode['bundel'] 
-        self.urut = self.kode['urut'] 
-        
     def get_kantor(self):
-        return self.get_raw()[:4]
+        return get_value(self, KANTOR)
         
-class clsNopelDetail(clsNopel, clsNop, clsKode):
-    def __init__(self, kode):
-        kode = re.sub("\D","", kode)
-        clsNopel.__init__(self, kode)
-        clsBank.__init__(self, kode[11:29])
-        clsKode.__init__(self, kode, NOPELDET)
-        
+class FixNopelDetail(BaseFixLength):
+    def get_structure(self):
+        return NOPELDET
+
     def get_nopel(self):
-        return self.get_raw()[4:11]
+        return get_value(self, NOPEL)
     
     def get_nop(self):
-        return self.get_raw()[11:]
-     
-# kantor = clsBank('61.01.01')
-# print kantor.get_raw()
-# sys.exit()
+        return get_value(self, NOP)
         
-# nop =  clsNop('61.01.001.001.0001.0')
-# print nop.get_raw()
 def hitung_denda(piutang_pokok, jatuh_tempo, tanggal=None):
     persen_denda = 2
     max_denda = 24
@@ -178,8 +155,27 @@ def hitung_denda(piutang_pokok, jatuh_tempo, tanggal=None):
         
     return bln_tunggakan * persen_denda / 100.0 * piutang_pokok
 
-        
-    
+def nop_formatted(row):
+    if type(row) in (StringType, UnicodeType):
+        row = FixNop(row)
+    return "%s.%s-%s.%s-%s.%s.%s" % (row.kd_propinsi, row.kd_dati2, row.kd_kecamatan,
+                row.kd_kelurahan, row.kd_blok, row.no_urut, row.kd_jns_op)
+                
+def nop_to_id(row):
+    if type(row) in (StringType, UnicodeType):
+        row = FixNop(row)
+    return "%s%s%s%s%s%s%s" % (row.kd_propinsi, row.kd_dati2, row.kd_kecamatan,
+                row.kd_kelurahan, row.kd_blok, row.no_urut, row.kd_jns_op)
+                
+def pbb_nip(user_name):
+    if user_name == 'admin':
+        return '060000000000000000'
+    row = pbbDBSession.query(DatLogin).\
+            filter_by(nm_login = user_name.upper()).first()
+    if row:
+        return row.nip
+    return
+# JEnis REstitusi Kompensasi    
 JNS_RESKOM =(
     (0,'Pilih Jenis'),
     (1,'Restitusi'),

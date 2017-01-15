@@ -67,6 +67,16 @@ id,kode,path,nama,status
 50053,"pbb-realisasi-rekap-view","/pbb/realisasi/rekap/{id}/view","PBB Realisasi View",1
 50054,"pbb-realisasi-rekap-post","/pbb/realisasi/rekap/{id}/post","PBB Realisasi Post",1
 50055,"pbb-realisasi-rekap-rpt","/pbb/realisasi/rekap/{rpt}/rpt","PBB Realisasi rpt",1
+50061,"pbb-sensus","/pbb/sensus","PBB Sensus",1
+50062,"pbb-sensus-act","/pbb/sensus/{id}/act","PBB Sensus ACT",1
+50063,"pbb-sensus-add","/pbb/sensus/add","PBB Sensus Tambah",1
+50064,"pbb-sensus-edit","/pbb/sensus/{id}/edit","PBB Sensus Edit",1
+50065,"pbb-sensus-delete","/pbb/sensus/{id}/delete","PBB Sensus Hapus",1
+50066,"pbb-sensus-post","/pbb/sensus/{id}/post","PBB Sensus Posting",1
+50067,"pbb-sensus-rpt","/pbb/sensus/{rpt}/rpt","PBB Sensus Report",1
+50068,"pbb-sensus-csv","/pbb/sensus/csv","PBB Sensus CSV",1
+50069,"pbb-sensus-upload","/pbb/sensus/upload","PBB Sensus Upload",1
+50070,"pbb-sensus-verify","/pbb/sensus/{id}/verify","PBB Sensus Verifikasi",1
 51000,"pbb-ws","/pbb/ws","Web Service PBB",1
 60000,"bphtb-akrual","/bphtb/akrual","BPHTB-Akrual",1
 60001,"bphtb-sa","/bphtb/sa","BPHTB-Saldo Awal",1
@@ -107,7 +117,14 @@ id,kode,path,nama,status
 70022,"pdl-realisasi-act","/pdl/realisasi/{id}/act","PDL-Realisasi Act",1
 70023,"pdl-realisasi-view","/pdl/realisasi/{id}/view","PDL-Realisasi View",1
 70024,"pdl-realisasi-post","/pdl/realisasi/{id}/post","PDL-Realisasi Post",1
-1702000,"F170200","/F170200","PBB Permohonan",1
+1000000,"F100000","/pbb","OPEN-PBB",1
+1604010,"F160401","/F160401","PBB Catatan Pembayaran",1
+1604011,"F160401-add","/F160401/add","PBB Catatan Pembayaran Add",1
+1604012,"F160401-edt","/F160401/{id}/edt","PBB Catatan Pembayaran Edit",1
+1604013,"F160401-del","/F160401/{id}/del","PBB Catatan Pembayaran Delete",1
+1604014,"F160401-act","/F160401/{id}/act","PBB Catatan Pembayaran Action",1
+1604015,"F160401-rpt","/F160401/{rpt}/rpt","PBB Catatan Pembayaran rpt",1
+1604016,"F160401-csv","/F160401/csv","PBB Catatan Pembayaran rpt",11702000,"F170200","/F170200","PBB Permohonan",1
 1702001,"F170200-add","/F170200/add","PBB Permohonan Add",1
 1702002,"F170200-edt","/F170200/{id}/edt","PBB Permohonan Edit",1
 1702003,"F170200-del","/F170200/{id}/del","PBB Permohonan Delete",1
@@ -121,9 +138,7 @@ id,kode,path,nama,status
 1709024,"F170902-act","/F170902/{id}/act","PBB Restitusi Kompensasi Action",1
 1709025,"F170902-rpt","/F170902/{rpt}/rpt","PBB Restitusi Kompensasi rpt",1
 1709026,"F170902-post","/F170902/{id}/post","PBB Restitusi Kompensasi Posting",1
-1604010,"F160401","/F160401","PBB Catatan Pembayaran",1
-1604011,"F160401-add","/F160401/add","PBB Catatan Pembayaran Add",1
-1604012,"F160401-edt","/F160401/{id}/edt","PBB Catatan Pembayaran Edit",1
-1604013,"F160401-del","/F160401/{id}/del","PBB Catatan Pembayaran Delete",1
-1604014,"F160401-act","/F160401/{id}/act","PBB Catatan Pembayaran Action",1
-1604015,"F160401-rpt","/F160401/{rpt}/rpt","PBB Catatan Pembayaran rpt",1
+9101021,"F910102","/F910102","PBB Proses Transaksi BPHTB",1
+9101022,"F910102-post","/F910102/{id}/post","PBB Proses Transaksi BPHTB Posting",1
+9101023,"F910102-act","/F910102/{act}/act","PBB Proses Transaksi BPHTB Action",1
+9101024,"F910102-rpt","/F910102/{rpt}/rpt","PBB Proses Transaksi BPHTB Report",1

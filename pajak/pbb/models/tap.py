@@ -30,7 +30,7 @@ from sqlalchemy.orm import (
     )
 import re
 from ...tools import as_timezone 
-from ..tools import clsNop, hitung_denda, clsBayar, clsSppt
+from ..tools import FixNop, hitung_denda, FixBayar, FixSppt
 from ...models import CommonModel
 from ..models import pbbBase, pbbDBSession, pbb_schema
 from ..models.ref import Kelurahan, Kecamatan, Dati2
@@ -104,12 +104,29 @@ class Sppt(pbbBase, CommonModel):
     posted                               = Column(Integer)
     
     @classmethod
-    def query_data(cls):
+    def query(cls):
         return pbbDBSession.query(cls)
         
     @classmethod
+    def query_id(cls, id):
+        fxSppt = FixSppt(id)
+        return cls.query().filter(
+                cls.kd_propinsi == fxSppt.kd_propinsi,
+                cls.kd_dati2 == fxSppt.kd_dati2,
+                cls.kd_kecamatan == fxSppt.kd_kecamatan,
+                cls.kd_kelurahan == fxSppt.kd_kelurahan,
+                cls.kd_blok == fxSppt.kd_blok,
+                cls.no_urut == fxSppt.no_urut,
+                cls.kd_jns_op == fxSppt.kd_jns_op,
+                cls.thn_pajak_sppt == fxSppt.thn_pajak_sppt)
+    
+    @classmethod
+    def query_data(cls):
+        return cls.query()
+        
+    @classmethod
     def count(cls, p_kode):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         query = pbbDBSession.query(func.count(cls.kd_propinsi))
         return query.filter(
                 cls.kd_propinsi == fxNop.kd_propinsi,
@@ -122,8 +139,8 @@ class Sppt(pbbBase, CommonModel):
                 
     @classmethod
     def get_by_nop(cls, p_kode):
-        fxNop = clsNop(p_kode)
-        query = cls.query_data()
+        fxNop = FixNop(p_kode)
+        query = cls.query()
         return query.filter_by(
                 cls.kd_propinsi == fxNop.kd_propinsi,
                 cls.kd_dati2 == fxNop.kd_dati2,
@@ -135,24 +152,15 @@ class Sppt(pbbBase, CommonModel):
                 
     @classmethod
     def get_by_nop_thn(cls, p_kode, p_tahun):
-        query = cls.get_by_nop(p_kode)
-        return query.filter_by(thn_pajak_sppt = p_tahun)
+        return cls.query_id(p_kode+p_tahun)
                 
     @classmethod
     def query_by_nop(cls, nop):
-        fxNop = clsNop(nop)
-        return cls.query_data().\
-            filter(cls.kd_propinsi == fxNop.kd_propinsi,
-                cls.kd_dati2 == fxNop.kd_dati2,
-                cls.kd_kecamatan == fxNop.kd_kecamatan,
-                cls.kd_kelurahan == fxNop.kd_kelurahan,
-                cls.kd_blok == fxNop.kd_blok,
-                cls.no_urut == fxNop.no_urut,
-                cls.kd_jns_op == fxNop.kd_jns_op)
-    
+        return cls.get_by_nop(nop)
+        
     @classmethod
     def piutang(cls, nop, tahun, tanggal):
-        row = cls.query_by_nop(nop).\
+        row = cls.query_id(nop+tahun).\
             filter(cls.thn_pajak_sppt == tahun,
                    cls.status_pembayaran_sppt<'2').first()
         if not row:
@@ -229,9 +237,7 @@ class Sppt(pbbBase, CommonModel):
                             
     @classmethod
     def set_status(cls, id, status):
-        fxSppt = clsSppt(id)
-        row = cls.query_by_nop(id).\
-            filter(cls.thn_pajak_sppt == fxSppt.thn_pajak_sppt).first()
+        row = cls.query_id(id).first()
         if row:
             row.status_pembayaran_sppt = status
             pbbDBSession.add(row)
@@ -276,7 +282,7 @@ class Sppt(pbbBase, CommonModel):
                     cls.kd_jns_op == fxNop.kd_jns_op)
     @classmethod
     def get_info_op_bphtb(cls, p_kode, p_tahun):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         q = pbbDBSession.query(cls.luas_bumi_sppt, cls.luas_bng_sppt,
                 cls.njop_bumi_sppt, cls.njop_bng_sppt, DatObjekPajak.jalan_op,
                 DatObjekPajak.blok_kav_no_op, DatObjekPajak.rt_op, DatObjekPajak.rw_op,
@@ -314,7 +320,7 @@ class Sppt(pbbBase, CommonModel):
     @classmethod
     def get_piutang(cls, p_kode, p_tahun, p_count):
         #Digunakan untuk menampilkan status sppt sesuai dengan jumah p_count
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         p_tahun_awal = str(int(p_tahun)-p_count+1)
                
         q1 = pbbDBSession.query(cls.thn_pajak_sppt,(cls.pbb_yg_harus_dibayar_sppt).label('pokok'), 
@@ -358,7 +364,7 @@ class Sppt(pbbBase, CommonModel):
         
     @classmethod
     def get_dop1(cls, p_kode, p_tahun):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         query = pbbDBSession.query( 
                     func.concat(cls.kd_propinsi, '.').\
                     concat(cls.kd_dati2).concat('-').\
@@ -492,7 +498,7 @@ class Sppt(pbbBase, CommonModel):
                     
     @classmethod
     def get_dop(cls, p_kode, p_tahun):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         query = pbbDBSession.query( 
                     func.concat(cls.kd_propinsi, '.').\
                     concat(cls.kd_dati2).concat('-').\
@@ -774,13 +780,31 @@ class PembayaranSppt(pbbBase, CommonModel):
     posted              = Column(Integer) 
 
     @classmethod
-    def query_data(cls):
+    def query(cls):
         return pbbDBSession.query(cls)
         
     @classmethod
+    def query_id(cls, id):
+        fxBayar = FixBayar(id)
+        return cls.query().filter(
+                cls.kd_propinsi == fxBayar.kd_propinsi,
+                cls.kd_dati2 == fxBayar.kd_dati2,
+                cls.kd_kecamatan == fxBayar.kd_kecamatan,
+                cls.kd_kelurahan == fxBayar.kd_kelurahan,
+                cls.kd_blok == fxBayar.kd_blok,
+                cls.no_urut == fxBayar.no_urut,
+                cls.kd_jns_op == fxBayar.kd_jns_op,
+                cls.thn_pajak_sppt == fxBayar.thn_pajak_sppt,
+                cls.thn_pajak_sppt==fxBayar.thn_pajak_sppt,
+                cls.kd_kanwil==fxBayar.kd_kanwil,
+                cls.kd_kantor==fxBayar.kd_kantor,
+                cls.kd_tp==fxBayar.kd_tp,
+                cls.pembayaran_sppt_ke==fxBayar.pembayaran_sppt_ke,)
+    
+    @classmethod
     def query_by_nop(cls, nop):
-        fxNop = clsNop(nop)
-        return cls.query_data().\
+        fxNop = FixNop(nop)
+        return cls.query().\
             filter(cls.kd_propinsi == fxNop.kd_propinsi,
                 cls.kd_dati2 == fxNop.kd_dati2,
                 cls.kd_kecamatan == fxNop.kd_kecamatan,
@@ -790,20 +814,8 @@ class PembayaranSppt(pbbBase, CommonModel):
                 cls.kd_jns_op == fxNop.kd_jns_op)
                 
     @classmethod
-    def query_id(cls,id):
-        fxBayar = clsBayar(id)
-        return cls.query_by_nop(id).\
-               filter(
-                PembayaranSppt.thn_pajak_sppt==fxBayar.thn_pajak_sppt,
-                PembayaranSppt.kd_kanwil==fxBayar.kd_kanwil,
-                PembayaranSppt.kd_kantor==fxBayar.kd_kantor,
-                PembayaranSppt.kd_tp==fxBayar.kd_tp,
-                PembayaranSppt.pembayaran_sppt_ke==fxBayar.pembayaran_sppt_ke,
-                )
-                
-    @classmethod
     def reversal(cls, id):
-        fxBayar = clsBayar(id)
+        fxBayar = FixBayar(id)
         q = cls.query_id(id)
         row = q.first()
         if row:
@@ -812,11 +824,12 @@ class PembayaranSppt(pbbBase, CommonModel):
             pbbDBSession.add(row)
             pbbDBSession.flush()
             Sppt.set_status(id,0)
+            
         return row
         
     @classmethod
     def get_bayar(cls, nop, tahun):
-        fxNop = clsNop(nop)
+        fxNop = FixNop(nop)
         q = pbbDBSession.query(func.sum(cls.denda_sppt).label("denda"),
                                  func.sum(cls.jml_sppt_yg_dibayar).label("bayar"),
                                  func.max(cls.pembayaran_sppt_ke).label("ke")).\

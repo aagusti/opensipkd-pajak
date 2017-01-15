@@ -2,6 +2,7 @@ import os
 import re
 import mimetypes
 import csv
+from datetime import datetime
 from types import (
     IntType,
     LongType,
@@ -258,6 +259,21 @@ class Upload(SaveFile):
         output_file.close()
         return fullpath
 
+class UploadFiles(SaveFile):
+    def save(self, fs):
+        input_file = fs.file
+        ext = get_ext(fs.filename)
+        fullpath = self.create_fullpath(ext)
+        output_file = open(fullpath, 'wb')
+        input_file.seek(0)
+        while True:
+            data = input_file.read(2<<16)
+            if not data:
+                break
+            output_file.write(data)
+        output_file.close()
+        return fullpath    
+        
 class CSVRenderer(object):
    def __init__(self, info):
       pass

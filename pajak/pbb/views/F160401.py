@@ -9,10 +9,11 @@ from deform import (Form, widget, ValidationFailure, )
 from ...pbb.models import pbbDBSession
 from ...pbb.models.tap import PembayaranSppt, Sppt
 from ...pbb.models.ref import TempatPembayaran
-from ...pbb.tools import JNS_RESKOM, clsNop, clsBank, fixKantor
 from ...tools import _DTstrftime, _DTnumber_format
 from ...views.common import ColumnDT, DataTables
-from ..tools import DAFTAR_TP, dmy, dmy_to_date, clsBayar
+from ...tools import dmy, dmy_to_date
+from ..tools import (DAFTAR_TP, FixBayar,JNS_RESKOM, FixNop, FixBank, 
+    FixKantor, nop_formatted, KANTOR)
 
 import re
 
@@ -111,8 +112,8 @@ class F160401View(PbbView):
     ##########
     # CSV #
     ##########
-    @view_config(route_name='F160401-rpt', renderer='csv',
-                 permission='F160401-rpt')
+    @view_config(route_name='F160401-csv', renderer='csv',
+                 permission='F160401-csv')
     def view_csv(self):
         req = self.req
         ses = self.ses
@@ -178,7 +179,7 @@ class F160401View(PbbView):
                     c = form.validate(controls)
                 except ValidationFailure, e:
                     return dict(project=self.project,
-                                form=form)				
+                                form=form)
                 save_request(dict(controls), request)
             return route_list(request)
         elif SESS_ADD_FAILED in request.session:
@@ -210,9 +211,9 @@ class F160401View(PbbView):
             del request.session[SESS_EDIT_FAILED]
             return dict(form=form)
         values = row.to_dict()
-        values["nop"] = fixNop.get_raw_dotted()
-        values["id"] = fixNopel.get_raw()
-        values["tgl_pembayaran_sppt"] = dmy_to_date(values["tgl_pembayaran_sppt"])
+        values["nop"] = nop_formatted(row)
+        values["id"] = nop_formatted(row)
+        values["tgl_pembayaran_sppt"] = dmy(values["tgl_pembayaran_sppt"])
         form.set_appstruct(values)
         return dict(project=self.project,
                     form=form)
@@ -357,13 +358,14 @@ def save(request, values, row=None):
     
     tp = re.sub('\D',"",values["kd_tp"])
     
-    fxBank = clsBank("%s%s" % (fixKantor.get_raw(), tp))
+    #fxBank = FixBank("%s%s" % (fixKantor.get_raw(), tp))
     
     nop = re.sub('\D',"",values["nop"])
-    fxNop = clsNop(nop)
-    values["kd_kanwil"] = fxBank.kd_kanwil
-    values["kd_kantor"] = fxBank.kd_kantor
-    values["kd_tp"] = fxBank.kd_tp
+    fxNop = FixNop(nop)
+    for name, typ, size in KANTOR:
+        values[name] = request.session[name]
+    
+    values["kd_tp"] = tp
     values["kd_propinsi"] = fxNop.kd_propinsi
     values["kd_dati2"] = fxNop.kd_dati2
     values["kd_kecamatan"] = fxNop.kd_kecamatan

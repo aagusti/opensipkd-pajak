@@ -11,8 +11,9 @@ from ...pbb.models.pelayanan09 import Skkpp, Spmkp, PenerimaKompensasi
 from ...pbb.models.pelayanan import PstPermohonan, PstDetail
 from ...pbb.models.log_data import LogKeluaranPst
 from ...pbb.models.ref import TempatPembayaran
-from ...pbb.tools import JNS_RESKOM, fixNop, fixNopel, fixKantor
-from ...tools import _DTstrftime, _DTnumber_format
+from ...pbb.tools import (JNS_RESKOM, FixNop, FixNopel, FixKantor, FixNopelDetail,
+        nop_formatted)
+from ...tools import dmy, dmy_to_date
 from ...views.common import ColumnDT, DataTables
 import re
 
@@ -223,14 +224,16 @@ class F170902View(PbbView):
         elif SESS_EDIT_FAILED in request.session:
             del request.session[SESS_EDIT_FAILED]
             return dict(form=form)
+        id = request.matchdict['id']
+        fixNopel = FixNopelDetail(id)
         values = row.to_dict()
-        values["nop"] = fixNop.get_raw_dotted()
-        values["nopel"] = fixNopel.get_raw_dotted()[6:]
-        values["id"] = fixNopel.get_raw()
-        values["tgl_sk_skkpp"] = values["tgl_sk_skkpp"].strftime("%d-%m-%Y")
+        values["nop"] = nop_formatted(fixNopel.get_nop())
+        values["nopel"] = fixNopel.get_nopel()[4:]
+        values["id"] = id
+        values["tgl_sk_skkpp"] = dmy(values["tgl_sk_skkpp"])
         if rowRestitusi:
             values.update(rowRestitusi.to_dict())
-            values["tgl_spmkp"] = values["tgl_spmkp"].strftime("%d-%m-%Y")
+            values["tgl_spmkp"] = dmy(values["tgl_spmkp"])
         if rowKompensasi:
             values.update(rowKompensasi.to_dict())
             #fixNop['kd_propinsi'] = rowKompensasi['kd_propinsi_kompensasi']
@@ -473,25 +476,23 @@ def get_form(request, class_form):
 def save(request, values, row=None, rowRestitusi=None, rowKompensasi=None):
     if not row:
         row = Skkpp()
-    
-    nopel = re.sub('\D',"",values["nopel"])
-    fixNopel.set_raw("%s%s" % (fixKantor.get_raw(), nopel))
-    nop = re.sub('\D',"",values["nop"])
-    fixNop.set_raw(nop)
+    nopel = ".".join([request.session['kd_kanwil'], 
+                    request.session['kd_kantor'],  values["nopel"], values["nop"]])
+    fixNopel = FixNopelDetail(nopel)
     values["kd_kanwil"] = fixNopel["kd_kanwil"]
     values["kd_kantor"] = fixNopel["kd_kantor"]
     values["thn_pelayanan"] = fixNopel["tahun"]
     values["bundel_pelayanan"] = fixNopel["bundel"]
     values["no_urut_pelayanan"] = fixNopel["urut"]
-    values["kd_propinsi_pemohon"] = fixNop["kd_propinsi"]
-    values["kd_dati2_pemohon"] = fixNop["kd_dati2"]
-    values["kd_kecamatan_pemohon"] = fixNop["kd_kecamatan"]
-    values["kd_kelurahan_pemohon"] = fixNop["kd_kelurahan"]
-    values["kd_blok_pemohon"] = fixNop["kd_blok"]
-    values["no_urut_pemohon"] = fixNop["no_urut"]
-    values["kd_jns_op_pemohon"] = fixNop["kd_jns_op"]
+    values["kd_propinsi_pemohon"] = fixNopel["kd_propinsi"]
+    values["kd_dati2_pemohon"] = fixNopel["kd_dati2"]
+    values["kd_kecamatan_pemohon"] = fixNopel["kd_kecamatan"]
+    values["kd_kelurahan_pemohon"] = fixNopel["kd_kelurahan"]
+    values["kd_blok_pemohon"] = fixNopel["kd_blok"]
+    values["no_urut_pemohon"] = fixNopel["no_urut"]
+    values["kd_jns_op_pemohon"] = fixNopel["kd_jns_op"]
     values["tgl_rekam_skkp"] = datetime.now()
-    values["nip_rekam_skkp"] = request.user.nip()
+    values["nip_rekam_skkp"] = request.user.nip_pbb()
     values["tgl_sk_skkpp"] = datetime.strptime(values["tgl_sk_skkpp"], "%d-%m-%Y")
     if not row.posted:
         values["posted"] = 0
@@ -519,9 +520,7 @@ def save(request, values, row=None, rowRestitusi=None, rowKompensasi=None):
         if not rowKompensasi:
             rowKompensasi = PenerimaKompensasi()
         
-        nop = re.sub('\D',"",values["nop_kompensasi"])
-        
-        fixNop.set_raw(nop)
+        fixNop = FixNop(values["nop_kompensasi"])
         values["kd_propinsi_kompensasi"] = fixNop["kd_propinsi"]
         values["kd_dati2_kompensasi"] = fixNop["kd_dati2"]
         values["kd_kecamatan_kompensasi"] = fixNop["kd_kecamatan"]
@@ -538,8 +537,10 @@ def save(request, values, row=None, rowRestitusi=None, rowKompensasi=None):
         if qRestitusi.first():
             qRestitusi.delete()
         pbbDBSession.flush()
+    
         
-    log_values = {"log_sppt":0, 
+    log_values = {"fixNopelDetail": fixNopel,
+                "log_sppt":0, 
                 "log_stts":0, 
                 "log_dhkp":0, 
                 "log_sk":1, 
@@ -555,6 +556,7 @@ def save_request(values, request, row=None, rowRestitusi=None, rowKompensasi=Non
 
 def route_list(request):
     return HTTPFound(location=request.route_url('F170902'))
+    
 
 def session_failed(request, session_name):
     r = dict(form=request.session[session_name])
@@ -578,7 +580,6 @@ def query_restitusi_id(request): #query realisasi
     return Spmkp.query_id(val)
                 
 def query_kompensasi_id(request): #query realisasi
-    val = request.matchdict['id']
     val = request.matchdict['id']
     return PenerimaKompensasi.query_id(val)
                 

@@ -1,0 +1,277 @@
+<html metal:use-macro="load: ../base.pt">
+  <div metal:fill-slot="content">
+    <div class="row">
+    <h3>Migrasi Excel - SISMIOP</h3>
+          <table id="table1" class="table table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                <th><input type="checkbox"id="select_all" name="select_all"></th>
+                <th>NOP</th>
+                <th>Subjek Pajak</th>
+                <th>Nama Subjek</th>
+                <th>F. SPOP</th>
+                <th>F. LSPOP</th>
+                <th>Jalan OP</th>
+                <th>Tgl. Pendataan</th>
+                <th>Tgl. Proses</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        
+    </div>
+  </div>
+  <div metal:fill-slot="scripts">
+    <script type="text/javascript" src="/static/js/tools.js"></script>
+  
+<script>
+    var oTable;
+    var rows_selected = [];
+    var is_alert  = true;
+    var oTableUri = "${request.url}";
+    var oTableUrl = oTableUri+"/grid/act";
+    
+    var mID;
+    
+      $(document).ready(function () {
+        oTable = $('#table1').DataTable({
+          "dom"           : '<"toolbar">lfrtip', //ftlip
+          processing    : true,
+          serverSide    : true,
+          ajax          : oTableUrl,
+          stateSave     : true,
+          scrollCollapse: true,
+          //sort          : true,
+          info          : false,
+          filter        : true,
+          autoWidth     : false,
+          paginate      : true,
+          paginationType: "full_numbers",
+          "order": [[ 1, "asc" ]],
+          lengthMenu: [
+              [10, 25, 50, 100, -1],
+              [10, 25, 50, 100, "Semua"]
+          ],
+
+          columns:[
+              { data  : "id",
+                render: function ( data, type, row ) {
+                return '<input type="checkbox" class="editor-active" value="'+data.id+'">';
+                }},
+              {data: "nop"},
+              {data: "subjek_pajak_id"},
+              {data: "nm_wp"},
+              {data: "no_formulir_spop"},
+              {data: "no_formulir_lspop"},
+              {data: "jalan_op"},
+              {data: "tgl_pendataan_op", sClass: "center"},
+              {data: "tgl_proses", sClass: "center"},
+              {data: "status",     sClass: "center"},
+                     
+          ],
+          columnDefs: [
+            {
+              "targets"   : [ 0 ],
+              "visible"   : true,
+              "searchable": false,
+              "sortable"  : false
+            }
+            //,{
+            //  "searchable": true,
+            //  "targets"   : [2,3,4,5,6,9]
+            //},{
+            //  "searchable": false,
+            //  "targets"   : [7,8]
+            //},{
+            //    "aTargets" : [9], // Untuk Status Migrasi
+            //    "mRender"  : function (data, type, full) {
+            //        if (data == "0") {
+            //            return 'N';
+            //        } else if (data == "1") {
+            //            return 'Y';
+            //        }
+            //    }
+            //}
+          ],
+            "language": {
+                "search"  : "Cari: ",
+                "paginate":{
+                    "first"   : "Pertama ",
+                    "last"    : "Terakhir ",
+                    "previous": "Sebelumnya ",
+                    "next"    : "Selanjutnya ",
+                },
+                "lengthMenu": "Tampil _MENU_ baris "
+            },
+            
+            //"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            //    switch(aData[9]){
+            //        case '1' :
+            //            $('td',nRow).css("background-color","#ddffdd")
+            //            break;
+            //    }
+            //},
+        });
+        var awal = "${request.session['awal']}";
+        var akhir = "${request.session['akhir']}";
+        var tb_array = [
+          '<div class="btn-group pull-left">',
+          //'	<button id="btn_proses"    class="btn btn btn-success" type="button">Migrasi Semua</button>',
+          '	<button id="btn_tambah"    class="btn btn btn-primary" type="button">Tambah</button>',
+          '	<button id="btn_post"     class="btn btn btn-success"  type="button">Posting</button>',
+          '	<button id="btn_upload"    class="btn btn btn-primary" type="button">Upload</button>',
+          '	<button id="csv_transaksi" class="btn btn btn-warning" type="button">CSV Transaksi</button>',
+          '	<button id="btn_delete"     class="btn btn btn-danger"  type="button">Hapus</button>',
+          '	<button id="btn_verify"     class="btn btn btn-success"  type="button">Verifikasi</button>',
+          '	&nbsp;Periode <input type="text" id="awal" class="input-sm" name="awal" value="'+awal+'">',
+          '	<input type="text" id="akhir" class="input-sm" name="akhir" value="'+akhir+'">',
+          '	&nbsp;',
+          '</div>',
+        ];
+
+        var tb = tb_array.join(' ');
+        $("div.toolbar").html(tb);
+        $("div.toolbar").attr('style', 'display:block; float: left; margin-bottom:6px; line-height:16px;');
+
+        $("#awal, #akhir").datepicker({
+          dateFormat : 'dd-mm-yy',
+          changeMonth: true,
+          changeYear : true,
+          onClose    : function( selectedDate ) {
+          },
+          onSelect: function(selectedDate) {
+            var filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val();
+            oTable.ajax.url(oTableUrl + filter).load();
+          }   
+        });
+        
+        //Binding Search By Enter Key
+        $('#table1_filter input').unbind();
+        $('#table1_filter input').bind('keyup', function(e) {
+            if(e.keyCode == 13) {
+              oTable.search(this.value).draw();
+          }
+        });
+        //Upload File
+        $('#btn_upload').click(function () {
+           window.location = oTableUri+'/upload';
+        });
+        //report CSV
+        $('#csv_transaksi').click( function() { 
+           window.open( oTableUri+'/csv?awal='+$( "#awal" ).val()+'&akhir='+$( "#akhir" ).val());
+        }); 
+        //handle MID for selected row
+        
+        $('#table1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                mID = none;
+            } else {
+                var aData = oTable.row( this ).data();
+                oTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                mID = aData.id;
+                oTable.$('tr.row_selected').removeClass('row_selected');
+                $(this).addClass('row_selected');
+            }
+        });
+        
+        $('#btn_delete').click(function () {
+            if (mID) {
+                if (confirm('Hapus Data '+mID+'?')==true)
+                    window.location = oTableUri+'/'+mID+'/delete';
+            }
+            else alert('Pilih Baris yang akan di hapus');
+        });
+        
+        $('#btn_verify').click(function () {
+            if (mID) {
+                window.location = oTableUri+'/'+mID+'/verify';
+            }
+            else alert('Pilih Baris yang akan di verifikasi');
+        });
+        
+        $('#btn_post').click(function () {
+            if (rows_selected.length>0) {
+              $.ajax({
+                type: "POST",
+                url: oTableUri+"/post/post",
+                data : { id : rows_selected.join(",") },
+                success: function (html) {
+                  if (html.success == true) {
+                    $("#success").css('display', 'inline', 'important');
+                    $("#success").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                    rows_selected = [];
+                    oTable.ajax.reload();
+                    } 
+                  else {
+                    $("#errors").css('display', 'inline', 'important');
+                    $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
+                    }
+                  } //end if
+                }); //end ajax*/
+              } //end if
+            else {
+              alert('Silahkan pilih data yang akan diposting');
+              }
+        });
+        
+     // Handle click on checkbox
+      $('#table1 tbody').on('click', 'input[type="checkbox"]', function(e){
+        var $row = $(this).closest('tr');
+        // Get row data
+        //iPos = oTable.fnGetPosition(this);
+        var data = oTable.row($row).data();
+        // Get row ID
+        var rowId = data.id;
+        
+        // Determine whether row ID is in the list of selected row IDs 
+        var index = $.inArray(rowId, rows_selected);
+
+        // If checkbox is checked and row ID is not in list of selected row IDs
+        if(this.checked && index === -1){
+           rows_selected.push(rowId);
+
+        // Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+        } else if (!this.checked && index !== -1){
+           rows_selected.splice(index, 1);
+        }
+
+        if(this.checked){
+           $row.addClass('selected');
+        } else {
+           $row.removeClass('selected');
+        }
+
+        // Update state of "Select all" control
+        
+        updateDataTableSelectAllCtrl(oTable);
+        
+        // Prevent click event from propagating to parent
+        e.stopPropagation();
+      });
+      
+      // Handle click on "Select all" control
+      $('#table1 thead input[name="select_all"]').on('click', function(e){
+        if(this.checked){
+            $('#table1 tbody input[type="checkbox"]:not(:checked)').trigger('click');
+          } else {
+            $('#table1 tbody input[type="checkbox"]:checked').trigger('click');
+          }
+
+        // Prevent click event from propagating to parent
+        e.stopPropagation();
+        });
+
+      // Handle table draw event
+      oTable.on('draw', function(){
+        // Update state of "Select all" control
+        updateDataTableSelectAllCtrl(oTable);
+        });
+        
+    });
+  </script>
+  </div>
+</html>

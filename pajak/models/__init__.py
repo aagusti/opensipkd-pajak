@@ -151,16 +151,9 @@ class User(UserMixin, BaseModel, CommonModel, Base):
     def nip_pbb(self):
         from ..tools import get_settings
         settings = get_settings()
-        if self.user_name == 'admin':
-            return '060000000000000000'
-        
         if "pbb.url" in settings and settings["pbb.url"]:
-            from ..pbb.models import pbbDBSession
-            from ..pbb.models.pegawai import DatLogin
-            row = pbbDBSession.query(DatLogin).\
-                    filter_by(nm_login = self.user_name).first()
-            if row:
-                return row.nip
+            from ..pbb.tools import pbb_nip
+            return pbb_nip(self.user_name.upper())
         return
         
     @classmethod

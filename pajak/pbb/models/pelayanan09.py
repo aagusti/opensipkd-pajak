@@ -30,8 +30,8 @@ from sqlalchemy.orm import (
     )
 import re
 from ...tools import as_timezone
-from ..tools import clsNop, clsNopel
 from ...models import CommonModel
+from ..tools import FixNopelDetail
 from ..models import pbbBase, pbbDBSession, pbb_schema
 from pelayanan import PstDetail
 #from ref import Kelurahan, Kecamatan, Dati2, KELURAHAN, KECAMATAN
@@ -73,25 +73,26 @@ class Skkpp(pbbBase, CommonModel):
         PstDetail.kd_kelurahan_pemohon, PstDetail.kd_blok_pemohon, 
         PstDetail.no_urut_pemohon, PstDetail.kd_jns_op_pemohon]),
         PBB_ARGS,)
+    @classmethod
+    def query(cls):
+        return pbbDBSession.query(cls)
     
     @classmethod
     def query_id(cls,id):
-        val = re.sub("\D", "", id)
-        fxNopel = clsNopel(val[:15])
-        fxNop = clsNop(val[15:])
-        return pbbDBSession.query(cls).\
+        fxNopel = FixNopelDetail(id)
+        return cls.query().\
                filter(cls.kd_kanwil == fxNopel.kd_kanwil, 
                     cls.kd_kantor == fxNopel.kd_kantor, 
                     cls.thn_pelayanan == fxNopel.tahun, 
                     cls.bundel_pelayanan == fxNopel.bundel, 
                     cls.no_urut_pelayanan == fxNopel.urut,
-                    cls.kd_propinsi_pemohon==fxNop.kd_propinsi,
-                    cls.kd_dati2_pemohon==fxNop.kd_dati2,
-                    cls.kd_kecamatan_pemohon==fxNop.kd_kecamatan,
-                    cls.kd_kelurahan_pemohon==fxNop.kd_kelurahan,
-                    cls.kd_blok_pemohon==fxNop.kd_blok,
-                    cls.no_urut_pemohon==fxNop.no_urut,
-                    cls.kd_jns_op_pemohon==fxNop.kd_jns_op,
+                    cls.kd_propinsi_pemohon==fxNopel.kd_propinsi,
+                    cls.kd_dati2_pemohon==fxNopel.kd_dati2,
+                    cls.kd_kecamatan_pemohon==fxNopel.kd_kecamatan,
+                    cls.kd_kelurahan_pemohon==fxNopel.kd_kelurahan,
+                    cls.kd_blok_pemohon==fxNopel.kd_blok,
+                    cls.no_urut_pemohon==fxNopel.no_urut,
+                    cls.kd_jns_op_pemohon==fxNopel.kd_jns_op,
                     )
 
 class Spmkp(pbbBase, CommonModel):
@@ -124,23 +125,25 @@ class Spmkp(pbbBase, CommonModel):
         Skkpp.no_urut_pemohon, Skkpp.kd_jns_op_pemohon]),PBB_ARGS,)
         
     @classmethod
+    def query(cls):
+        return pbbDBSession.query(cls)
+        
+    @classmethod
     def query_id(cls,id):
-        val = re.sub("\D", "", id)
-        fxNopel = clsNopel(val[:15])
-        fxNop = clsNop(val[15:])
-        return pbbDBSession.query(cls).\
+        fxNopel = FixNopelDetail(id)
+        return cls.query().\
                filter(cls.kd_kanwil == fxNopel.kd_kanwil, 
                     cls.kd_kantor == fxNopel.kd_kantor, 
                     cls.thn_pelayanan == fxNopel.tahun, 
                     cls.bundel_pelayanan == fxNopel.bundel, 
                     cls.no_urut_pelayanan == fxNopel.urut,
-                    cls.kd_propinsi_pemohon==fxNop.kd_propinsi,
-                    cls.kd_dati2_pemohon==fxNop.kd_dati2,
-                    cls.kd_kecamatan_pemohon==fxNop.kd_kecamatan,
-                    cls.kd_kelurahan_pemohon==fxNop.kd_kelurahan,
-                    cls.kd_blok_pemohon==fxNop.kd_blok,
-                    cls.no_urut_pemohon==fxNop.no_urut,
-                    cls.kd_jns_op_pemohon==fxNop.kd_jns_op,
+                    cls.kd_propinsi_pemohon==fxNopel.kd_propinsi,
+                    cls.kd_dati2_pemohon==fxNopel.kd_dati2,
+                    cls.kd_kecamatan_pemohon==fxNopel.kd_kecamatan,
+                    cls.kd_kelurahan_pemohon==fxNopel.kd_kelurahan,
+                    cls.kd_blok_pemohon==fxNopel.kd_blok,
+                    cls.no_urut_pemohon==fxNopel.no_urut,
+                    cls.kd_jns_op_pemohon==fxNopel.kd_jns_op,
                     )
     @classmethod
     def delete_id(cls,id):
@@ -187,26 +190,31 @@ class PenerimaKompensasi(pbbBase, CommonModel):
                     self.kd_blok_kompensasi, self.no_urut_kompensasi, 
                     self.kd_jns_op_kompensasi])
     @classmethod
+    def query(cls):
+        return pbbDBSession.query(cls)
+        
+    @classmethod
     def query_id(cls,id):
-        val = re.sub("\D", "", id)
-        fxNopel = clsNopel(val[:15])
-        fxNop = clsNop(val[15:])
+        fxNopel = FixNopelDetail(id)
         return pbbDBSession.query(cls).\
                filter(cls.kd_kanwil == fxNopel.kd_kanwil, 
                     cls.kd_kantor == fxNopel.kd_kantor, 
                     cls.thn_pelayanan == fxNopel.tahun, 
                     cls.bundel_pelayanan == fxNopel.bundel, 
                     cls.no_urut_pelayanan == fxNopel.urut,
-                    cls.kd_propinsi_pemohon==fxNop.kd_propinsi,
-                    cls.kd_dati2_pemohon==fxNop.kd_dati2,
-                    cls.kd_kecamatan_pemohon==fxNop.kd_kecamatan,
-                    cls.kd_kelurahan_pemohon==fxNop.kd_kelurahan,
-                    cls.kd_blok_pemohon==fxNop.kd_blok,
-                    cls.no_urut_pemohon==fxNop.no_urut,
-                    cls.kd_jns_op_pemohon==fxNop.kd_jns_op,
+                    cls.kd_propinsi_pemohon==fxNopel.kd_propinsi,
+                    cls.kd_dati2_pemohon==fxNopel.kd_dati2,
+                    cls.kd_kecamatan_pemohon==fxNopel.kd_kecamatan,
+                    cls.kd_kelurahan_pemohon==fxNopel.kd_kelurahan,
+                    cls.kd_blok_pemohon==fxNopel.kd_blok,
+                    cls.no_urut_pemohon==fxNopel.no_urut,
+                    cls.kd_jns_op_pemohon==fxNopel.kd_jns_op,
+                    #no_urut_penerima_kompensasi == id[-3:]
                     )                 
                     
     @classmethod
     def delete_id(cls,id):
         q = cls.query_id(id)
         q.delete()
+        
+#END Of Script

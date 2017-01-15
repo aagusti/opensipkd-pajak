@@ -16,14 +16,14 @@ memproses data pajak daerah (PBB, BPHTB dan Non PBB BPHTB)
 <li>PBB Monitoring <a href="http://pbb-bphtb.tangselkota.org">PBBM</a></li>
 <li>Elektronik SSP BPHTB Monitoring <a href="http://pbb-bphtb.tangselkota.org">e-sspb</a></li>
 <li>SIG PBB <a href="http://sig.tangselkota.org/">SIG-PBB</a></li>
-<li>Integrasi PBB - Akuntansi <a href="/pbb/akrual?project=_akrual">PBB Akrual</a></li>
-<li>Integrasi BPHTB - Akuntansi <a href="/bphtb/akrual?project=_akrual">BPHTB Akrual</a></li>
+<li>Integrasi PBB BPHTB - Akuntansi <a href="/pbb/akrual?project=_akrual">PBB BPHTB Akrual</a></li>
+<li>Data Sensus <a href="/pbb/sensus?project=_sensus">e-sensus</a></li>
+<li>Pengelolaan Restitusi/Kompensasi PBB  <a href="/F170900?project=_restitusi">e-Restitusi</a></li>
 <li>Integrasi PDL Akuntansi <a href="http://padl.tangselkota.org">PDL Akrual</a></li>
 <li>Elektronik SPPT <a href="http://e-sppt.tangselkota.org">e-sppt</a></li>
 <li>Informasi Tagihan PBB Via Android Base <a href="https://play.google.com/store/apps/details?id=com.opensipkd.ipbb_tangsel">i-pbb</a></li>
 <li>Informasi Tagihan PBB Via SMS +6281210101070 Command <strong>NOP 36.76.kec.kel.blok.urut.jns.tahun</strong></li>
 <li>Informasi PBB Via email <strong>pbb-bphtb[at]tangerangselatankota.go.id</strong> dengan isi <strong>NOP 36.76.kec.kel.blok.urut.jns</strong></li>
-<li>Pengelolaan Restitusi/Kompensasi PBB  <a href="/F170900?project=_restitusi">e-Restitusi</a></li>
 <li>Payment Online System PBB  <a href="http://pospbb.tangselkota.org">POS PBB</a></li>
 <li>System Integrasi Perbankan (BJB/BCA/MANDIRI)</li>
 <li>System Informasi Objek Pajak PBB</li>

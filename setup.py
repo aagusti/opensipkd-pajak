@@ -28,6 +28,7 @@ requires=['pyramid',
           'pyramid_rpc',
           'sqlalchemy-datatables',
           'requests',
+	  'xlrd',
          ]
 
 if sys.argv[1:] and sys.argv[1] == 'develop-use-pip':

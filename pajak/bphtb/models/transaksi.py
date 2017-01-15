@@ -39,7 +39,6 @@ class Ppat(bphtbBase, CommonModel):
     __table_args__ = (UniqueConstraint('kode', 
                           name='bphtb_ppat_kode_uk'),
                       BPHTB_ARGS)    
-    
     id = Column(Integer, primary_key=True)
     kode = Column(String(6))
     nama = Column(String(50))

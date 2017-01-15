@@ -86,6 +86,8 @@
       <div tal:condition="request.session.peek_flash('error')">
         <div class="alert alert-danger" tal:repeat="message request.session.pop_flash('error')">${message}</div>
       </div>
+      <div id="success" style="display:none;">Success</div>
+      <div id="errors" style="display:none;">Errors</div>
           
       <div metal:define-slot="content"></div>    
 

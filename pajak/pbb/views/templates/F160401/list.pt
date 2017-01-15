@@ -121,7 +121,7 @@
         var tb_array = [
           '<div class="btn-group pull-left">',
           '	<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
-          '	<button id="btn_edit"   class="btn btn btn-primary" type="button">Edit</button>',
+          //'	<button id="btn_edit"   class="btn btn btn-primary" type="button">Edit</button>',
           '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Reversal</button>',
           '	<!--button id="btn_print"  class="btn btn btn-primary" type="button">Cetak</button-->',
           '	<button id="btn_csv"    class="btn btn btn-primary" type="button">CSV</button>',

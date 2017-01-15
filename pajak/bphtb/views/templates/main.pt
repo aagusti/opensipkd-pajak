@@ -1,3 +1,120 @@
 <html metal:use-macro="load: base.pt">
-
+<div metal:fill-slot="navs">
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li tal:attributes="class request.path == '/' and 'active'"><a href="/">BPHBT</a></li>
+        <!-- PPAT -->
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">SSPD<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/sspd/">Registrasi SSPD</a></li>
+                <li><a href="/bphtb/sspd_kb/">Registrasi SSPD KB</a></li>
+                <li><a href="/bphtb/sspd_register/">Register SSPD</a></li>
+                <li><a href="/bphtb/pasaran">Harga Pasar</a></li>
+                <li class="divider"></li>
+                <li><a href="/bphtb/ajb">Entri AJB</a></li>
+                <li><a href="/bphtb/ajb_verifikasi">Verifikasi AJB</a></li>
+            </ul>
+        </li>
+        
+        <!-- NON PPAT -->
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Penerimaan<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/penerimaan">Daftar Penerimaan</a></li>
+                <li class="nav-header">Laporan</li>
+                <li><a href="/bphtb/lap_penerimaan/harian/">Register Pembayaran Harian</a></li>
+                <li><a href="/bphtb/lap_penerimaan/harian_kel/">Rekapitulasi Per Kelurahan</a></li>
+                <li><a href="/bphtb/lap_penerimaan/harian_kec/">Rekapitulasi Per Kecamatan</a></li>
+                <li><a href="/bphtb/lap_penerimaan/harian_kab/">Rekapitulasi Per Kabupaten</a></li>
+            </ul>
+        </li>
+            
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pelayanan<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/berkas_in/">Berkas Masuk</a></li>
+                <li><a href="/bphtb/berkas_out/">Berkas Keluar</a></li>
+                <li class="divider"></li>
+                <li><a href="/bphtb/sspd_approval/">SSPD Approval</a></li>
+                <li class="nav-header">Laporan</li>
+                <li><a href="/bphtb/lap_berkas/masuk/">Register Penerimaan Berkas</a></li>
+                <li><a href="/bphtb/lap_berkas/keluar/">Register Berkas Keluar</a></li>
+            </ul>
+        </li>
+                
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Penelitian / Penetapan<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/penelitian/">Penelitian SSPD</a></li>
+                <!--li><a href="/bphtb/penelitian_nihil/">Penelitian SSPD Bayar</a></li-->
+                <li><a href="/bphtb/penetapan">Penetapan SKPD-KB/LB</a></li>
+                <li class="divider"></li>
+                <li><a href="/bphtb/approval">Approval</a></li>
+                <li class="nav-header">Laporan</li>
+                <li><a href="/bphtb/lap_penelitian/teliti_ok/">Register Penelitian SSPD</a></li>
+                <li><a href="/bphtb/lap_penelitian/teliti_no/">Register SSPD yang belum diteliti</a></li>
+                <li><a href="/bphtb/lap_penelitian/penetapan/">Register Penetapan</a></li>
+             </ul>
+        </li>
+                    
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">BPN<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/bpn_penerimaan/">Register Penerimaan SSPD</a></li>
+                <li><a href="/bphtb/bpn_penyelesaian/">Register Penyelesaian Berkas</a></li>
+                <li class="nav-header">Laporan</li>
+                <li><a href="/bphtb/lap_penerimaan/harian_not_register/">Dokumen Dalam Proses</a></li>
+                <li><a href="/bphtb/lap_penerimaan/harian_yes_register/">Dokumen Selesai</a></li>
+             </ul>
+        </li>
+        
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">PBB<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/bphtb_verifikasi">Verifikasi BPHTB</a></li>
+                <li><a href="/bphtb/bphtb_unposted">BPHTB Unposted</a></li>
+                <li><a href="/bphtb/bphtb_posted_rpt">BPHTB Posted</a></li>
+                <!--li><a href="/bphtb/bphtb_posted">Posted</a></li-->
+            </ul>
+        </li>
+                            
+                            
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Objek Pajak <strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/objek_pajak/">Histori</a></li>
+            </ul>
+        </li>
+        
+        <!-- NON PPAT -->
+        <li class="dropdown ">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Referensi <strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/bphtb/ppat/">Daftar PPAT</a></li>
+                <li><a href="/bphtb/ppat_user/">User PPAT</a></li>
+                <li><a href="/bphtb/user_validasi">Level User (Validasi)</a></li>
+                <li class="divider"></li>
+                <li><a href="/bphtb/alasan/">Alasan Pengurangan</a></li>
+                <li><a href="/bphtb/dasar/">Dasar Perhitungan</a></li>
+                <li><a href="/bphtb/hukum/">Bentuk Hukum</a></li>
+                <li><a href="/bphtb/perolehan/">Jenis Perolehan</a></li>
+                <li><a href="/bphtb/status_hak/">Status Kepemilikan</a></li>
+                <li><a href="/bphtb/jabatan/">Jabatan Pegawai</a></li>
+                <li><a href="/bphtb/pejabat/">Pejabat</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Akrual <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/bphtb/sa">Saldo Awal</a></li>                
+              <li><a href="/bphtb/self">Realisasi SSPD/Self</a></li>                
+              <li><a href="/bphtb/ketetapan">Ketetapan</a></li>                
+              <li><a href="/bphtb/realisasi">Realisasi Ketetapan</a></li>                
+            </ul>
+        </li>
+      
+    </ul>
+  </div>
+</div>
 </html>

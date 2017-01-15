@@ -33,7 +33,7 @@ from ...tools import as_timezone, FixLength
 
 from ...models import CommonModel
 from ..models import pbbBase, pbbDBSession, pbb_schema
-from ...pbb.tools import fixNopel, fixNop
+from ...pbb.tools import FixNopel, FixNop
 from pelayanan import PstDetail
 #from ref import Kelurahan, Kecamatan, Dati2, KELURAHAN, KECAMATAN
     
@@ -65,7 +65,8 @@ class LogKeluaranPst(pbbBase, CommonModel):
     __table_args__ = (PBB_ARGS,)
     
     @classmethod
-    def pst_add_log_keluaran(cls, log_values):
+    def pst_add_log_keluaran(cls, values):
+        fixNopel = values["fixNopelDetail"]
         q = pbbDBSession.query(PstDetail).\
                 filter(
                     PstDetail.kd_kanwil == fixNopel['kd_kanwil'], 
@@ -73,13 +74,13 @@ class LogKeluaranPst(pbbBase, CommonModel):
                     PstDetail.thn_pelayanan == fixNopel['tahun'], 
                     PstDetail.bundel_pelayanan == fixNopel['bundel'], 
                     PstDetail.no_urut_pelayanan == fixNopel['urut'],
-                    PstDetail.kd_propinsi_pemohon==fixNop['kd_propinsi'],
-                    PstDetail.kd_dati2_pemohon==fixNop['kd_dati2'],
-                    PstDetail.kd_kecamatan_pemohon==fixNop['kd_kecamatan'],
-                    PstDetail.kd_kelurahan_pemohon==fixNop['kd_kelurahan'],
-                    PstDetail.kd_blok_pemohon==fixNop['kd_blok'],
-                    PstDetail.no_urut_pemohon==fixNop['no_urut'],
-                    PstDetail.kd_jns_op_pemohon==fixNop['kd_jns_op'],
+                    PstDetail.kd_propinsi_pemohon==fixNopel['kd_propinsi'],
+                    PstDetail.kd_dati2_pemohon==fixNopel['kd_dati2'],
+                    PstDetail.kd_kecamatan_pemohon==fixNopel['kd_kecamatan'],
+                    PstDetail.kd_kelurahan_pemohon==fixNopel['kd_kelurahan'],
+                    PstDetail.kd_blok_pemohon==fixNopel['kd_blok'],
+                    PstDetail.no_urut_pemohon==fixNopel['no_urut'],
+                    PstDetail.kd_jns_op_pemohon==fixNopel['kd_jns_op'],
                 )
                 
         row = q.first()
@@ -90,19 +91,19 @@ class LogKeluaranPst(pbbBase, CommonModel):
                     cls.thn_pelayanan == fixNopel['tahun'], 
                     cls.bundel_pelayanan == fixNopel['bundel'], 
                     cls.no_urut_pelayanan == fixNopel['urut'],
-                    cls.kd_propinsi_pemohon==fixNop['kd_propinsi'],
-                    cls.kd_dati2_pemohon==fixNop['kd_dati2'],
-                    cls.kd_kecamatan_pemohon==fixNop['kd_kecamatan'],
-                    cls.kd_kelurahan_pemohon==fixNop['kd_kelurahan'],
-                    cls.kd_blok_pemohon==fixNop['kd_blok'],
-                    cls.no_urut_pemohon==fixNop['no_urut'],
-                    cls.kd_jns_op_pemohon==fixNop['kd_jns_op'],)
+                    cls.kd_propinsi_pemohon==fixNopel['kd_propinsi'],
+                    cls.kd_dati2_pemohon==fixNopel['kd_dati2'],
+                    cls.kd_kecamatan_pemohon==fixNopel['kd_kecamatan'],
+                    cls.kd_kelurahan_pemohon==fixNopel['kd_kelurahan'],
+                    cls.kd_blok_pemohon==fixNopel['kd_blok'],
+                    cls.no_urut_pemohon==fixNopel['no_urut'],
+                    cls.kd_jns_op_pemohon==fixNopel['kd_jns_op'],)
                     
             row_cls =  q_cls.first()
             if not row_cls:
                 row_cls = cls()
                 row_cls.from_dict(row.to_dict())
-                row_cls.from_dict(log_values)
+                row_cls.from_dict(values)
                 row_cls.log_tahun_pajak = row.thn_pajak_permohonan
                 pbbDBSession.add(row_cls)
                 pbbDBSession.flush()
