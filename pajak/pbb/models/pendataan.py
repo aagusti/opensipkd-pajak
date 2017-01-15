@@ -75,9 +75,7 @@ class DatSubjekPajak(pbbBase, CommonModel):
         return cls.query().filter(cls.subjek_pajak_id==id)
         
     @classmethod
-    def add_dict(cls, row_dicted):
-        q = cls.query_id(row_dicted['subjek_pajak_id'])
-        row = q.first()
+    def add_dict(cls, row_dicted, row = None):
         if not row:
             row = cls()
             if not 'status_pekerjaan_wp' in row_dicted:
