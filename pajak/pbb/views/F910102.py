@@ -112,7 +112,7 @@ class KetetapanView(PbbView):
                     #UPDATE SUBJEK PAJAK
                     ##################################################
                     row_pbb = {
-                        'subjek_pajak_id': re.sub('\D',row.wp_identitas.upper()),
+                        'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
                         'nm_wp'          : row.wp_nama.upper(),
                         'jalan_wp'       : row.wp_alamat.upper(),
                         'blok_kav_no_wp' : row.wp_blok_kav.upper(),
@@ -122,7 +122,7 @@ class KetetapanView(PbbView):
                         'kota_wp'        : row.wp_kota.upper(),
                         'kd_pos_wp'      : row.wp_kdpos.upper(),
                         'telp_wp'        : hasattr(row,'wp_telp') and row.wp_telp.upper() or None,
-                        'npwp'           : re.sub('\D',row.wp_npwp.upper()),
+                        'npwp'           : re.sub('\D',"",row.wp_npwp.upper()),
                         'kecamatan_wp'   : row.wp_kecamatan.upper(),
                         'provinsi_wp'    :  row.wp_provinsi.upper(),}
         
