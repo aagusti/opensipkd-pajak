@@ -282,6 +282,7 @@ class KetetapanView(PbbView):
     @view_config(route_name='F910102-rpt', 
                  permission='F910102-rpt')
     def view_csv(self):
+        url_dict = self.req.matchdict
         query = bphtbDBSession.query(
                 SspdBphtb.id, 
                 func.concat(SspdBphtb.tahun,
