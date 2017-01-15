@@ -72,7 +72,7 @@ class DatSubjekPajak(pbbBase, CommonModel):
         
     @classmethod
     def query_id(cls, id):
-        return cls.query().filter_by(subjek_pajak_id=id)
+        return cls.query().filter(func.trim(cls.subjek_pajak_id)==id)
         
     @classmethod
     def add_dict(cls, row_dicted, row = None):
