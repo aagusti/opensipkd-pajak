@@ -21,6 +21,7 @@
              <input id="akhir" class="form-control" type="text" 
                      value="${request.session['akhir']}" name="akhir">
           </div>
+          
           <button id="btn_filter"  name="btn_filter"  class="btn btn btn-primary" type="submit">Filter</button>
         </div>
         
@@ -144,7 +145,7 @@
         });
         var tb_array = [
           '<div class="btn-group pull-left">',
-          '	<button id="btn_post"   class="btn btn btn-warning" type="button">Proses</button>',
+          //'	<button id="btn_post"   class="btn btn btn-warning" type="button">Proses</button>',
           '	<!--<button id="btn_add"    class="btn btn btn-primary" type="button">Tambah</button>',
           '	<button id="btn_edit"   class="btn btn btn-warning" type="button">Edit</button>',
           '	<button id="btn_delete" class="btn btn btn-danger"  type="button">Hapus</button>-->',
@@ -157,13 +158,6 @@
         var tb = tb_array.join(' ');
         $("div.toolbar").html(tb);
         $("div.toolbar").attr('style', 'display:block; float: left; margin-bottom:6px; line-height:16px;');
-        //Binding Search By Enter Key
-        $('#table1_filter input').unbind();
-        $('#table1_filter input').bind('keyup', function(e) {
-            if(e.keyCode == 13) {
-              oTable.search(this.value).draw();
-          }
-        });
      
      // Handle click on checkbox
       $('#table1 tbody').on('click', 'input[type="checkbox"]', function(e){
@@ -240,10 +234,19 @@
               }
         });
         
+        //Binding Search By Enter Key
+        $('#table1_filter input').unbind();
+        $('#table1_filter input').bind('keyup', function(e) {
+            if(e.keyCode == 13) {
+              oTable.search(this.value).draw();
+          }
+        });
+
         $("#btn_filter").click(function () {
             filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val();
             oTable.ajax.url(oTableUrl+filter).load();
         });
+        
         $('#awal, #akhir').datepicker({
             changeMonth: true,
             changeYear: true,

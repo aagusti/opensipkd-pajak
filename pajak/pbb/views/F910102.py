@@ -282,28 +282,40 @@ class KetetapanView(PbbView):
     @view_config(route_name='F910102-rpt', 
                  permission='F910102-rpt')
     def view_csv(self):
-        url_dict = self.req.matchdict
-        query = pbbDBSession.query(func.concat(SpptAkrual.kd_propinsi,
-                            func.concat(".", 
-                            func.concat(SpptAkrual.kd_dati2, 
-                            func.concat("-", 
-                            func.concat(SpptAkrual.kd_kecamatan,
-                            func.concat(".", 
-                            func.concat(SpptAkrual.kd_kelurahan,
-                            func.concat("-", 
-                            func.concat(SpptAkrual.kd_blok,
-                            func.concat(".", 
-                            func.concat(SpptAkrual.no_urut,
-                            func.concat(".", SpptAkrual.kd_jns_op)))))))))))).label('nop'),
-                            SpptAkrual.thn_pajak_sppt,
-                            SpptAkrual.siklus_sppt,
-                            SpptAkrual.nm_wp_sppt,
-                            SpptAkrual.luas_bumi_sppt,
-                            SpptAkrual.luas_bng_sppt,
-                            SpptAkrual.pbb_yg_harus_dibayar_sppt).\
-                            filter(SpptAkrual.create_date.between(self.dt_awal, 
-                                              self.dt_akhir+timedelta(days=1),)).\
-                            filter(SpptAkrual.posted == self.posted)
+        query = bphtbDBSession.query(
+                SspdBphtb.id, 
+                func.concat(SspdBphtb.tahun,
+                    func.concat(".", 
+                    func.concat(SspdBphtb.kode,
+                    func.concat(".", SspdBphtb.no_sspd)))).label('sspd_no'),
+                SspdBphtb.wp_nama.label('wp_nama'),
+                func.concat(SspdBphtb.kd_propinsi,
+                     func.concat(".", 
+                     func.concat(SspdBphtb.kd_dati2, 
+                     func.concat("-", 
+                     func.concat(SspdBphtb.kd_kecamatan,
+                     func.concat(".", 
+                     func.concat(SspdBphtb.kd_kelurahan,
+                     func.concat("-", 
+                     func.concat(SspdBphtb.kd_blok,
+                     func.concat(".", 
+                     func.concat(SspdBphtb.no_urut,
+                     func.concat(".", SspdBphtb.kd_jns_op)))))))))))).label('nop'),
+                SspdBphtb.thn_pajak_sppt.label('tahun'),
+                SspdBphtb.bphtb_harus_dibayarkan.label('terhutang'),
+                SspdBphtb.status_pembayaran.label('bayar'),
+                func.to_char(SspdBphtb.verifikasi_date,'DD-MM-YYYY').label('tgl_approval'),
+                func.to_char(SspdBphtb.verifikasi_bphtb_date,'DD-MM-YYYY').label('tgl_verifikasi'),
+                SspdBphtb.status_validasi.label('status_validasi'),
+                SspdBphtb.no_ajb.label('no_ajb'),
+                func.to_char(SspdBphtb.tgl_ajb,'DD-MM-YYYY').label('tgl_ajb'),
+                SspdBphtb.posted.label('posted'),
+                Ppat.nama.label('ppat_nama'),
+                Ppat.kode.label('ppat_kode'),).\
+                join(Ppat).\
+                filter(SspdBphtb.tgl_transaksi.between(self.dt_awal, 
+                    self.dt_akhir+timedelta(days=1),)).\
+                filter(SspdBphtb.posted==1)
         if url_dict['rpt']=='csv' :
             filename = 'F910102.csv'
             return csv_response(self.req, csv_rows(query), filename)

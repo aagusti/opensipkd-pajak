@@ -142,3 +142,6 @@ id,kode,path,nama,status
 9101022,"F910102-post","/F910102/{id}/post","PBB Proses Transaksi BPHTB Posting",1
 9101023,"F910102-act","/F910102/{act}/act","PBB Proses Transaksi BPHTB Action",1
 9101024,"F910102-rpt","/F910102/{rpt}/rpt","PBB Proses Transaksi BPHTB Report",1
+9101031,"F910103","/F910103","PBB Proses Transaksi BPHTB Posted",1
+9101032,"F910103-act","/F910103/{act}/act","PBB Proses Transaksi BPHTB Posted Action",1
+9101033,"F910103-rpt","/F910103/{rpt}/rpt","PBB Proses Transaksi BPHTB Posted Report",1
