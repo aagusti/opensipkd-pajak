@@ -116,8 +116,8 @@ class KetetapanView(PbbView):
                         'nm_wp'          : row.wp_nama.upper(),
                         'jalan_wp'       : row.wp_alamat.upper(),
                         'blok_kav_no_wp' : row.wp_blok_kav.upper(),
-                        'rw_wp'          : row.wp_rw.upper(),
-                        'rt_wp'          : row.wp_rt.upper(),
+                        'rw_wp'          : row.wp_rw.upper()[-2:0],
+                        'rt_wp'          : row.wp_rt.upper()[-3:0],
                         'kelurahan_wp'   : row.wp_kelurahan.upper(),
                         'kota_wp'        : row.wp_kota.upper(),
                         'kd_pos_wp'      : row.wp_kdpos.upper(),
@@ -169,8 +169,8 @@ class KetetapanView(PbbView):
                         #'no_persil': row.
                         'jalan_op': row.op_alamat.upper(),
                         'blok_kav_no_op': row.op_blok_kav.upper(),
-                        'rw_op': row.op_rw.upper(),
-                        'rt_op': row.op_rt.upper(),
+                        'rw_op': row.op_rw.upper()[-2:0],
+                        'rt_op': row.op_rt.upper()[-3:0],
                         #'kd_status_cabang': row.
                         #'kd_status_wp': row.
                         #'total_luas_bumi': row.
