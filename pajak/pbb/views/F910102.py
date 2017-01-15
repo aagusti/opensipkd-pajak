@@ -205,8 +205,6 @@ class KetetapanView(PbbView):
                                     user = request.user.nice_username(),
                                     ))
                     
-                    row_pbb = {
-                        }
                     if not DatObjekPajak.add_dict(row_pbb, row_dop): 
                         return dict(
                             success = False,
