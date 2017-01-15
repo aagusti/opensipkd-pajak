@@ -116,12 +116,12 @@ class KetetapanView(PbbView):
                     row_pbb = {
                         'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
                         'nm_wp'          : row.wp_nama.upper(),
-                        'jalan_wp'       : row.wp_alamat.upper(),
-                        'blok_kav_no_wp' : row.wp_blok_kav.upper(),
+                        'jalan_wp'       : row.wp_alamat.upper()[:30],
+                        'blok_kav_no_wp' : row.wp_blok_kav.upper()[:15],
                         'rw_wp'          : row.wp_rw.upper()[-2:0],
                         'rt_wp'          : row.wp_rt.upper()[-3:0],
-                        'kelurahan_wp'   : row.wp_kelurahan.upper(),
-                        'kota_wp'        : row.wp_kota.upper(),
+                        'kelurahan_wp'   : row.wp_kelurahan.upper()[:30],
+                        'kota_wp'        : row.wp_kota.upper()[:30],
                         'kd_pos_wp'      : row.wp_kdpos.upper(),
                         'telp_wp'        : hasattr(row,'wp_telp') and row.wp_telp.upper() or None,
                         'npwp'           : re.sub('\D',"",row.wp_npwp.upper()),
@@ -166,11 +166,11 @@ class KetetapanView(PbbView):
                         'kd_blok': row.kd_blok,
                         'no_urut': row.no_urut,
                         'kd_jns_op': row.kd_jns_op,
-                        'subjek_pajak_id': row.wp_identitas.upper(),
+                        'subjek_pajak_id':  re.sub('\D',"",row.wp_identitas.upper()),
                         'no_formulir_spop': no_formulir_spop, #row. "2000.0001.001" 	2016.8109.420
                         #'no_persil': row.
-                        'jalan_op': row.op_alamat.upper(),
-                        'blok_kav_no_op': row.op_blok_kav.upper(),
+                        'jalan_op': row.op_alamat.upper()[:30],
+                        'blok_kav_no_op': row.op_blok_kav.upper()[:15],
                         'rw_op': row.op_rw.upper()[-2:0],
                         'rt_op': row.op_rt.upper()[-3:0],
                         #'kd_status_cabang': row.
