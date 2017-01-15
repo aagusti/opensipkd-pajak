@@ -225,13 +225,13 @@
                   if (html.success == true) {
                     $("#success").css('display', 'inline', 'important');
                     $("#success").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
-                    rows_selected = [];
-                    oTable.ajax.reload();
                     } 
                   else {
                     $("#errors").css('display', 'inline', 'important');
                     $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
                     }
+                    rows_selected = [];
+                    oTable.ajax.reload();
                   } //end if
                 }); //end ajax*/
               } //end if
