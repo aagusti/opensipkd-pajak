@@ -143,6 +143,7 @@ class DatObjekPajak(pbbBase, CommonModel):
     @classmethod
     def get_by_nop(cls, p_kode):
         return cls.query_id(p_kode)
+        
     @classmethod
     def add_dict(cls, row_dicted, row = None):
         # if not row:
@@ -189,7 +190,6 @@ class DatObjekPajak(pbbBase, CommonModel):
                     func.coalesce(DatOpAnggota.njop_bng_beban,0).label('njop_bng_beban'), ).\
                 outerjoin(DatSubjekPajak).\
                 outerjoin(DatOpAnggota)
-
         return query.filter(
                             cls.kd_propinsi == pkey['kd_propinsi'],
                             cls.kd_dati2 == pkey['kd_dati2'],

@@ -155,7 +155,7 @@ class KetetapanView(PbbView):
                                 format(
                                     user = request.user.nice_username(),
                                     ))
-                    #Upd
+                    
                     no_formulir_spop = str(row.tahun)+'8'+str(row.kode)+str(row.no_sspd).zfill(5)    
                     row_pbb = {
                         'id': id,
@@ -226,40 +226,41 @@ class KetetapanView(PbbView):
                     ##################################################
                     #UPDATE OBJEK BUMI
                     ##################################################
-                    if row.bng_luas>0:
-                        row_dog = DatOpBangunan.query_id(id,1).first()
-                        if not row_dog:
-                            return dict(
-                                success = False,
-                                msg = "Objek Pajak Bumi ID#{id} Tidak Ditemukan {nama}".\
-                                    format(id = id,
-                                        nama = row.wp_nama.upper(),
-                                        ))
+                    # if row.bng_luas>0:
+                        # row_dog = DatOpBangunan.query_id(id,1).first()
+                        # if not row_dog:
+                            # return dict(
+                                # success = False,
+                                # msg = "Objek Pajak Bumi ID#{id} Tidak Ditemukan {nama}".\
+                                    # format(id = id,
+                                        # nama = row.wp_nama.upper(),
+                                        # ))
                     
-                        no_formulir_lspop = str(row.tahun)+'7'+str(row.kode)+str(row.no_sspd).zfill(5)    
-                        row_pbb['no_bng'] = 1
-                        row_pbb['no_formulir_lspop'] = no_formulir_lspop
-                        row_pbb['luas_bng'] = row.bng_luas
-                        row_pbb['tgl_pendataan_bng'] = row.verifikasi_date
-                        #'nip_pendata_bng': row.
-                        row_pbb['tgl_pemeriksaan_bng'] = row.verifikasi_bphtb_date,
-                        #'nip_pemeriksa_bng': row.
-                        row_pbb['tgl_perekaman_bng'] = datetime.now(),
-                        row_pbb['nip_perekam_bng'] = request.user.nip_pbb()
+                        # no_formulir_lspop = str(row.tahun)+'7'+str(row.kode)+str(row.no_sspd).zfill(5)    
+                        # row_pbb['no_bng'] = 1
+                        # row_pbb['no_formulir_lspop'] = no_formulir_lspop
+                        # row_pbb['luas_bng'] = row.bng_luas
+                        # row_pbb['tgl_pendataan_bng'] = row.verifikasi_date
+                        # #'nip_pendata_bng': row.
+                        # row_pbb['tgl_pemeriksaan_bng'] = row.verifikasi_bphtb_date,
+                        # #'nip_pemeriksa_bng': row.
+                        # row_pbb['tgl_perekaman_bng'] = datetime.now(),
+                        # row_pbb['nip_perekam_bng'] = request.user.nip_pbb()
   
-                        if not DatOpBangunan.add_dict(row_pbb, row_dog): 
-                            return dict(
-                                success = False,
-                                msg = "Objek Bangunan ID#{id} Tidak Bisa Di Update {nama}".\
-                                    format(
-                                        id = id,
-                                        nama = row.wp_nama
-                                        ))
-                        pass
+                        # if not DatOpBangunan.add_dict(row_pbb, row_dog): 
+                            # return dict(
+                                # success = False,
+                                # msg = "Objek Bangunan ID#{id} Tidak Bisa Di Update {nama}".\
+                                    # format(
+                                        # id = id,
+                                        # nama = row.wp_nama
+                                        # ))
                     
+                    # pbbDBSession.flush()
                     #Update BPHTB
                     row.posted = 2
                     bphtbDBSession.add(row)
+                    bphtbDBSession.flush()
                     n_sukses += 1
                     
                 msg = '%s Data Di Proses' % (n_sukses)
