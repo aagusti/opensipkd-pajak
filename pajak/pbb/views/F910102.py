@@ -135,7 +135,8 @@ class KetetapanView(PbbView):
                                 format(id = wp_identitaskd,
                                     nama = row.wp_nama.upper(), 
                                     ))
-                                    
+                    pbbDBSession.commit()
+                    
                     ##################################################
                     #UPDATE OBJEK PAJAK
                     ##################################################
@@ -196,6 +197,7 @@ class KetetapanView(PbbView):
                                     id = id,
                                     nama = row.wp_nama
                                     ))
+                    pbbDBSession.commit()
                                     
                     ##################################################
                     #UPDATE OBJEK BUMI
@@ -223,8 +225,9 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
+                    pbbDBSession.commit()
                     ##################################################
-                    #UPDATE OBJEK BUMI
+                    #UPDATE OBJEK BANGUNAN
                     ##################################################
                     if row.bng_luas>0:
                         row_dog = DatOpBangunan.query_id(id,1).first()
@@ -265,7 +268,8 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
-                    
+                        pbbDBSession.commit()
+
                     # pbbDBSession.flush()
                     #Update BPHTB
                     row.posted = 2
