@@ -256,8 +256,8 @@ class KetetapanView(PbbView):
                         pass
                     
                     #Update BPHTB
-                    #row.posted = 2
-                    #bphtbDBSession.add(row)
+                    row.posted = 2
+                    bphtbDBSession.add(row)
                     n_sukses += 1
                     
                 msg = '%s Data Di Proses' % (n_sukses)
