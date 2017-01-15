@@ -7,11 +7,12 @@ from sqlalchemy.orm import (
     )
 from zope.sqlalchemy import ZopeTransactionExtension
 
-pbbDBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+pbbDBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension(),
+                              autocommit=False,
+                              autoflush=False,))
 pbbBase = declarative_base()
-from pyramid.threadlocal import get_current_registry
-
-settings = get_current_registry().settings
+from ...tools import get_settings
+settings = get_settings()
 pbb_schema = settings and 'schema.pbb' in settings and settings['schema.pbb'] or 'pbb'
 
 PBB_ARGS = {'extend_existing':True,  
