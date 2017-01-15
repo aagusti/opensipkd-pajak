@@ -112,7 +112,7 @@ class KetetapanView(PbbView):
                     #UPDATE SUBJEK PAJAK
                     ##################################################
                     id = re.sub('\D',"",row.wp_identitas.upper())
-                    row = DatSubjekPajak.query_id().first(id).first()
+                    row = DatSubjekPajak.query_id(id).first()
                     row_pbb = {
                         'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
                         'nm_wp'          : row.wp_nama.upper(),
