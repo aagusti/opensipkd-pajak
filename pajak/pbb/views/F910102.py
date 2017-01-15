@@ -116,7 +116,7 @@ class KetetapanView(PbbView):
                         return dict(
                             success = False,
                             msg = "Subjek Pajak ID#{id} Tidak Boleh Kosong {nama}".\
-                                format(id = wp_identitaskd,
+                                format(id = id,
                                     nama = row.wp_nama.upper(), 
                                     ))
                         
@@ -188,7 +188,7 @@ class KetetapanView(PbbView):
                         return dict(
                             success = False,
                             msg = "Subjek Pajak ID#{id} Tidak Bisa Di Update {nama}".\
-                                format(id = wp_identitaskd,
+                                format(id = row.wp_identitas,
                                     nama = row.wp_nama.upper(), 
                                     ))
                     #transaction.commit()
