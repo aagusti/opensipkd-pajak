@@ -22,7 +22,7 @@ from ...report_tools import (
         
 from ...bphtb.models import bphtbDBSession
 from ...bphtb.models.transaksi import Ppat, SspdBphtb
-        
+import transaction        
 SESS_ADD_FAILED  = 'Tambah Ketetapan gagal'
 SESS_EDIT_FAILED = 'Edit Ketetapan gagal'
 
@@ -135,7 +135,7 @@ class KetetapanView(PbbView):
                                 format(id = wp_identitaskd,
                                     nama = row.wp_nama.upper(), 
                                     ))
-                    pbbDBSession.commit()
+                    transaction.commit()
                     
                     ##################################################
                     #UPDATE OBJEK PAJAK
@@ -197,7 +197,7 @@ class KetetapanView(PbbView):
                                     id = id,
                                     nama = row.wp_nama
                                     ))
-                    pbbDBSession.commit()
+                    transaction.commit()
                                     
                     ##################################################
                     #UPDATE OBJEK BUMI
@@ -225,7 +225,7 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
-                    pbbDBSession.commit()
+                    transaction.commit()
                     ##################################################
                     #UPDATE OBJEK BANGUNAN
                     ##################################################
@@ -268,7 +268,7 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
-                        pbbDBSession.commit()
+                        transaction.commit()
 
                     # pbbDBSession.flush()
                     #Update BPHTB
