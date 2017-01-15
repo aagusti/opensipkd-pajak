@@ -112,7 +112,7 @@ class KetetapanView(PbbView):
                     #UPDATE SUBJEK PAJAK
                     ##################################################
                     id = re.sub('\D',"",row.wp_identitas.upper())
-                    row = DatSubjekPajak.query_id(id).first()
+                    row_sp = DatSubjekPajak.query_id(id).first()
                     row_pbb = {
                         'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
                         'nm_wp'          : row.wp_nama.upper(),
@@ -128,7 +128,7 @@ class KetetapanView(PbbView):
                         'kecamatan_wp'   : row.wp_kecamatan.upper(),
                         'provinsi_wp'    :  row.wp_provinsi.upper(),}
         
-                    if not DatSubjekPajak.add_dict(row_pbb, row): 
+                    if not DatSubjekPajak.add_dict(row_pbb, row_sp): 
                         return dict(
                             success = False,
                             msg = "Subjek Pajak ID#{id} Tidak Bisa Di Update {nama}".\
