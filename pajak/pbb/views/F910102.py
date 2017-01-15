@@ -22,7 +22,7 @@ from ...report_tools import (
         
 from ...bphtb.models import bphtbDBSession
 from ...bphtb.models.transaksi import Ppat, SspdBphtb
-import transaction        
+#import transaction        
 SESS_ADD_FAILED  = 'Tambah Ketetapan gagal'
 SESS_EDIT_FAILED = 'Edit Ketetapan gagal'
 
@@ -113,7 +113,10 @@ class KetetapanView(PbbView):
                     ##################################################
                     id = re.sub('\D',"",row.wp_identitas.upper())
                     row_sp = DatSubjekPajak.query_id(id).first()
+                    no_formulir_spop = str(row.tahun)+'8'+str(row.kode)+str(row.no_sspd).zfill(5)    
+                    no_formulir_lspop = str(row.tahun)+'7'+str(row.kode)+str(row.no_sspd).zfill(5)    
                     row_pbb = {
+                        'id': id,
                         'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
                         'nm_wp'          : row.wp_nama.upper(),
                         'jalan_wp'       : row.wp_alamat.upper()[:30],
@@ -126,7 +129,52 @@ class KetetapanView(PbbView):
                         'telp_wp'        : hasattr(row,'wp_telp') and row.wp_telp.upper() or None,
                         'npwp'           : re.sub('\D',"",row.wp_npwp.upper()),
                         'kecamatan_wp'   : row.wp_kecamatan.upper(),
-                        'provinsi_wp'    :  row.wp_provinsi.upper(),}
+                        'provinsi_wp'    :  row.wp_provinsi.upper(),
+                        ########################################################
+                        'kd_propinsi': row.kd_propinsi,
+                        'kd_dati2': row.kd_dati2,
+                        'kd_kecamatan': row.kd_kecamatan,
+                        'kd_kelurahan': row.kd_kelurahan,
+                        'kd_blok': row.kd_blok,
+                        'no_urut': row.no_urut,
+                        'kd_jns_op': row.kd_jns_op,
+                        'no_formulir_spop': no_formulir_spop, #row. "2000.0001.001" 	2016.8109.420
+                        #'no_persil': row.
+                        'jalan_op': row.op_alamat.upper()[:30],
+                        'blok_kav_no_op': row.op_blok_kav.upper()[:15],
+                        'rw_op': row.op_rw.upper()[-2:0],
+                        'rt_op': row.op_rt.upper()[-3:0],
+                        #'kd_status_cabang': row.
+                        #'kd_status_wp': row.
+                        #'total_luas_bumi': row.
+                        #'total_luas_bng': row.
+                        #'njop_bumi': row.
+                        #'njop_bng': row.
+                        #'status_peta_op': row.
+                        #'jns_transaksi_op': row.
+                        'tgl_pendataan_op': row.verifikasi_date,
+                        #'nip_pendata': row.
+                        'tgl_pemeriksaan_op': row.verifikasi_bphtb_date,
+                        #'nip_pemeriksa_op': row.
+                        'tgl_perekaman_op': datetime.now(),
+                        'nip_perekam_op': request.user.nip_pbb(),
+                        ########################################################
+                        'no_bumi': 1,
+                        #row_pbb['kd_znt'] =
+                        'luas_bumi': row.bumi_luas,
+                        #row_pbb['jns_bumi'] =
+                        #row_pbb['nilai_sistem_bumi'] =
+                        ########################################################
+                        'no_bng': 1,
+                        'no_formulir_lspop': no_formulir_lspop,
+                        'luas_bng': row.bng_luas,
+                        'tgl_pendataan_bng': row.verifikasi_date,
+                        #'nip_pendata_bng': row.
+                        'tgl_pemeriksaan_bng': row.verifikasi_bphtb_date,
+                        #'nip_pemeriksa_bng': row.
+                        'tgl_perekaman_bng': datetime.now(),
+                        'nip_perekam_bng': request.user.nip_pbb()
+                        }
         
                     if not DatSubjekPajak.add_dict(row_pbb, row_sp): 
                         return dict(
@@ -135,7 +183,7 @@ class KetetapanView(PbbView):
                                 format(id = wp_identitaskd,
                                     nama = row.wp_nama.upper(), 
                                     ))
-                    transaction.commit()
+                    #transaction.commit()
                     
                     ##################################################
                     #UPDATE OBJEK PAJAK
@@ -157,37 +205,7 @@ class KetetapanView(PbbView):
                                     user = request.user.nice_username(),
                                     ))
                     
-                    no_formulir_spop = str(row.tahun)+'8'+str(row.kode)+str(row.no_sspd).zfill(5)    
                     row_pbb = {
-                        'id': id,
-                        'kd_propinsi': row.kd_propinsi,
-                        'kd_dati2': row.kd_dati2,
-                        'kd_kecamatan': row.kd_kecamatan,
-                        'kd_kelurahan': row.kd_kelurahan,
-                        'kd_blok': row.kd_blok,
-                        'no_urut': row.no_urut,
-                        'kd_jns_op': row.kd_jns_op,
-                        'subjek_pajak_id':  re.sub('\D',"",row.wp_identitas.upper()),
-                        'no_formulir_spop': no_formulir_spop, #row. "2000.0001.001" 	2016.8109.420
-                        #'no_persil': row.
-                        'jalan_op': row.op_alamat.upper()[:30],
-                        'blok_kav_no_op': row.op_blok_kav.upper()[:15],
-                        'rw_op': row.op_rw.upper()[-2:0],
-                        'rt_op': row.op_rt.upper()[-3:0],
-                        #'kd_status_cabang': row.
-                        #'kd_status_wp': row.
-                        #'total_luas_bumi': row.
-                        #'total_luas_bng': row.
-                        #'njop_bumi': row.
-                        #'njop_bng': row.
-                        #'status_peta_op': row.
-                        #'jns_transaksi_op': row.
-                        'tgl_pendataan_op': row.verifikasi_date,
-                        #'nip_pendata': row.
-                        'tgl_pemeriksaan_op': row.verifikasi_bphtb_date,
-                        #'nip_pemeriksa_op': row.
-                        'tgl_perekaman_op': datetime.now(),
-                        'nip_perekam_op': request.user.nip_pbb()
                         }
                     if not DatObjekPajak.add_dict(row_pbb, row_dop): 
                         return dict(
@@ -197,7 +215,7 @@ class KetetapanView(PbbView):
                                     id = id,
                                     nama = row.wp_nama
                                     ))
-                    transaction.commit()
+                    #transaction.commit()
                                     
                     ##################################################
                     #UPDATE OBJEK BUMI
@@ -212,11 +230,6 @@ class KetetapanView(PbbView):
                                         nama = row.wp_nama.upper(),
                                         ))
                     
-                        row_pbb['no_bumi'] = 1
-                        #row_pbb['kd_znt'] =
-                        row_pbb['luas_bumi'] = row.bumi_luas
-                        #row_pbb['jns_bumi'] =
-                        #row_pbb['nilai_sistem_bumi'] =
                         if not DatOpBumi.add_dict(row_pbb, row_dom): 
                             return dict(
                                 success = False,
@@ -225,7 +238,7 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
-                    transaction.commit()
+                    #transaction.commit()
                     ##################################################
                     #UPDATE OBJEK BANGUNAN
                     ##################################################
@@ -239,26 +252,6 @@ class KetetapanView(PbbView):
                                         nama = row.wp_nama.upper(),
                                         ))
                     
-                        no_formulir_lspop = str(row.tahun)+'7'+str(row.kode)+str(row.no_sspd).zfill(5)    
-                        row_pbb = {
-                            'id': id,
-                            'kd_propinsi': row.kd_propinsi,
-                            'kd_dati2': row.kd_dati2,
-                            'kd_kecamatan': row.kd_kecamatan,
-                            'kd_kelurahan': row.kd_kelurahan,
-                            'kd_blok': row.kd_blok,
-                            'no_urut': row.no_urut,
-                            'kd_jns_op': row.kd_jns_op,
-                            }
-                        row_pbb['no_bng'] = 1
-                        row_pbb['no_formulir_lspop'] = no_formulir_lspop
-                        row_pbb['luas_bng'] = row.bng_luas
-                        row_pbb['tgl_pendataan_bng'] = row.verifikasi_date
-                        #'nip_pendata_bng': row.
-                        row_pbb['tgl_pemeriksaan_bng'] = row.verifikasi_bphtb_date,
-                        #'nip_pemeriksa_bng': row.
-                        row_pbb['tgl_perekaman_bng'] = datetime.now(),
-                        row_pbb['nip_perekam_bng'] = request.user.nip_pbb()
   
                         if not DatOpBangunan.add_dict(row_pbb, row_dog): 
                             return dict(
@@ -268,7 +261,7 @@ class KetetapanView(PbbView):
                                         id = id,
                                         nama = row.wp_nama
                                         ))
-                        transaction.commit()
+                        #transaction.commit()
 
                     # pbbDBSession.flush()
                     #Update BPHTB
