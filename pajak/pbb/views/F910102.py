@@ -112,9 +112,18 @@ class KetetapanView(PbbView):
                     #UPDATE SUBJEK PAJAK
                     ##################################################
                     id = re.sub('\D',"",row.wp_identitas.upper())
+                    if not id:
+                        return dict(
+                            success = False,
+                            msg = "Subjek Pajak ID#{id} Tidak Boleh Kosong {nama}".\
+                                format(id = wp_identitaskd,
+                                    nama = row.wp_nama.upper(), 
+                                    ))
+                        
                     row_sp = DatSubjekPajak.query_id(id).first()
                     no_formulir_spop = str(row.tahun)+'8'+str(row.kode)+str(row.no_sspd).zfill(5)    
                     no_formulir_lspop = str(row.tahun)+'7'+str(row.kode)+str(row.no_sspd).zfill(5)    
+                    id = nop_to_id(row)
                     row_pbb = {
                         'id': id,
                         'subjek_pajak_id': re.sub('\D',"",row.wp_identitas.upper()),
@@ -175,7 +184,6 @@ class KetetapanView(PbbView):
                         'tgl_perekaman_bng': datetime.now(),
                         'nip_perekam_bng': request.user.nip_pbb()
                         }
-        
                     if not DatSubjekPajak.add_dict(row_pbb, row_sp): 
                         return dict(
                             success = False,
