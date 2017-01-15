@@ -133,13 +133,14 @@ class DatObjekPajak(pbbBase, CommonModel):
     def query_id(cls, id):
         pkey = FixNop(id)
         query = cls.query()
-        return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
-                            kd_dati2 = pkey['kd_dati2'],
-                            kd_kecamatan = pkey['kd_kecamatan'],
-                            kd_kelurahan = pkey['kd_kelurahan'],
-                            kd_blok = pkey['kd_blok'],
-                            no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'],)
+        return query.filter(cls.kd_propinsi == pkey['kd_propinsi'],
+                            cls.kd_dati2 == pkey['kd_dati2'],
+                            cls.kd_kecamatan == pkey['kd_kecamatan'],
+                            cls.kd_kelurahan == pkey['kd_kelurahan'],
+                            cls.kd_blok == pkey['kd_blok'],
+                            cls.no_urut == pkey['no_urut'],
+                            cls.kd_jns_op == pkey['kd_jns_op'],
+                            )
         
     @classmethod
     def get_by_nop(cls, p_kode):
@@ -271,14 +272,14 @@ class DatOpBumi(pbbBase, CommonModel):
     def query_id(cls, id, no_bumi):
         pkey = FixNop(id)
         query = cls.query()
-        return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
-                            kd_dati2 = pkey['kd_dati2'],
-                            kd_kecamatan = pkey['kd_kecamatan'],
-                            kd_kelurahan = pkey['kd_kelurahan'],
-                            kd_blok = pkey['kd_blok'],
-                            no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'],
-                            no_bumi = no_bumi)
+        return query.filter(cls.kd_propinsi == pkey['kd_propinsi'],
+                            cls.kd_dati2 == pkey['kd_dati2'],
+                            cls.kd_kecamatan == pkey['kd_kecamatan'],
+                            cls.kd_kelurahan == pkey['kd_kelurahan'],
+                            cls.kd_blok == pkey['kd_blok'],
+                            cls.no_urut == pkey['no_urut'],
+                            cls.kd_jns_op == pkey['kd_jns_op'],
+                            cls.no_bumi == no_bumi)
     @classmethod
     def add_dict(cls, row_dicted, row = None):
         # q = cls.query_id(row_dicted['id'], row_dicted['no_bumi'])
@@ -382,14 +383,14 @@ class DatOpBangunan(pbbBase, CommonModel):
     def query_id(cls, id, no_bng):
         pkey = FixNop(id)
         query = cls.query()
-        return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
-                            kd_dati2 = pkey['kd_dati2'],
-                            kd_kecamatan = pkey['kd_kecamatan'],
-                            kd_kelurahan = pkey['kd_kelurahan'],
-                            kd_blok = pkey['kd_blok'],
-                            no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'],
-                            no_bng = no_bng)
+        return query.filter(cls.kd_propinsi == pkey['kd_propinsi'],
+                            cls.kd_dati2 == pkey['kd_dati2'],
+                            cls.kd_kecamatan == pkey['kd_kecamatan'],
+                            cls.kd_kelurahan == pkey['kd_kelurahan'],
+                            cls.kd_blok == pkey['kd_blok'],
+                            cls.no_urut == pkey['no_urut'],
+                            cls.kd_jns_op == pkey['kd_jns_op'],
+                            cls.no_bng == no_bng)
     @classmethod
     def add_dict(cls, row_dicted, row = None):
         # q = cls.query_id(row_dicted['id'], row_dicted['no_bumi'])
@@ -408,13 +409,14 @@ class DatOpBangunan(pbbBase, CommonModel):
     def total_luas_bng(cls, id):
         pkey = FixNop(id)
         query = pbbDBSession.query(func.sum(cls.luas_bng).label('total_luas_bng'))
-        return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
-                            kd_dati2 = pkey['kd_dati2'],
-                            kd_kecamatan = pkey['kd_kecamatan'],
-                            kd_kelurahan = pkey['kd_kelurahan'],
-                            kd_blok = pkey['kd_blok'],
-                            no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'])
+        return query.filter(cls.kd_propinsi == pkey['kd_propinsi'],
+                    cls.kd_dati2 == pkey['kd_dati2'],
+                    cls.kd_kecamatan == pkey['kd_kecamatan'],
+                    cls.kd_kelurahan == pkey['kd_kelurahan'],
+                    cls.kd_blok == pkey['kd_blok'],
+                    cls.no_urut == pkey['no_urut'],
+                    cls.kd_jns_op == pkey['kd_jns_op'],
+                    )
                             
 class Fasilitas(pbbBase, CommonModel):
     __tablename__ = 'fasilitas'
@@ -430,16 +432,9 @@ class Fasilitas(pbbBase, CommonModel):
         
     @classmethod
     def query_id(cls, id):
-        pkey = FixNop(id)
         query = cls.query()
-        return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
-                            kd_dati2 = pkey['kd_dati2'],
-                            kd_kecamatan = pkey['kd_kecamatan'],
-                            kd_kelurahan = pkey['kd_kelurahan'],
-                            kd_blok = pkey['kd_blok'],
-                            no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'],)
-                            
+        return query.filter(cls.kd_fasilitas == id,
+                            )                            
 class DatFasilitasBangunan(pbbBase, CommonModel):
     __tablename__ = 'dat_fasilitas_bangunan'
     kd_propinsi = Column(String(2), primary_key=True)
