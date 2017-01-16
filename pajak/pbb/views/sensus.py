@@ -571,9 +571,9 @@ def get_columns(request):
                                func.concat('.',
                                func.concat(TmpPendataan.no_bng,
                                func.concat('.',
-                               func.concat(TmpPendataan.kd_fasilitas,
+                                           TmpPendataan.kd_fasilitas)
                                
-                            )))))))))))))), mData='id'))
+                            )))))))))))), mData='id'))
     columns.append(ColumnDT(func.concat(TmpPendataan.kd_propinsi,
                                func.concat('.',
                                func.concat(TmpPendataan.kd_dati2,
