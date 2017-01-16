@@ -19,7 +19,8 @@ from ..models import (
     DBSession,
     Route)
 
-from datatables import ColumnDT, DataTables
+from ..views.common import ColumnDT, DataTables    
+
 #from okeuangan.views.base_view import BaseViews
     
 

@@ -18,7 +18,8 @@ from ..models import (
     Group,
     UserGroup,    )
     
-from datatables import ColumnDT, DataTables
+from ..views.common import ColumnDT, DataTables    
+
 
 
 SESS_ADD_FAILED = 'Tambah user gagal'

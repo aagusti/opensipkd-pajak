@@ -17,7 +17,8 @@ from ..models import (
     DBSession,
     User,
     )
-from datatables import ColumnDT, DataTables
+from ..views.common import ColumnDT, DataTables    
+
 
 from ..tools import _DTstatus
 SESS_ADD_FAILED = 'user add failed'

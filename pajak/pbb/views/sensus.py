@@ -27,7 +27,7 @@ from sqlalchemy import func, cast, String, BigInteger, tuple_, or_, not_
 from sqlalchemy.sql.expression import between
 from sqlalchemy.sql import text
 
-from datatables import ColumnDT, DataTables    
+from ...views.common import ColumnDT, DataTables    
 from ...tools import (dict_to_str, create_now, UploadFiles, get_settings, 
     file_type, dmy, dmy_to_date)
 from time import gmtime, strftime

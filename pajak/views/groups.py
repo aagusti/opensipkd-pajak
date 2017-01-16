@@ -20,7 +20,8 @@ from ..models import (
     Group
     )
     
-from datatables import ColumnDT, DataTables
+from ..views.common import ColumnDT, DataTables    
+
     
 
 SESS_ADD_FAILED = 'Tambah group gagal'
