@@ -17,7 +17,7 @@ memproses data pajak daerah (PBB, BPHTB dan Non PBB BPHTB)
 <li>Elektronik SSP BPHTB Monitoring <a href="http://pbb-bphtb.tangselkota.org">e-sspb</a></li>
 <li>SIG PBB <a href="http://sig.tangselkota.org/">SIG-PBB</a></li>
 <li>Integrasi PBB BPHTB - Akuntansi <a href="/pbb/akrual?project=_akrual">PBB BPHTB Akrual</a></li>
-<li>Data Sensus <a href="/pbb/sensus?project=_sensus">e-sensus</a></li>
+<li>Data Sensus <a href="/pbb/sensus">e-sensus</a></li>
 <li>Pengelolaan Restitusi/Kompensasi PBB  <a href="/F170900?project=_restitusi">e-Restitusi</a></li>
 <li>Integrasi PDL Akuntansi <a href="http://padl.tangselkota.org">PDL Akrual</a></li>
 <li>Elektronik SPPT <a href="http://e-sppt.tangselkota.org">e-sppt</a></li>

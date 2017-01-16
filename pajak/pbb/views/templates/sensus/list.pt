@@ -1,4 +1,4 @@
-<html metal:use-macro="load: ../base.pt">
+<html metal:use-macro="load: ../main.pt">
   <div metal:fill-slot="content">
     <div class="row">
     <h3>Migrasi Excel - SISMIOP</h3>
@@ -7,6 +7,9 @@
               <tr>
                 <th><input type="checkbox"id="select_all" name="select_all"></th>
                 <th>NOP</th>
+                <th>Bumi</th>
+                <th>Bng</th>
+                <th>Fas.</th>
                 <th>Subjek Pajak</th>
                 <th>Nama Subjek</th>
                 <th>F. SPOP</th>
@@ -60,7 +63,10 @@
                 render: function ( data, type, row ) {
                 return '<input type="checkbox" class="editor-active" value="'+data.id+'">';
                 }},
-              {data: "nop"},
+              {data: "nop", width:"150px", sClass: "center"},
+              {data: "bumi", width:"50px", sClass: "center"},
+              {data: "bng", width:"50px", sClass: "center"},
+              {data: "fas", width:"50px", sClass: "center"},
               {data: "subjek_pajak_id"},
               {data: "nm_wp"},
               {data: "no_formulir_spop"},
@@ -68,8 +74,13 @@
               {data: "jalan_op"},
               {data: "tgl_pendataan_op", sClass: "center"},
               {data: "tgl_proses", sClass: "center"},
-              {data: "status",     sClass: "center"},
-                     
+              {data: "status",     sClass: "center",
+                 'render': function (data, type, full, meta){
+                    if (data == 0)
+                       return '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+                    else
+                        return '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+                    }},
           ],
           columnDefs: [
             {
@@ -78,22 +89,6 @@
               "searchable": false,
               "sortable"  : false
             }
-            //,{
-            //  "searchable": true,
-            //  "targets"   : [2,3,4,5,6,9]
-            //},{
-            //  "searchable": false,
-            //  "targets"   : [7,8]
-            //},{
-            //    "aTargets" : [9], // Untuk Status Migrasi
-            //    "mRender"  : function (data, type, full) {
-            //        if (data == "0") {
-            //            return 'N';
-            //        } else if (data == "1") {
-            //            return 'Y';
-            //        }
-            //    }
-            //}
           ],
             "language": {
                 "search"  : "Cari: ",
@@ -116,6 +111,7 @@
         });
         var awal = "${request.session['awal']}";
         var akhir = "${request.session['akhir']}";
+        var valposted = "${request.session['posted'] and 'checked' or None}";
         var tb_array = [
           '<div class="btn-group pull-left">',
           //'	<button id="btn_proses"    class="btn btn btn-success" type="button">Migrasi Semua</button>',
@@ -127,6 +123,7 @@
           '	<button id="btn_verify"     class="btn btn btn-success"  type="button">Verifikasi</button>',
           '	&nbsp;Periode <input type="text" id="awal" class="input-sm" name="awal" value="'+awal+'">',
           '	<input type="text" id="akhir" class="input-sm" name="akhir" value="'+akhir+'">',
+          ' <input type="checkbox" id="posted" class="form-control" '+valposted+'" name="posted">Posted',
           '	&nbsp;',
           '</div>',
         ];
@@ -142,11 +139,16 @@
           onClose    : function( selectedDate ) {
           },
           onSelect: function(selectedDate) {
-            var filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val();
+            var filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val()+"&posted="+$("#posted").is(':checked');
             oTable.ajax.url(oTableUrl + filter).load();
           }   
         });
         
+        $("#posted").click(function(){
+            var filter = "?awal="+$("#awal").val()+"&akhir="+$("#akhir").val()+"&posted="+$("#posted").is(':checked');
+            oTable.ajax.url(oTableUrl + filter).load();
+        })
+        ;
         //Binding Search By Enter Key
         $('#table1_filter input').unbind();
         $('#table1_filter input').bind('keyup', function(e) {

@@ -28,7 +28,7 @@ from sqlalchemy.orm import (
     )
 import re
 from ...tools import as_timezone
-from ..tools import FixNop
+from ..tools import FixNop, FixSppt
 
 from ...models import CommonModel
 from ..models import pbbBase, pbbDBSession, PBB_ARGS
@@ -458,7 +458,7 @@ class DatFasilitasBangunan(pbbBase, CommonModel):
         return pbbDBSession.query(cls)
 
     @classmethod
-    def query_id(cls, id):
+    def query_id(cls, id, no_bng, kd_fasilitas):
         pkey = FixNop(id)
         query = cls.query()
         return query.filter_by(kd_propinsi = pkey['kd_propinsi'],
@@ -467,7 +467,9 @@ class DatFasilitasBangunan(pbbBase, CommonModel):
                             kd_kelurahan = pkey['kd_kelurahan'],
                             kd_blok = pkey['kd_blok'],
                             no_urut = pkey['no_urut'],
-                            kd_jns_op = pkey['kd_jns_op'],)
+                            kd_jns_op = pkey['kd_jns_op'],
+                            no_bng = no_bng,
+                            kd_fasilitas = kd_fasilitas)
                             
 class TmpPendataan(pbbBase, CommonModel):
     __tablename__ = 'tmp_pendataan'
@@ -536,7 +538,7 @@ class TmpPendataan(pbbBase, CommonModel):
     nip_pemeriksa_bng = Column(String(18))
     tgl_perekaman_bng = Column(DateTime)
     nip_perekam_bng = Column(String(18))
-    kd_fasilitas = Column(String(2))
+    kd_fasilitas = Column(String(2), primary_key=True)
     jml_satuan = Column(Integer)
     status = Column(Integer, nullable=False)
     tgl_proses = Column(DateTime)
@@ -572,7 +574,8 @@ class TmpPendataan(pbbBase, CommonModel):
 
     @classmethod
     def query_id(cls,id):
-        pkey = FixNop(id)
+        ids = id.split('.')
+        pkey = FixSppt(ids[0])
         return cls.query().filter_by(
                 kd_propinsi = pkey['kd_propinsi'],
                 kd_dati2 = pkey['kd_dati2'],
@@ -580,5 +583,9 @@ class TmpPendataan(pbbBase, CommonModel):
                 kd_kelurahan = pkey['kd_kelurahan'],
                 kd_blok = pkey['kd_blok'],
                 no_urut = pkey['no_urut'],
-                kd_jns_op = pkey['kd_jns_op'],)
+                kd_jns_op = pkey['kd_jns_op'],
+                thn_pendataan = pkey['thn_pajak_sppt'],
+                no_bumi = ids[1],
+                no_bng = ids[2],
+                kd_fasilitas = ids[3])
 #END OF SCRIPT

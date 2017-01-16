@@ -36,8 +36,8 @@ class BaseView(object):
         self.ses['dt_akhir'] = self.dt_akhir
         
         self.project = "project" in self.ses and self.ses["project"] or ''
-        if "project" in self.params and self.params["project"]:
-            self.project = "project" in self.params and self.params["project"]
+        if "project" in self.params: # and self.params["project"]:
+            self.project = self.params["project"] or ''
         self.ses["project"] = self.project
         
             

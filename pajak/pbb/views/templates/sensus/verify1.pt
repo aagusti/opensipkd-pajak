@@ -1,0 +1,302 @@
+<html metal:use-macro="load: ../main.pt">
+<div metal:fill-slot="content">
+<form id="myform" method="post" enctype="multipart/form-data" accept-charset="utf-8" 
+             class="form-horizontal">
+        
+    <div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">${request.title}</h3>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <div class="row" tal:define="field form['id']" id="item-${field.oid}">
+                <label for="${field.oid}" class="control-label col-md-2" id="req-${field.oid}">
+                        ${field.title}</label>
+                <div class="col-md-3">
+                   ${structure:field.serialize()}
+                    <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                       tal:repeat="error field.error.messages()">
+                       ${error}</p>
+                </div>
+            </div>
+        </div>
+        
+
+        
+        <div id="subjek_pajak"> 
+            <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Subjek Pajak</h3>
+            </div>
+            <div class="panel-body">
+               <div class="form-group">
+                
+                    <div class="col-md-6" tal:define="field form['subjek_pajak_id']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_subjek_pajak_id']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                </div>
+               <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['nm_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_nm_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                    
+                </div>
+                
+               <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['jalan_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_jalan_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+
+               <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['blok_kav_no_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_blok_kav_no_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['rw_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_rw_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['rt_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_rt_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['kelurahan_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_kelurahan_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                
+                    <div class="col-md-6" tal:define="field form['kota_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_kota_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['kd_pos_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_kd_pos_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['telp_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_telp_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['npwp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_npwp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6" tal:define="field form['status_pekerjaan_wp']" id="item-${field.oid}">
+                        <label for="${field.oid}" class="control-label col-md-4" id="req-${field.oid}">
+                                ${field.title}</label>
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" tal:define="field form['old_status_pekerjaan_wp']" id="item-${field.oid}">
+                        <div class="col-md-6">
+                           ${structure:field.serialize()}
+                            <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                               tal:repeat="error field.error.messages()">
+                               ${error}</p>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+            </div>
+        </div>
+        
+    </div>
+    </div>
+</form>
+<script>
+  $(document).ready(function () {
+    $('#id').attr('readonly', 'readonly');
+    $("input[name*='old_']").attr('readonly', 'readonly');
+  });
+</script>
+</div>
+</html>

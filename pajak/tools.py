@@ -140,7 +140,9 @@ def date_from_str(value):
     return date(y, m, d)    
     
 def dmy(tgl):
-    return tgl.strftime('%d-%m-%Y')
+    if tgl:
+        return tgl.strftime('%d-%m-%Y')
+    return
 
 def dmy_to_date(tgl):
     return datetime.strptime(tgl,'%d-%m-%Y')
