@@ -126,12 +126,8 @@ class BphtbViewSelf(BphtbView):
             path = os.path.join(os.path.dirname(_here), 'static')
             print "XXXXXXXXXXXXXXXXXXX", os.path
 
-            #logo = path + "/img/logo.png"
-            #line = path + "/img/line.png"
-            #logo = self.req.static_url('static/img/logo.png')
-            #line = self.req.static_url('static/img/line.png')
-            logo = "http://192.168.56.3:6543/static/img/logo.png"
-            line = "http://192.168.56.3:6543/static/img/line.png"
+            logo = os.path.abspath("pajak/static/img/logo.png")
+            line = os.path.abspath("pajak/static/img/line.png")
 
             path = os.path.join(os.path.dirname(_here), 'reports')
             rml_row = open_rml_row(path+'/bphtb_realisasi_self.row.rml')
