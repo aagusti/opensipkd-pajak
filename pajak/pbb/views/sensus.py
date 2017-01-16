@@ -137,6 +137,11 @@ class SensusView(PbbView):
                     s = str(e)
                     return dict(success=False,
                                 msg = "Error Data Objek Pajak NOP Msg: %s  " %s)
+                
+                row_dicted = dict(id = nop,
+                                  total_luas_bumi = row.luas_bumi)
+                DatObjekPajak.set_luas_bumi(row_dicted)
+        
                 # sql = "Declare out1 number;" \
                       # "Begin "\
                       # "PENENTUAN_NJOP_BUMI('{kd_propinsi}','{kd_dati2}','{kd_kecamatan}','{kd_kelurahan}',"\
@@ -161,10 +166,16 @@ class SensusView(PbbView):
                     pbbDBSession.add(datOpBangunan)
                     try:
                         pbbDBSession.flush()
+                        
                     except Exception as e:
                         s = str(e)
                         return dict(success=False,
                                     msg = "Error Data Bangunan NOP Msg: %s  " %s)
+                    
+                    total_luas_bng = DatOpBangunan.total_luas_bng(row_dicted['id']).scalar()
+                    row_dicted['total_luas_bng'] = total_luas_bng
+                    DatObjekPajak.set_luas_bng(row_dicted)
+        
                     # sql = "Declare out1 number;" \
                           # "Begin "\
                           # "PENENTUAN_NJOP_BNG('{kd_propinsi}','{kd_dati2}','{kd_kecamatan}','{kd_kelurahan}',"\
