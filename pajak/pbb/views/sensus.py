@@ -1032,8 +1032,14 @@ class DbUpload(UploadFiles):
                             no_bng = vals['no_bng'],
                             kd_fasilitas = vals['kd_fasilitas'],
                             ).first()
+                        
                         if not tmp_pendataan:
                             tmp_pendataan = TmpPendataan()
+                            print '---------------------------------------------'
+
+                        else:
+                            print '**********************************************'
+
                         tmp_pendataan.from_dict(vals)
                         tmp_pendataan.tgl_proses=datetime.now()
                         try:
