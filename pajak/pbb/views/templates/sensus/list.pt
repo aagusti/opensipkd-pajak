@@ -124,7 +124,7 @@
           '	<button id="btn_verify"     class="btn btn btn-success"  type="button">Verifikasi</button>',
           '	&nbsp;Periode <input type="text" id="awal" class="input-sm" name="awal" value="'+awal+'">',
           '	<input type="text" id="akhir" class="input-sm" name="akhir" value="'+akhir+'">',
-          ' <input type="checkbox" id="posted" class="form-control" '+valposted+' name="posted">Posted',
+          ' <input type="checkbox" id="posted" class="form-control" '+valposted+'  name="posted">Posted',
           '	&nbsp;',
           '</div>',
         ];
