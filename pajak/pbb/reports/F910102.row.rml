@@ -1,0 +1,17 @@
+<tr>
+    <td style="tableBody">{id}</td>
+    <td style="tableBody">{sspd_no}</td>
+    <td style="tableBody">{wp_nama}</td>
+    <td style="tableBody">{nop}</td>
+    <td style="tableBody">{tahun}</td>
+    <td style="tableBody">{terhutang}</td>
+    <td style="tableBody">{bayar}</td>
+    <td style="tableBody">{tgl_approval}</td>
+    <td style="tableBody">{tgl_verifikasi}</td>
+    <td style="tableBody">{status_validasi}</td>
+    <td style="tableBody">{no_ajb}</td>
+    <td style="tableBody">{tgl_ajb}</td>
+    <td style="tableBody">{posted}</td>
+    <td style="tableBody">{ppat_nama}</td>
+    <td style="tableBody">{ppat_kode}</td>
+</tr>
