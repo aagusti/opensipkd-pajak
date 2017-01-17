@@ -234,7 +234,7 @@ class SaldoAwalView(BphtbView):
             
             rows=[]
             for r in query.all():
-                s = rml_row.format(tahun=r.tahun, uraian=r.uraian, tahun_tetap=r.tahun_tetap,   
+                s = rml_row.format(id=r.id, tahun=r.tahun, uraian=r.uraian, tahun_tetap=r.tahun_tetap,   
                                    nilai=r.nilai, posted=r.posted)
                 rows.append(s)
             
