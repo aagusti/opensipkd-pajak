@@ -198,12 +198,12 @@ class SaldoAwalView(PbbView):
     @view_config(route_name='pbb-sa-rpt', 
                  permission='pbb-sa-rpt')
     def view_csv(self):
-        query = pbbDBSession.query(
+        query = pbbDBSession.query(SaldoAwal.id,
                       SaldoAwal.tahun,
                       SaldoAwal.uraian,
                       SaldoAwal.tahun_tetap,
                       SaldoAwal.nilai,
-                      SaldoAwal.posted,).\
+                      SaldoAwal.posted).\
               filter(SaldoAwal.tahun==str(self.tahun))
               
         url_dict = self.req.matchdict
@@ -224,7 +224,7 @@ class SaldoAwalView(PbbView):
             
             rows=[]
             for r in query.all():
-                s = rml_row.format(tahun=r.tahun, uraian=r.uraian, tahun_tetap=r.tahun_tetap, nilai=r.nilai, posted=r.posted)
+                s = rml_row.format(id=r.id, tahun=r.tahun, uraian=r.uraian, tahun_tetap=r.tahun_tetap, nilai=r.nilai, posted=r.posted)
                 rows.append(s)
             
             pdf, filename = open_rml_pdf(path+'/pbb_saldo_awal.rml', rows=rows, 
