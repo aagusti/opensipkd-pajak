@@ -7,6 +7,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from xlrd import open_workbook, xldate_as_tuple
 import colander
+import locale
 from deform import (
     Form,
     widget,
@@ -935,8 +936,10 @@ class DbUpload(UploadFiles):
         settings = get_settings()
         dir_path = os.path.realpath(settings['static_files'])
         UploadFiles.__init__(self, dir_path)
+        self.settings = settings
         
     def save(self, request, names):
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
         fileslist = request.POST.getall(names)
         error = 0
         for f in fileslist:
@@ -984,14 +987,30 @@ class DbUpload(UploadFiles):
                                     val = 0
                                     
                             elif col in [33,35,37]:
-                                val = xldate_as_tuple(xl_sheet.cell(row,col).value,book.datemode)
-                                val = datetime(*val)
+                                try:
+                                    val = xldate_as_tuple(xl_sheet.cell(row,col).value,book.datemode)
+                                    val = datetime(*val)
+                                except:
+                                    val = xl_sheet.cell(row,col).value.strip().title()
+                                    try:
+                                        val = datetime.strptime(val, '%d-%b-%y')
+                                    except:
+                                        val = datetime.now()
+    
                             elif col in [59,61,63]:
                                 if xl_sheet.cell(row,col).value == '':
                                     val = None
                                 else:
-                                    val = xldate_as_tuple(xl_sheet.cell(row,col).value,book.datemode)
-                                    val = datetime(*val)
+                                    try:
+                                        val = xldate_as_tuple(xl_sheet.cell(row,col).value,book.datemode)
+                                        val = datetime(*val)
+                                    except:
+                                        val = xl_sheet.cell(row,col).value.strip().title()
+                                        try:
+                                            val = datetime.strptime(val, '%d-%b-%y')
+                                        except:
+                                            val = None
+        
                             elif col in [65]:
                                 if xl_sheet.cell(row,col).value == '': #kd_fasilitas
                                     val = '00'
@@ -1010,8 +1029,10 @@ class DbUpload(UploadFiles):
                         except:
                             error += 1
                         #pbbDBSession.commit()
+            locale.setlocale(locale.LC_ALL, settings['localization'])        
             return error
-            
+        locale.setlocale(locale.LC_ALL, settings['localization'])        
+
 def upload_request(values, request, row=None):
     dbu = DbUpload()
     error = dbu.save(request, 'upload')
