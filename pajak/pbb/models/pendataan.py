@@ -178,7 +178,7 @@ class DatObjekPajak(pbbBase, CommonModel):
         
     @classmethod
     def get_info_op_bphtb(cls, p_kode):
-        pkey = FixNop(NOP)
+        pkey = FixNop(p_kode)
         query = pbbDBSession.query(
                     cls.jalan_op, cls.blok_kav_no_op, cls.rt_op, cls.rw_op,
                     cls.total_luas_bumi.label('luas_bumi_sppt'), cls.total_luas_bng.label('luas_bng_sppt'),
