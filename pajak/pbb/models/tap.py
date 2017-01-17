@@ -101,7 +101,7 @@ class Sppt(pbbBase, CommonModel):
     tgl_terbit_sppt                      = Column(DateTime(timezone=False))
     tgl_cetak_sppt                       = Column(DateTime(timezone=False))
     nip_pencetak_sppt                    = Column(String(18))
-    posted                               = Column(Integer)
+    #posted                               = Column(Integer)
     
     @classmethod
     def query(cls):
