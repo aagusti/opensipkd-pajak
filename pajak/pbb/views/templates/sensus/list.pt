@@ -112,6 +112,7 @@
         var awal = "${request.session['awal']}";
         var akhir = "${request.session['akhir']}";
         var valposted = "${request.session['posted'] and 'checked' or None}";
+        console.log(valposted)
         var tb_array = [
           '<div class="btn-group pull-left">',
           //'	<button id="btn_proses"    class="btn btn btn-success" type="button">Migrasi Semua</button>',
