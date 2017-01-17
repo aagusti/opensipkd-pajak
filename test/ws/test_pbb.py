@@ -5,11 +5,21 @@ from tools import json_rpc_header
 from config import (
     username,
     pass_encrypted,)
-
+methods = """
+             Daftar Method
+             get_sppt_bayar
+             get_info_op
+             get_dop_bphtb
+             get_piutang_by_nop
+             get_sppt_dop
+             get_sppt
+             get_dop
+          """
+print methods
 
 #url = 'http://rpc.bogorkota.net:6543/ws/pbb'
 url = 'http://localhost:6543/pbb/api'
-url = 'https://pajak.tangselkota.org/pbb/ws/api'
+url = 'http://pajak.tangselkota.org:6543/pbb/ws/api'
 kode = '611001000100100010'
 kode = '367605000500100040'
 tahun = '2005'

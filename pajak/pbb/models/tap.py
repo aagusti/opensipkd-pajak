@@ -180,7 +180,7 @@ class Sppt(pbbBase, CommonModel):
                     ke = ke)
     @classmethod
     def get_bayar(cls, p_kode):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         query = pbbDBSession.query(
               func.concat(cls.kd_propinsi, '.').\
                    concat(cls.kd_dati2).concat('-').\
@@ -246,7 +246,7 @@ class Sppt(pbbBase, CommonModel):
         
     @classmethod
     def get_info_op(cls, p_kode):
-        fxNop = clsNop(p_kode)
+        fxNop = FixNop(p_kode)
         query = pbbDBSession.query(
               func.concat(cls.kd_propinsi, '.').\
                    concat(cls.kd_dati2).concat('-').\
