@@ -1029,7 +1029,7 @@ class DbUpload(UploadFiles):
                         except:
                             error += 1
                         #pbbDBSession.commit()
-            locale.setlocale(locale.LC_ALL, settings['localization'])        
+            locale.setlocale(locale.LC_ALL, self.settings['localization'])        
             return error
         locale.setlocale(locale.LC_ALL, settings['localization'])        
 
