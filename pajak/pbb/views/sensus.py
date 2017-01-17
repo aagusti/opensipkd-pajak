@@ -958,7 +958,7 @@ class DbUpload(UploadFiles):
                 if rows < 2:
                    continue
                 
-                if xl_sheet.cell(0,0).value.strip() == 'SUBJEK_PAJAK_ID':
+                if str(xl_sheet.cell(0,0).value).strip().upper() == 'SUBJEK_PAJAK_ID':
                     for row in range(1,rows):
                         vals = {} 
                         for col in range(0,cols):
