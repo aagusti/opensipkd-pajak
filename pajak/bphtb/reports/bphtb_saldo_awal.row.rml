@@ -1,7 +1,8 @@
 <tr>
+    <td style="tableBody">{id}</td>
     <td style="tableBody">{tahun}</td>
     <td style="tableBody">{uraian}</td>
-    <td style="tableBody">{ketetapan}</td>
+    <td style="tableBody">{tahun_tetap}</td>
     <td style="tableBody">{nilai}</td>
     <td style="tableBody">{posted}</td>
 </tr>
