@@ -316,4 +316,4 @@ def get_dop(request, data):
         return dict(code = CODE_DATA_INVALID, message = MSG_INVALID)
     
     params = dict(data=ret_data)
-    return dict(code = CODE_OK, message = message_ok, params = params)
+    return dict(code = CODE_OK, message = MSG_OK, params = params)
