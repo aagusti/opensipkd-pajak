@@ -65,7 +65,7 @@ class SensusView(PbbView):
 
         if url_dict['id'] == 'grid':
             columns, query = get_columns(req)
-            qry = query.filter(TmpPendataan.tgl_pendataan_op.between(self.dt_awal,self.dt_akhir))
+            qry = query.filter(TmpPendataan.tgl_proses.between(self.dt_awal,self.dt_akhir))
             rowTable = DataTables(req.GET, qry, columns)
             return rowTable.output_result()
         
