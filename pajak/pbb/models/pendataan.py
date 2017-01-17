@@ -188,9 +188,11 @@ class DatObjekPajak(pbbBase, CommonModel):
                     func.coalesce(DatOpAnggota.luas_bng_beban,0).label('luas_bng_beban'),
                     func.coalesce(DatOpAnggota.njop_bumi_beban,0).label('njop_bumi_beban'),
                     func.coalesce(DatOpAnggota.njop_bng_beban,0).label('njop_bng_beban'), ).\
+                join(DatOpBumi).\
                 outerjoin(DatSubjekPajak).\
                 outerjoin(DatOpAnggota)
         return query.filter(
+                            DatOpBumi.no_bumi < '4',
                             cls.kd_propinsi == pkey['kd_propinsi'],
                             cls.kd_dati2 == pkey['kd_dati2'],
                             cls.kd_kecamatan == pkey['kd_kecamatan'],
