@@ -131,10 +131,10 @@ def get_dop_bphtb(request, data):
     try:
         ret_data =[]
         for r in data:
-            if Sppt.count(r['kode'])>0:
-                query = Sppt.get_info_op_bphtb(r['kode'],r['tahun'])
-            else:
-                query = DatObjekPajak.get_info_op_bphtb(r['kode'])
+            #if Sppt.count(r['kode'])>0:
+            #    query = Sppt.get_info_op_bphtb(r['kode'],r['tahun'])
+            #else:
+            query = DatObjekPajak.get_info_op_bphtb(r['kode'])
             row  =  query.first()
             if not row:
                 resp['code'] = CODE_NOT_FOUND 
@@ -233,7 +233,7 @@ def get_sppt(request, data):
                 rows = Sppt.get_nop_by_kelurahan(r['kode'],r['tahun']).all()
             else:
                 if 'tahun' in r and r['tahun']:
-                    rows = Sppt.get_nop_by_nop_thn(r['kode'],r['tahun']).all()
+                    rows = Sppt.get_by_nop_thn(r['kode'],r['tahun']).all()
                 else:
                     rows = Sppt.get_by_nop(r['kode']).all()
             if rows:
