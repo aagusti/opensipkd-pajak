@@ -73,7 +73,7 @@ class SensusView(PbbView):
             cari = 'cari' in req.params and req.params['cari'] or ''
             columns, query = get_columns(req)
             
-            qry = query.filter(TmpPendataan.tgl_pendataan_op.between(ddate_from,ddate_to))
+            qry = query.filter(TmpPendataan.tgl_proses.between(ddate_from,ddate_to))
             rowTable = DataTables(req.GET, TmpPendataan, qry, columns)
             return rowTable.output_result()
             
@@ -257,7 +257,7 @@ class SensusView(PbbView):
         #if url_dict['csv'] == 'transaksi':
         #columns, 
         qry = TmpPendataan.query_data()
-        qry = qry.filter(TmpPendataan.tgl_pendataan_op.between(self.dt_awal,self.dt_akhir))
+        qry = qry.filter(TmpPendataan.tgl_proses.between(self.dt_awal,self.dt_akhir))
         r = qry.first()
 
         header = r.keys()
