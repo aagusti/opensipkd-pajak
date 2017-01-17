@@ -1020,7 +1020,20 @@ class DbUpload(UploadFiles):
                         vals['status'] = 0
                         if 'thn_pendataan' not in vals:
                             vals['thn_pendataan'] = datetime.now().year
-                        tmp_pendataan = TmpPendataan()
+                        tmp_pendataan = TmpPendataan.query().filter_by(
+                            kd_propinsi = vals['kd_propinsi'],
+                            kd_dati2 = vals['kd_dati2'],
+                            kd_kecamatan = vals['kd_kecamatan'],
+                            kd_kelurahan = vals['kd_kelurahan'],
+                            kd_blok = vals['kd_blok'],
+                            no_urut = vals['no_urut'],
+                            kd_jns_op = vals['kd_jns_op'],
+                            no_bumi = vals['no_bumi'],
+                            no_bng = vals['no_bng'],
+                            kd_fasilitas = vals['kd_fasilitas'],
+                            ).first()
+                        if not tmp_pendataan:
+                            tmp_pendataan = TmpPendataan()
                         tmp_pendataan.from_dict(vals)
                         tmp_pendataan.tgl_proses=datetime.now()
                         try:
