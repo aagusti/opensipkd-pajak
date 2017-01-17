@@ -130,4 +130,32 @@ class KetetapanView(PbbView):
         if url_dict['rpt']=='csv' :
             filename = 'F910103.csv'
             return csv_response(self.req, csv_rows(query), filename)
+
+        if url_dict['rpt']=='pdf' :
+            _here = os.path.dirname(__file__)
+            path = os.path.join(os.path.dirname(_here), 'static')
+            print "XXXXXXXXXXXXXXXXXXX", os.path
+
+            logo = os.path.abspath("pajak/static/img/logo.png")
+            line = os.path.abspath("pajak/static/img/line.png")
+
+            path = os.path.join(os.path.dirname(_here), 'reports')
+            rml_row = open_rml_row(path+'/F910103.row.rml')
+            
+            rows=[]
+            for r in query.all():
+                s = rml_row.format(id=r.id, sspd_no=r.sspd_no, wp_nama=r.wp_nama, nop=r.nop, tahun=r.tahun,   
+                                   terhutang=r.terhutang, bayar=r.bayar, tgl_approval=r.tgl_approval, 
+                                   tgl_verifikasi=r.tgl_verifikasi, status_validasi=r.status_validasi, 
+                                   no_ajb=r.no_ajb, tgl_ajb=r.tgl_ajb, posted=r.posted, ppat_nama=r.ppat_nama,
+                                   ppat_kode=r.ppat_kode)
+                rows.append(s)
+            
+            pdf, filename = open_rml_pdf(path+'/F910103.rml', rows=rows, 
+                                company=self.req.company,
+                                departement = self.req.departement,
+                                logo = logo,
+                                line = line,
+                                address = self.req.address)
+            return pdf_response(self.req, pdf, filename)
             
